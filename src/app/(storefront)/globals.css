@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+:root {
+  --color-cream: #faf6f1;
+  --color-blush: #f0e0da;
+  --color-sage: #8a9a80;
+  --color-ink: #362f28;
+  --color-ink-soft: #6b6155;
+  --color-accent: #a8785f;
+}
+
+@theme inline {
+  --color-cream: var(--color-cream);
+  --color-blush: var(--color-blush);
+  --color-sage: var(--color-sage);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-accent: var(--color-accent);
+  --font-sans: var(--font-montserrat);
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+@layer components {
+  .input {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--color-ink) 15%, transparent);
+    background: white;
+    padding: 0.65rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-ink);
+  }
+  .input::placeholder {
+    color: var(--color-ink-soft);
+  }
+  .input:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-ticker {
+  animation: ticker 30s linear infinite;
+}

@@ -1,0 +1,150 @@
+import type { CollectionConfig } from 'payload'
+
+import { isOwner } from '@/access/isOwner'
+import { isOwnerOrFlorist } from '@/access/isOwnerOrFlorist'
+
+const DELIVERY_TIME_WINDOWS = [
+  { label: '09:00–12:00', value: '09:00-12:00' },
+  { label: '12:00–15:00', value: '12:00-15:00' },
+  { label: '15:00–18:00', value: '15:00-18:00' },
+  { label: '18:00–21:00', value: '18:00-21:00' },
+]
+
+export const Orders: CollectionConfig = {
+  slug: 'orders',
+  admin: {
+    useAsTitle: 'id',
+    group: 'Замовлення',
+    defaultColumns: ['customerName', 'phone', 'deliveryDate', 'status', 'orderTotal', 'createdAt'],
+  },
+  access: {
+    // Checkout submits through the validated `createOrder` server action only — this
+    // collection-level `create: true` is what lets that server action call payload.create().
+    create: () => true,
+    read: isOwnerOrFlorist,
+    update: isOwnerOrFlorist,
+    delete: isOwner,
+  },
+  fields: [
+    {
+      type: 'row',
+      fields: [
+        { name: 'customerName', type: 'text', required: true },
+        { name: 'phone', type: 'text', required: true },
+      ],
+    },
+    {
+      name: 'email',
+      type: 'text',
+    },
+    {
+      type: 'row',
+      fields: [
+        { name: 'deliveryCity', type: 'text', required: true },
+        { name: 'deliveryDate', type: 'date', required: true, admin: { date: { pickerAppearance: 'dayOnly' } } },
+      ],
+    },
+    {
+      name: 'deliveryAddress',
+      type: 'textarea',
+      required: true,
+    },
+    {
+      name: 'deliveryTimeWindow',
+      type: 'select',
+      required: true,
+      options: DELIVERY_TIME_WINDOWS,
+    },
+    {
+      name: 'cardMessage',
+      type: 'textarea',
+      admin: { description: 'Текст листівки' },
+    },
+    {
+      name: 'comment',
+      type: 'textarea',
+    },
+    {
+      name: 'items',
+      type: 'array',
+      required: true,
+      minRows: 1,
+      fields: [
+        { name: 'product', type: 'relationship', relationTo: 'products', required: true },
+        { name: 'productName', type: 'text', required: true },
+        { name: 'variantLabel', type: 'text' },
+        { name: 'quantity', type: 'number', required: true, min: 1 },
+        { name: 'unitPrice', type: 'number', required: true, admin: { description: 'Копійки' } },
+        { name: 'lineTotal', type: 'number', required: true, admin: { description: 'Копійки' } },
+      ],
+    },
+    {
+      name: 'orderTotal',
+      type: 'number',
+      admin: { description: 'Копійки, рахується автоматично', readOnly: true },
+    },
+    {
+      name: 'status',
+      type: 'select',
+      required: true,
+      defaultValue: 'new',
+      admin: { position: 'sidebar' },
+      options: [
+        { label: 'Нове', value: 'new' },
+        { label: 'Підтверджено', value: 'confirmed' },
+        { label: 'У роботі', value: 'in_progress' },
+        { label: 'Виконано', value: 'done' },
+        { label: 'Скасовано', value: 'cancelled' },
+      ],
+    },
+    // Payment placeholders — not wired to any gateway yet. Monobank Acquiring / Monobank
+    // installments integration will populate these later without a schema change.
+    {
+      name: 'paymentStatus',
+      type: 'select',
+      defaultValue: 'not_required',
+      admin: { position: 'sidebar' },
+      options: [
+        { label: 'Не потрібна', value: 'not_required' },
+        { label: 'Очікується', value: 'pending' },
+        { label: 'Оплачено', value: 'paid' },
+        { label: 'Не вдалась', value: 'failed' },
+        { label: 'Повернення', value: 'refunded' },
+      ],
+    },
+    {
+      name: 'paymentProvider',
+      type: 'select',
+      defaultValue: 'none',
+      admin: { position: 'sidebar' },
+      options: [
+        { label: 'Немає', value: 'none' },
+        { label: 'Monobank Acquiring', value: 'monobank_acquiring' },
+        { label: 'Оплата частинами Monobank', value: 'monobank_installments' },
+      ],
+    },
+    {
+      name: 'paymentReference',
+      type: 'text',
+      admin: { position: 'sidebar' },
+    },
+  ],
+  hooks: {
+    beforeChange: [
+      ({ data }) => {
+        if (Array.isArray(data.items)) {
+          data.orderTotal = data.items.reduce(
+            (sum: number, item: { lineTotal?: number }) => sum + (item.lineTotal || 0),
+            0,
+          )
+        }
+        return data
+      },
+    ],
+    afterChange: [
+      // Extension point for the client's CRM integration: POST the created order to
+      // process.env.CRM_WEBHOOK_URL when operation === 'create'. Intentionally left as a
+      // documented no-op until that integration is scoped (see docs/future-integrations.md).
+    ],
+  },
+}

@@ -1,0 +1,105 @@
+import { getPayloadClient } from '@/lib/payload'
+import { Hero } from '@/components/storefront/Hero'
+import { TickerStrip } from '@/components/storefront/TickerStrip'
+import { SubscriptionExplainer } from '@/components/storefront/SubscriptionExplainer'
+import { CategoryGrid } from '@/components/storefront/CategoryGrid'
+import { WeddingPromo } from '@/components/storefront/WeddingPromo'
+import { ProductGrid } from '@/components/storefront/ProductGrid'
+import { InstagramFeed } from '@/components/storefront/InstagramFeed'
+import { TestimonialsGrid } from '@/components/storefront/TestimonialsGrid'
+import { FaqAccordion } from '@/components/storefront/FaqAccordion'
+import { mediaUrl } from '@/lib/media'
+
+export default async function HomePage() {
+  const payload = await getPayloadClient()
+
+  const [hero, siteSettings, subscriptionInfo, weddingPage, categories, featuredProducts] = await Promise.all([
+    payload.findGlobal({ slug: 'hero' }),
+    payload.findGlobal({ slug: 'site-settings' }),
+    payload.findGlobal({ slug: 'subscription-info' }),
+    payload.findGlobal({ slug: 'wedding-page' }),
+    payload.find({ collection: 'categories', where: { _status: { equals: 'published' } }, sort: 'sortOrder', limit: 8 }),
+    payload.find({
+      collection: 'products',
+      where: { and: [{ _status: { equals: 'published' } }, { featured: { equals: true } }] },
+      sort: 'sortOrder',
+      limit: 8,
+    }),
+  ])
+
+  return (
+    <>
+      <Hero
+        heading={hero.heading}
+        subheading={hero.subheading}
+        videoUrl={mediaUrl(hero.video)}
+        fallbackImageUrl={mediaUrl(hero.fallbackImage)}
+        fallbackImageAlt={hero.heading}
+        ctaButtons={(hero.ctaButtons || []).map((cta) => ({
+          label: cta.label,
+          href: cta.href,
+          style: cta.style,
+        }))}
+      />
+
+      {subscriptionInfo.tickerText && <TickerStrip text={subscriptionInfo.tickerText} />}
+
+      <CategoryGrid
+        categories={categories.docs.map((c) => ({
+          slug: c.slug,
+          name: c.name,
+          imageUrl: mediaUrl(c.image, 'card'),
+        }))}
+      />
+
+      <SubscriptionExplainer
+        heading={subscriptionInfo.heading}
+        intro={subscriptionInfo.intro}
+        imageUrl={mediaUrl(subscriptionInfo.image, 'full')}
+        frequenciesHeading={subscriptionInfo.frequenciesHeading}
+        frequencies={subscriptionInfo.frequencies || []}
+        minimumHeading={subscriptionInfo.minimumHeading}
+        minimumIncludes={subscriptionInfo.minimumIncludes || []}
+        eachDeliveryHeading={subscriptionInfo.eachDeliveryHeading}
+        eachDeliveryIncludes={subscriptionInfo.eachDeliveryIncludes || []}
+        ctaLabel={subscriptionInfo.ctaLabel}
+        ctaHref={subscriptionInfo.ctaHref}
+      />
+
+      <WeddingPromo imageUrl={mediaUrl(weddingPage.coverImage, 'full')} heading={weddingPage.heading} />
+
+      <ProductGrid
+        title="Популярне"
+        products={featuredProducts.docs.map((p) => ({
+          slug: p.slug,
+          name: p.name,
+          price: p.price,
+          imageUrl: mediaUrl(p.images?.[0]?.image, 'card'),
+          imageAlt: p.images?.[0]?.alt || p.name,
+          inStock: p.inStock ?? true,
+        }))}
+      />
+
+      <TestimonialsGrid
+        testimonials={(siteSettings.testimonials || [])
+          .map((t) => {
+            const imageUrl = mediaUrl(t.image, 'card')
+            return imageUrl ? { imageUrl, authorName: t.authorName } : null
+          })
+          .filter((t) => t !== null)}
+      />
+
+      <InstagramFeed
+        instagramUrl={siteSettings.instagramUrl}
+        posts={(siteSettings.instagramPosts || [])
+          .map((p) => {
+            const imageUrl = mediaUrl(p.image, 'card')
+            return imageUrl ? { imageUrl, link: p.link } : null
+          })
+          .filter((p) => p !== null)}
+      />
+
+      <FaqAccordion items={(siteSettings.faqItems || []).map((item) => ({ question: item.question, answer: item.answer }))} />
+    </>
+  )
+}
