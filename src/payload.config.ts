@@ -17,6 +17,7 @@ import { SubscriptionInfo } from './globals/SubscriptionInfo'
 import { WeddingPage } from './globals/WeddingPage'
 import { FormatsSection } from './globals/FormatsSection'
 import { InstagramIntegration } from './globals/InstagramIntegration'
+import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -39,6 +40,15 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
+    push: true,
+    // Only wire up prodMigrations when explicitly asked to (set in the
+    // Docker image — see Dockerfile). Passing `prodMigrations` at all makes
+    // Payload check for dev/push drift during `next build`, which always
+    // runs with NODE_ENV=production — that turned plain local `npm run
+    // build` against the push-synced dev DB into a hung interactive prompt
+    // ("data loss will occur, proceed? y/N") with no stdin to answer it.
+    // Local dev never sets this flag, so it keeps using push like before.
+    prodMigrations: process.env.PAYLOAD_USE_MIGRATIONS === 'true' ? migrations : undefined,
   }),
   sharp,
   plugins: [],

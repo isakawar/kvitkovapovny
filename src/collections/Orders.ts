@@ -90,9 +90,12 @@ export const Orders: CollectionConfig = {
       admin: { description: "Кур'єрська доставка" },
     },
     {
-      name: 'npOfficeNumber',
-      type: 'text',
-      admin: { description: 'Нова пошта — номер відділення/поштомату' },
+      type: 'row',
+      fields: [
+        { name: 'npOfficeNumber', type: 'text', admin: { description: 'Номер відділення/поштомату' } },
+        { name: 'npCityRef', type: 'text', admin: { description: 'Ref міста в довіднику Нової пошти', readOnly: true } },
+        { name: 'npWarehouseRef', type: 'text', admin: { description: 'Ref відділення в довіднику Нової пошти', readOnly: true } },
+      ],
     },
     {
       name: 'pickupTime',
@@ -111,9 +114,9 @@ export const Orders: CollectionConfig = {
       defaultValue: 'online',
       admin: { position: 'sidebar' },
       options: [
-        { label: 'Онлайн-оплата (Apple Pay / Google Pay / Картка)', value: 'online' },
+        { label: 'Онлайн-оплата (Картка / Apple Pay / Google Pay через Monobank)', value: 'online' },
+        { label: 'Оплата частинами Monobank', value: 'installments' },
         { label: 'Оплата за рахунком для бізнесу (ФОП / ТОВ)', value: 'business_invoice' },
-        { label: 'Оплата менеджеру після підтвердження', value: 'manager_confirm' },
       ],
     },
     {

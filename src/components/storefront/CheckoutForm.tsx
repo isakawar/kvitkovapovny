@@ -7,6 +7,8 @@ import Image from 'next/image'
 import { useCart } from '@/lib/cart-context'
 import { formatUAH } from '@/lib/money'
 import { createOrder } from '@/app/actions/createOrder'
+import { createPaymentInvoice } from '@/app/actions/createPaymentInvoice'
+import { NovaPoshtaFields } from './NovaPoshtaFields'
 
 const TIME_WINDOWS = [
   { value: '09:00-12:00', label: '09:00–12:00' },
@@ -16,9 +18,9 @@ const TIME_WINDOWS = [
 ]
 
 const PAYMENT_METHODS = [
-  { value: 'online', label: 'Онлайн-оплата (Apple Pay / Google Pay / Картка)' },
+  { value: 'online', label: 'Онлайн-оплата (Картка / Apple Pay / Google Pay через Monobank)' },
+  { value: 'installments', label: 'Оплата частинами Monobank (розстрочка на 3-6 місяців)' },
   { value: 'business_invoice', label: 'Оплата за рахунком для бізнесу (ФОП / ТОВ)' },
-  { value: 'manager_confirm', label: 'Оплата менеджеру після підтвердження' },
 ]
 
 const DELIVERY_METHODS = [
@@ -59,6 +61,8 @@ export function CheckoutForm({ cities, showroomAddress }: { cities: string[]; sh
       deliveryDate: String(formData.get('deliveryDate') || ''),
       deliveryTimeWindow: String(formData.get('deliveryTimeWindow') || '') || undefined,
       npOfficeNumber: String(formData.get('npOfficeNumber') || '') || undefined,
+      npCityRef: String(formData.get('npCityRef') || '') || undefined,
+      npWarehouseRef: String(formData.get('npWarehouseRef') || '') || undefined,
       pickupTime: String(formData.get('pickupTime') || '') || undefined,
       cardMessage: String(formData.get('cardMessage') || '') || undefined,
       comment: String(formData.get('comment') || '') || undefined,
@@ -70,13 +74,27 @@ export function CheckoutForm({ cities, showroomAddress }: { cities: string[]; sh
       })),
     })
 
-    setSubmitting(false)
-
     if (!result.ok) {
+      setSubmitting(false)
       setError(result.error)
       return
     }
 
+    if (result.paymentMethod === 'online' || result.paymentMethod === 'installments') {
+      const payment = await createPaymentInvoice(result.orderId)
+      setSubmitting(false)
+
+      if (!payment.ok) {
+        setError(payment.error)
+        return
+      }
+
+      cart.clear()
+      window.location.href = payment.pageUrl
+      return
+    }
+
+    setSubmitting(false)
     cart.clear()
     router.push(`/order/${result.orderId}/confirmation`)
   }
@@ -149,8 +167,7 @@ export function CheckoutForm({ cities, showroomAddress }: { cities: string[]; sh
 
           {deliveryMethod === 'nova_poshta' && (
             <>
-              <input name="deliveryCity" required placeholder="Місто" className="input" />
-              <input name="npOfficeNumber" required placeholder="Номер відділення / поштомату Нової пошти" className="input" />
+              <NovaPoshtaFields />
               <input name="deliveryDate" type="date" required className="input" />
               <p className="text-xs text-ink-soft">
                 Надсилаємо у спеціальних герметичних аква-боксах з підтримкою свіжості.

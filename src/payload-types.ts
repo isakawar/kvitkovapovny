@@ -412,9 +412,17 @@ export interface Order {
    */
   deliveryTimeWindow?: ('09:00-12:00' | '12:00-15:00' | '15:00-18:00' | '18:00-21:00') | null;
   /**
-   * Нова пошта — номер відділення/поштомату
+   * Номер відділення/поштомату
    */
   npOfficeNumber?: string | null;
+  /**
+   * Ref міста в довіднику Нової пошти
+   */
+  npCityRef?: string | null;
+  /**
+   * Ref відділення в довіднику Нової пошти
+   */
+  npWarehouseRef?: string | null;
   /**
    * Самовивіз — орієнтовний час візиту
    */
@@ -423,7 +431,7 @@ export interface Order {
    * Текст листівки
    */
   cardMessage?: string | null;
-  paymentMethod: 'online' | 'business_invoice' | 'manager_confirm';
+  paymentMethod: 'online' | 'installments' | 'business_invoice';
   comment?: string | null;
   items: {
     product: number | Product;
@@ -743,6 +751,8 @@ export interface OrdersSelect<T extends boolean = true> {
   deliveryAddress?: T;
   deliveryTimeWindow?: T;
   npOfficeNumber?: T;
+  npCityRef?: T;
+  npWarehouseRef?: T;
   pickupTime?: T;
   cardMessage?: T;
   paymentMethod?: T;

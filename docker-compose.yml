@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: payload
+      POSTGRES_PASSWORD: payload
+      POSTGRES_DB: kvitkova
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U payload -d kvitkova']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - '${APP_PORT:-3000}:3000'
+    env_file:
+      - .env
+    environment:
+      # Overrides whatever is in .env — the app must reach Postgres via the
+      # docker network (service name `db`), not the host-local address used
+      # for local dev outside Docker.
+      DATABASE_URI: postgres://payload:payload@db:5432/kvitkova
+    volumes:
+      # Uploaded media persists across redeploys/restarts.
+      - media:/app/media
+      # Lets one-off scripts (npm run seed, scripts/*.mjs — invoked with
+      # `node --env-file=.env`) find a .env file at runtime without baking
+      # secrets into the image itself.
+      - ./.env:/app/.env:ro
+
+volumes:
+  pgdata:
+  media:

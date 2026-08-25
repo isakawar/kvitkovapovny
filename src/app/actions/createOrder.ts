@@ -22,6 +22,8 @@ export type CreateOrderInput = {
   deliveryDate: string
   deliveryTimeWindow?: string
   npOfficeNumber?: string
+  npCityRef?: string
+  npWarehouseRef?: string
   pickupTime?: string
   cardMessage?: string
   comment?: string
@@ -29,7 +31,9 @@ export type CreateOrderInput = {
   items: CreateOrderItemInput[]
 }
 
-export type CreateOrderResult = { ok: true; orderId: string } | { ok: false; error: string }
+export type CreateOrderResult =
+  | { ok: true; orderId: string; paymentMethod: PaymentMethod }
+  | { ok: false; error: string }
 
 const DELIVERY_TIME_WINDOWS = ['09:00-12:00', '12:00-15:00', '15:00-18:00', '18:00-21:00'] as const
 type DeliveryTimeWindow = (typeof DELIVERY_TIME_WINDOWS)[number]
@@ -37,7 +41,7 @@ type DeliveryTimeWindow = (typeof DELIVERY_TIME_WINDOWS)[number]
 const DELIVERY_METHODS = ['courier', 'nova_poshta', 'pickup'] as const
 type DeliveryMethod = (typeof DELIVERY_METHODS)[number]
 
-const PAYMENT_METHODS = ['online', 'business_invoice', 'manager_confirm'] as const
+const PAYMENT_METHODS = ['online', 'installments', 'business_invoice'] as const
 type PaymentMethod = (typeof PAYMENT_METHODS)[number]
 
 export async function createOrder(input: CreateOrderInput): Promise<CreateOrderResult> {
@@ -134,16 +138,19 @@ export async function createOrder(input: CreateOrderInput): Promise<CreateOrderR
       deliveryDate: input.deliveryDate,
       deliveryTimeWindow,
       npOfficeNumber: deliveryMethod === 'nova_poshta' ? input.npOfficeNumber?.trim() || undefined : undefined,
+      npCityRef: deliveryMethod === 'nova_poshta' ? input.npCityRef || undefined : undefined,
+      npWarehouseRef: deliveryMethod === 'nova_poshta' ? input.npWarehouseRef || undefined : undefined,
       pickupTime: deliveryMethod === 'pickup' ? input.pickupTime?.trim() || undefined : undefined,
       cardMessage: input.cardMessage?.trim() || undefined,
       comment: input.comment?.trim() || undefined,
       paymentMethod,
       items: resolvedItems,
       status: 'new',
-      paymentStatus: 'not_required',
-      paymentProvider: 'none',
+      paymentStatus: paymentMethod === 'business_invoice' ? 'not_required' : 'pending',
+      paymentProvider:
+        paymentMethod === 'online' ? 'monobank_acquiring' : paymentMethod === 'installments' ? 'monobank_installments' : 'none',
     },
   })
 
-  return { ok: true, orderId: String(order.id) }
+  return { ok: true, orderId: String(order.id), paymentMethod }
 }
