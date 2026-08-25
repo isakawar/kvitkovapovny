@@ -15,6 +15,20 @@ export const SiteSettings: GlobalConfig = {
   },
   fields: [
     {
+      name: 'designTheme',
+      type: 'select',
+      label: 'Дизайн сайту',
+      defaultValue: 'old',
+      options: [
+        { label: 'Старий дизайн', value: 'old' },
+        { label: 'Новий дизайн (ребрендінг)', value: 'new' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Перемикає весь сайт між старою та новою фірмовою темою',
+      },
+    },
+    {
       name: 'logo',
       type: 'upload',
       relationTo: 'media',
