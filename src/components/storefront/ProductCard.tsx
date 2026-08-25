@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { BrandFlowerAccent } from './BrandFlowerAccent'
 import { formatUAH } from '@/lib/money'
 
 export type ProductCardData = {
@@ -35,6 +36,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
             </span>
           </div>
         )}
+        <BrandFlowerAccent className="pointer-events-none absolute bottom-2 right-2 z-10 hidden h-6 w-6 text-cream/90 [html[data-theme='new']_&]:block" />
       </div>
       <div className="flex flex-1 flex-col gap-1 p-4">
         <h3 className="text-sm font-medium text-ink">{product.name}</h3>
