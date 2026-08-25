@@ -3,6 +3,8 @@ import { Hero } from '@/components/storefront/Hero'
 import { TickerStrip } from '@/components/storefront/TickerStrip'
 import { SubscriptionExplainer } from '@/components/storefront/SubscriptionExplainer'
 import { FormatsGrid } from '@/components/storefront/FormatsGrid'
+import { FeatureStrip } from '@/components/storefront/FeatureStrip'
+import { HowItWorks } from '@/components/storefront/HowItWorks'
 import { WeddingPromo } from '@/components/storefront/WeddingPromo'
 import { ProductGrid } from '@/components/storefront/ProductGrid'
 import { InstagramFeed } from '@/components/storefront/InstagramFeed'
@@ -14,25 +16,39 @@ import { getInstagramFeed } from '@/lib/instagram'
 export default async function HomePage() {
   const payload = await getPayloadClient()
 
-  const [hero, siteSettings, subscriptionInfo, weddingPage, formatsSection, featuredProducts, instagramPosts] =
-    await Promise.all([
-      payload.findGlobal({ slug: 'hero' }),
-      payload.findGlobal({ slug: 'site-settings' }),
-      payload.findGlobal({ slug: 'subscription-info' }),
-      payload.findGlobal({ slug: 'wedding-page' }),
-      payload.findGlobal({ slug: 'formats-section' }),
-      payload.find({
-        collection: 'products',
-        where: { and: [{ _status: { equals: 'published' } }, { featured: { equals: true } }] },
-        sort: 'sortOrder',
-        limit: 8,
-      }),
-      getInstagramFeed(),
-    ])
+  const [
+    hero,
+    siteSettings,
+    subscriptionInfo,
+    weddingPage,
+    formatsSection,
+    featureStrip,
+    howItWorksSection,
+    featuredProducts,
+    instagramPosts,
+  ] = await Promise.all([
+    payload.findGlobal({ slug: 'hero' }),
+    payload.findGlobal({ slug: 'site-settings' }),
+    payload.findGlobal({ slug: 'subscription-info' }),
+    payload.findGlobal({ slug: 'wedding-page' }),
+    payload.findGlobal({ slug: 'formats-section' }),
+    payload.findGlobal({ slug: 'feature-strip' }),
+    payload.findGlobal({ slug: 'how-it-works-section' }),
+    payload.find({
+      collection: 'products',
+      where: { and: [{ _status: { equals: 'published' } }, { featured: { equals: true } }] },
+      sort: 'sortOrder',
+      limit: 8,
+    }),
+    getInstagramFeed(),
+  ])
+
+  const theme = siteSettings.designTheme || 'old'
 
   return (
     <>
       <Hero
+        theme={theme}
         heading={hero.heading}
         subheading={hero.subheading}
         videoUrl={mediaUrl(hero.video)}
@@ -45,9 +61,20 @@ export default async function HomePage() {
         }))}
       />
 
+      {theme === 'new' && (
+        <FeatureStrip
+          items={(featureStrip.items || []).map((item) => ({
+            icon: item.icon,
+            title: item.title,
+            subtitle: item.subtitle,
+          }))}
+        />
+      )}
+
       {subscriptionInfo.tickerText && <TickerStrip text={subscriptionInfo.tickerText} />}
 
       <FormatsGrid
+        theme={theme}
         cards={[...(formatsSection.cards || [])]
           .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
           .map((card) => ({
@@ -58,6 +85,17 @@ export default async function HomePage() {
             imageUrl: mediaUrl(card.image, 'card'),
           }))}
       />
+
+      {theme === 'new' && (
+        <HowItWorks
+          heading={howItWorksSection.heading}
+          steps={(howItWorksSection.steps || []).map((step) => ({
+            icon: step.icon,
+            title: step.title,
+            subtitle: step.subtitle,
+          }))}
+        />
+      )}
 
       <SubscriptionExplainer
         heading={subscriptionInfo.heading}
