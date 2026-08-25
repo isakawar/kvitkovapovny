@@ -32,7 +32,7 @@ function HeartIcon() {
 
 function HeaderIconPlaceholders() {
   return (
-    <div className="hidden items-center gap-4 text-ink [html[data-theme='new']_&]:flex">
+    <div className="hidden items-center gap-4 text-ink sm:[html[data-theme='new']_&]:flex">
       <span role="img" aria-label="Пошук" className="cursor-default">
         <SearchIcon />
       </span>
@@ -56,7 +56,13 @@ export function Header({
   crossSellProducts?: CrossSellProduct[]
 }) {
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-between gap-4 bg-cream/90 px-6 py-3 text-ink backdrop-blur sm:px-10">
+    <header
+      className={
+        theme === 'new'
+          ? 'sticky top-0 z-20 flex items-center justify-between gap-4 bg-cream/90 px-6 py-3 text-ink backdrop-blur sm:px-10'
+          : 'sticky top-0 z-20 flex items-center justify-between bg-cream/90 px-6 py-3 text-ink backdrop-blur sm:px-10'
+      }
+    >
       <Link href="/" className="flex items-center">
         {logoUrl ? (
           <Image src={logoUrl} alt="kvitkova povnya" width={1628} height={485} className="h-14 w-auto sm:h-16" priority />
@@ -78,10 +84,14 @@ export function Header({
           Подарункові сертифікати
         </Link>
       </nav>
-      <div className="flex items-center gap-4">
-        {theme === 'new' && <HeaderIconPlaceholders />}
+      {theme === 'new' ? (
+        <div className="flex items-center gap-4">
+          {theme === 'new' && <HeaderIconPlaceholders />}
+          <CartDrawer crossSellProducts={crossSellProducts} />
+        </div>
+      ) : (
         <CartDrawer crossSellProducts={crossSellProducts} />
-      </div>
+      )}
     </header>
   )
 }

@@ -61,7 +61,7 @@ export function Hero({
 }: HeroProps) {
   if (theme === 'new') {
     return (
-      <section className="w-full bg-cream">
+      <section className="relative w-full bg-cream">
         <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:py-20">
           <div className="flex flex-col gap-6">
             <h1
@@ -90,6 +90,7 @@ export function Hero({
             )}
           </div>
         </div>
+        <BrandFlowerAccent className="pointer-events-none absolute right-6 top-6 z-10 hidden h-16 w-16 text-cream/70 [html[data-theme='new']_&]:block sm:h-20 sm:w-20" />
       </section>
     )
   }
@@ -129,7 +130,6 @@ export function Hero({
         )}
         <CtaButtons ctaButtons={ctaButtons} theme={theme} />
       </div>
-      <BrandFlowerAccent className="pointer-events-none absolute right-6 top-6 z-10 hidden h-16 w-16 text-cream/70 [html[data-theme='new']_&]:block sm:h-20 sm:w-20" />
     </section>
   )
 }
