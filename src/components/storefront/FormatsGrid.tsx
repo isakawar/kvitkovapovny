@@ -9,8 +9,55 @@ export type FormatCardData = {
   imageUrl?: string | null
 }
 
-export function FormatsGrid({ cards }: { cards: FormatCardData[] }) {
+function ArrowIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M7 17 17 7" />
+      <path d="M9 7h8v8" />
+    </svg>
+  )
+}
+
+export function FormatsGrid({ cards, theme }: { cards: FormatCardData[]; theme: 'old' | 'new' }) {
   if (cards.length === 0) return null
+
+  if (theme === 'new') {
+    return (
+      <section className="mx-auto max-w-6xl px-4 py-16">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {cards.map((card) => (
+            <div
+              key={card.title}
+              className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-md"
+            >
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-blush">
+                {card.imageUrl && (
+                  <Image
+                    src={card.imageUrl}
+                    alt={card.title}
+                    fill
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover transition duration-300 group-hover:scale-105"
+                  />
+                )}
+              </div>
+              <div className="relative flex flex-1 flex-col gap-1 p-5">
+                <h3 className="text-base font-semibold text-ink">{card.title}</h3>
+                <p className="pr-10 text-sm text-ink-soft">{card.subtitle}</p>
+                <Link
+                  href={card.buttonHref}
+                  aria-label={card.buttonLabel}
+                  className="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-accent text-cream transition group-hover:bg-accent/90"
+                >
+                  <ArrowIcon className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-16">
