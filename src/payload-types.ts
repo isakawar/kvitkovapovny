@@ -102,6 +102,8 @@ export interface Config {
     'wedding-page': WeddingPage;
     'formats-section': FormatsSection;
     'instagram-integration': InstagramIntegration;
+    'feature-strip': FeatureStrip;
+    'how-it-works-section': HowItWorksSection;
   };
   globalsSelect: {
     hero: HeroSelect;
@@ -110,6 +112,8 @@ export interface Config {
     'wedding-page': WeddingPageSelect;
     'formats-section': FormatsSectionSelect;
     'instagram-integration': InstagramIntegrationSelect;
+    'feature-strip': FeatureStripSelect;
+    'how-it-works-section': HowItWorksSectionSelect;
   };
   locale: null;
   widgets: {
@@ -1029,6 +1033,45 @@ export interface InstagramIntegration {
   createdAt?: string | null;
 }
 /**
+ * Ряд із 3 переваг з іконками під головним банером (лише в новому дизайні)
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "feature-strip".
+ */
+export interface FeatureStrip {
+  id: number;
+  items?:
+    | {
+        icon: 'truck' | 'vase' | 'pause' | 'flower' | 'home' | 'sparkle';
+        title: string;
+        subtitle?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Заголовок і пронумеровані кроки (лише в новому дизайні)
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "how-it-works-section".
+ */
+export interface HowItWorksSection {
+  id: number;
+  heading: string;
+  steps?:
+    | {
+        icon: 'truck' | 'vase' | 'pause' | 'flower' | 'home' | 'sparkle';
+        title: string;
+        subtitle?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero_select".
  */
@@ -1177,6 +1220,41 @@ export interface InstagramIntegrationSelect {
   accessToken?: boolean;
   igUserId?: boolean;
   postLimit?: boolean;
+  updatedAt?: boolean;
+  createdAt?: boolean;
+  globalType?: boolean;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "feature-strip_select".
+ */
+export interface FeatureStripSelect {
+  items?:
+    | boolean
+    | {
+        icon?: boolean;
+        title?: boolean;
+        subtitle?: boolean;
+        id?: boolean;
+      };
+  updatedAt?: boolean;
+  createdAt?: boolean;
+  globalType?: boolean;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "how-it-works-section_select".
+ */
+export interface HowItWorksSectionSelect {
+  heading?: boolean;
+  steps?:
+    | boolean
+    | {
+        icon?: boolean;
+        title?: boolean;
+        subtitle?: boolean;
+        id?: boolean;
+      };
   updatedAt?: boolean;
   createdAt?: boolean;
   globalType?: boolean;
