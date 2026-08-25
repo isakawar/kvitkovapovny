@@ -20,8 +20,8 @@ RUN npm ci
 
 COPY . .
 
-EXPOSE 3000
-ENV PORT=3000
+EXPOSE 4000
+ENV PORT=4000
 ENV HOSTNAME="0.0.0.0"
 # Applies to every process in this container, including one-off scripts run
 # via `docker compose exec app ...` — keeps Payload's migration-based (not
