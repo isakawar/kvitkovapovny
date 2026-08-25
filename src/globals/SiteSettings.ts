@@ -93,8 +93,7 @@ export const SiteSettings: GlobalConfig = {
     afterChange: [
       ({ doc }) => {
         try {
-          revalidatePath('/')
-          revalidatePath('/contacts')
+          revalidatePath('/', 'layout')
         } catch {
           // No-op outside a Next.js request context (e.g. seed scripts).
         }
