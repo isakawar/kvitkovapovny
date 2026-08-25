@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { BrandFlowerAccent } from './BrandFlowerAccent'
 
 type CtaButton = {
   label: string
@@ -36,8 +37,20 @@ export function Hero({ heading, subheading, videoUrl, fallbackImageUrl, fallback
       )}
       <div className="absolute inset-0 bg-ink/30 backdrop-blur-[2px]" />
       <div className="relative z-10 mx-4 flex max-w-xl flex-col items-center gap-6 rounded-2xl bg-ink/20 px-8 py-10 text-center text-cream backdrop-blur-md">
-        <h1 className="text-3xl font-semibold tracking-wide uppercase sm:text-4xl">{heading}</h1>
-        {subheading && <p className="text-sm tracking-wide text-cream/90">[{subheading}]</p>}
+        <h1
+          className="text-3xl tracking-wide uppercase sm:text-4xl"
+          style={{ fontWeight: 'var(--font-weight-brand-bold)' }}
+        >
+          {heading}
+        </h1>
+        {subheading && (
+          <p
+            className="text-sm tracking-wide text-cream/90"
+            style={{ fontWeight: 'var(--font-weight-brand-light)' }}
+          >
+            [{subheading}]
+          </p>
+        )}
         {ctaButtons.length > 0 && (
           <div className="flex flex-wrap items-center justify-center gap-4">
             {ctaButtons.map((cta) => (
@@ -56,6 +69,7 @@ export function Hero({ heading, subheading, videoUrl, fallbackImageUrl, fallback
           </div>
         )}
       </div>
+      <BrandFlowerAccent className="pointer-events-none absolute right-6 top-6 z-10 hidden h-16 w-16 text-cream/70 [html[data-theme='new']_&]:block sm:h-20 sm:w-20" />
     </section>
   )
 }
