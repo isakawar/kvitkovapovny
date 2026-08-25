@@ -7,6 +7,21 @@
   --color-ink: #362f28;
   --color-ink-soft: #6b6155;
   --color-accent: #a8785f;
+  --color-accent-warm: #a8785f;
+  --font-weight-brand-bold: 700;
+  --font-weight-brand-light: 400;
+}
+
+:root[data-theme='new'] {
+  --color-cream: #faf8e9;
+  --color-blush: #f3f1ea;
+  --color-sage: #c9d170;
+  --color-ink: #2b2b28;
+  --color-ink-soft: #6d6a60;
+  --color-accent: #9eaf00;
+  --color-accent-warm: #e8871e;
+  --font-weight-brand-bold: 900;
+  --font-weight-brand-light: 300;
 }
 
 @theme inline {
@@ -16,6 +31,7 @@
   --color-ink: var(--color-ink);
   --color-ink-soft: var(--color-ink-soft);
   --color-accent: var(--color-accent);
+  --color-accent-warm: var(--color-accent-warm);
   --font-sans: var(--font-montserrat);
 }
 
