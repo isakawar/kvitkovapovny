@@ -38,7 +38,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }))
 
   return (
-    <html lang="uk" className={`${montserrat.variable} h-full antialiased`}>
+    <html
+      lang="uk"
+      data-theme={siteSettings.designTheme || 'old'}
+      className={`${montserrat.variable} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col">
         <CartProvider>
           <Header logoUrl={mediaUrl(siteSettings.logo, 'card')} crossSellProducts={crossSellProducts} />
