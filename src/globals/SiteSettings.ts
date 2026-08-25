@@ -32,6 +32,11 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
     },
     {
+      name: 'showroomAddress',
+      type: 'text',
+      admin: { description: 'Адреса шоуруму/студії для самовивозу — показується на сторінці чекауту' },
+    },
+    {
       name: 'instagramPosts',
       type: 'array',
       admin: { description: 'Фото з Instagram для стрічки на головній сторінці' },

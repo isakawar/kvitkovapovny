@@ -17,7 +17,8 @@ export const SubscriptionInfo: GlobalConfig = {
     {
       name: 'tickerText',
       type: 'text',
-      defaultValue: 'У комплекті до підписки ваза та флористичні ножиці',
+      defaultValue:
+        '★ Безкоштовна доставка по Києву ★ Ваза та ножиці у подарунок ★ Можливість паузи підписки',
     },
     {
       name: 'heading',

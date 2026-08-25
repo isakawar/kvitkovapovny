@@ -18,12 +18,12 @@ export const Hero: GlobalConfig = {
       name: 'heading',
       type: 'text',
       required: true,
-      defaultValue: 'ПІДПИСКА НА КВІТИ',
+      defaultValue: 'СВІЖІ КВІТИ У ВАШОМУ ДОМІ ЩОТИЖНЯ',
     },
     {
       name: 'subheading',
       type: 'text',
-      defaultValue: 'квіти не тільки на свята',
+      defaultValue: 'Спеціальна ваза та флористичний секатор у подарунок до першої підписки',
     },
     {
       name: 'video',
@@ -46,7 +46,7 @@ export const Hero: GlobalConfig = {
       name: 'ctaButtons',
       type: 'array',
       maxRows: 3,
-      defaultValue: [{ label: 'Переглянути', href: '/katalog', style: 'primary' }],
+      defaultValue: [{ label: 'ОБРАТИ СВІЙ ТАРИФ', href: '/katalog', style: 'primary' }],
       fields: [
         { name: 'label', type: 'text', required: true },
         { name: 'href', type: 'text', required: true },

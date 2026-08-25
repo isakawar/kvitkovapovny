@@ -15,6 +15,8 @@ import { Hero } from './globals/Hero'
 import { SiteSettings } from './globals/SiteSettings'
 import { SubscriptionInfo } from './globals/SubscriptionInfo'
 import { WeddingPage } from './globals/WeddingPage'
+import { FormatsSection } from './globals/FormatsSection'
+import { InstagramIntegration } from './globals/InstagramIntegration'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -27,7 +29,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Categories, Products, Orders, WeddingInquiries],
-  globals: [Hero, SiteSettings, SubscriptionInfo, WeddingPage],
+  globals: [Hero, SiteSettings, SubscriptionInfo, WeddingPage, FormatsSection, InstagramIntegration],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

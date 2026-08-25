@@ -20,13 +20,28 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const payload = await getPayloadClient()
-  const siteSettings = await payload.findGlobal({ slug: 'site-settings' })
+  const [siteSettings, crossSellResult] = await Promise.all([
+    payload.findGlobal({ slug: 'site-settings' }),
+    payload.find({
+      collection: 'products',
+      where: { and: [{ _status: { equals: 'published' } }, { crossSell: { equals: true } }] },
+      limit: 4,
+    }),
+  ])
+
+  const crossSellProducts = crossSellResult.docs.map((p) => ({
+    productId: String(p.id),
+    productSlug: p.slug,
+    name: p.name,
+    price: p.price,
+    imageUrl: mediaUrl(p.images?.[0]?.image, 'thumbnail'),
+  }))
 
   return (
     <html lang="uk" className={`${montserrat.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <CartProvider>
-          <Header logoUrl={mediaUrl(siteSettings.logo, 'card')} />
+          <Header logoUrl={mediaUrl(siteSettings.logo, 'card')} crossSellProducts={crossSellProducts} />
           <main className="flex-1">{children}</main>
           <Footer
             contactPhone={siteSettings.contactPhone}

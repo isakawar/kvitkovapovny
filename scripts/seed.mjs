@@ -66,6 +66,23 @@ const pidpyska = await payload.create({
     image: catSubscriptionImg.id,
     sortOrder: 1,
     _status: 'published',
+    faqItems: [
+      {
+        question: 'Як доглядати за квітами з підписки?',
+        answer:
+          'До кожної доставки додається інструкція по догляду та підживлення для квітів. Свіжі стебла, чиста вода та прохолодне місце без прямого сонця подовжують життя букета.',
+      },
+      {
+        question: 'Чи можна замінити квіти в композиції?',
+        answer:
+          'Так, напишіть побажання перед доставкою (напр. без лілій чи певний колір) — флорист врахує їх при складанні композиції в межах сезонної наявності.',
+      },
+      {
+        question: 'Чи можна поставити підписку на паузу під час відпустки?',
+        answer:
+          'Так, паузу або перенесення дати доставки можна оформити в особистому кабінеті або написавши нам заздалегідь.',
+      },
+    ],
   },
 })
 const buket = await payload.create({
@@ -123,7 +140,7 @@ await payload.create({
   data: {
     name: 'Підписка на квіти',
     slug: 'pidpyska-na-kvity',
-    categories: [pidpyska.id, vesilna.id, biznes.id],
+    categories: [vesilna.id, biznes.id],
     price: 680000,
     description: richText([
       'Підписка включає 4 доставки свіжих квіткових композицій із періодичністю на ваш вибір — щотижнева, раз на два тижні або щомісячна.',
@@ -171,15 +188,99 @@ await payload.create({
   },
 })
 
+console.log('Seeding pidpyska pricing plans...')
+await payload.create({
+  collection: 'products',
+  data: {
+    name: 'Тестовий букет (1 доставка)',
+    slug: 'testovyi-buket',
+    categories: [pidpyska.id],
+    price: 120000,
+    images: [{ image: subM.id, alt: 'Тестовий букет' }],
+    bullets: [
+      { label: '1 пробна доставка' },
+      { label: 'Професійний секатор у подарунок' },
+      { label: 'Безкоштовна доставка' },
+    ],
+    ctaLabel: 'Спробувати',
+    audienceTags: ['trial'],
+    inStock: true,
+    sortOrder: 1,
+    _status: 'published',
+  },
+})
+await payload.create({
+  collection: 'products',
+  data: {
+    name: 'Підписка S (Затишна)',
+    slug: 'pidpyska-s',
+    categories: [pidpyska.id],
+    price: 400000,
+    priceSuffixLabel: '1 000 грн / букет',
+    images: [{ image: subM.id, alt: 'Підписка S' }],
+    bullets: [{ label: '4 доставки букетів' }, { label: 'Ваза у подарунок' }, { label: 'Зміна днів доставки' }],
+    ctaLabel: 'Обрати S',
+    audienceTags: ['home', 'business'],
+    inStock: true,
+    sortOrder: 2,
+    _status: 'published',
+  },
+})
+await payload.create({
+  collection: 'products',
+  data: {
+    name: 'Підписка M (Класична)',
+    slug: 'pidpyska-m',
+    categories: [pidpyska.id],
+    price: 680000,
+    priceSuffixLabel: '1 700 грн / букет',
+    images: [{ image: subL.id, alt: 'Підписка M' }],
+    bullets: [
+      { label: '4 великі композиції' },
+      { label: 'Ваза + секатор у подарунок' },
+      { label: 'Безкоштовна доставка' },
+    ],
+    badge: 'ХІТ ПРОДАЖІВ',
+    ctaLabel: 'Обрати M',
+    highlighted: true,
+    audienceTags: ['home', 'business'],
+    inStock: true,
+    featured: true,
+    sortOrder: 3,
+    _status: 'published',
+  },
+})
+await payload.create({
+  collection: 'products',
+  data: {
+    name: 'Підписка L (Пишна)',
+    slug: 'pidpyska-l',
+    categories: [pidpyska.id],
+    price: 1120000,
+    priceSuffixLabel: '2 800 грн / букет',
+    images: [{ image: subXl.id, alt: 'Підписка L' }],
+    bullets: [
+      { label: '4 преміум композиції' },
+      { label: 'Ваза + секатор у подарунок' },
+      { label: 'Персональний флорист' },
+    ],
+    ctaLabel: 'Обрати L',
+    audienceTags: ['home', 'business'],
+    inStock: true,
+    sortOrder: 4,
+    _status: 'published',
+  },
+})
+
 console.log('Seeding hero + site settings...')
 await payload.updateGlobal({
   slug: 'hero',
   data: {
-    heading: 'ПІДПИСКА НА КВІТИ',
-    subheading: 'квіти не тільки на свята',
+    heading: 'СВІЖІ КВІТИ У ВАШОМУ ДОМІ ЩОТИЖНЯ',
+    subheading: 'Спеціальна ваза та флористичний секатор у подарунок до першої підписки',
     video: heroVideo.id,
     fallbackImage: heroImage.id,
-    ctaButtons: [{ label: 'Переглянути', href: '/katalog', style: 'primary' }],
+    ctaButtons: [{ label: 'ОБРАТИ СВІЙ ТАРИФ', href: '/katalog', style: 'primary' }],
   },
 })
 
@@ -211,7 +312,8 @@ const subscriptionImage = await uploadAsset('lifestyle-peonies.png', 'Флори
 await payload.updateGlobal({
   slug: 'subscription-info',
   data: {
-    tickerText: 'У комплекті до підписки ваза та флористичні ножиці',
+    tickerText:
+      '★ Безкоштовна доставка по Києву ★ Ваза та ножиці у подарунок ★ Можливість паузи підписки',
     heading: 'Що таке підписка на квіти?',
     intro:
       'Підписка на квіти - це регулярна доставка найсвіжіших квіткових композицій з сезонних та екзотичних квітів, прямо до дверей, щоб у домі або офісі завжди була краса та настрій.\n\nВам достатньо обрати частоту доставок та розмір композиції і вже скоро ваша квіткова підписка прямуватиме до вас.',
@@ -246,6 +348,48 @@ await payload.updateGlobal({
     coverImage: weddingCover.id,
     gallery: [{ image: weddingCover.id, caption: 'Церемонія біля озера' }],
     contactNote: "Залиште заявку — зв'яжемось для безкоштовної консультації протягом дня.",
+  },
+})
+
+console.log('Seeding formats section...')
+const certificateImg = await uploadAsset('flower-2.png', 'Подарунковий сертифікат')
+await payload.updateGlobal({
+  slug: 'formats-section',
+  data: {
+    cards: [
+      {
+        title: 'ДЛЯ ДОМУ',
+        subtitle: 'Регулярна доставка для затишку вашої оселі',
+        buttonLabel: 'Обрати тариф',
+        buttonHref: '/katalog/pidpyska',
+        image: catSubscriptionImg.id,
+        sortOrder: 1,
+      },
+      {
+        title: 'ДЛЯ БІЗНЕСУ ТА ОФІСІВ',
+        subtitle: 'Декор рецепцій, ресторанів та шоурумів (оплата за рахунком)',
+        buttonLabel: 'Запросити КП',
+        buttonHref: '/business',
+        image: catBusinessImg.id,
+        sortOrder: 2,
+      },
+      {
+        title: 'ВЕСІЛЬНА ПІДПИСКА',
+        subtitle: 'Подарунок для молодят: місяць квітів після весілля',
+        buttonLabel: 'Дізнатися більше',
+        buttonHref: '/wedding',
+        image: catWeddingImg.id,
+        sortOrder: 3,
+      },
+      {
+        title: 'ПОДАРУНКОВИЙ СЕРТИФІКАТ',
+        subtitle: 'Елегантний бокс із сертифікатом для близьких',
+        buttonLabel: 'Купити сертифікат',
+        buttonHref: '/gift-certificates',
+        image: certificateImg.id,
+        sortOrder: 4,
+      },
+    ],
   },
 })
 

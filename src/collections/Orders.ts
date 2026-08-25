@@ -38,27 +38,83 @@ export const Orders: CollectionConfig = {
       type: 'text',
     },
     {
+      name: 'isGift',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: { description: 'Замовлення на подарунок іншому отримувачу' },
+    },
+    {
+      type: 'row',
+      admin: { condition: (data) => Boolean(data.isGift) },
+      fields: [
+        { name: 'recipientName', type: 'text' },
+        { name: 'recipientPhone', type: 'text' },
+      ],
+    },
+    {
+      name: 'giftSurprise',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Не розкривати деталі замовлення отримувачу (сюрприз)',
+        condition: (data) => Boolean(data.isGift),
+      },
+    },
+    {
+      name: 'deliveryMethod',
+      type: 'select',
+      required: true,
+      defaultValue: 'courier',
+      options: [
+        { label: "Кур'єрська доставка (Київ та область)", value: 'courier' },
+        { label: 'Нова пошта (по Україні)', value: 'nova_poshta' },
+        { label: 'Самовивіз з шоуруму', value: 'pickup' },
+      ],
+    },
+    {
       type: 'row',
       fields: [
-        { name: 'deliveryCity', type: 'text', required: true },
+        { name: 'deliveryCity', type: 'text', admin: { description: "Кур'єр і Нова пошта" } },
         { name: 'deliveryDate', type: 'date', required: true, admin: { date: { pickerAppearance: 'dayOnly' } } },
       ],
     },
     {
       name: 'deliveryAddress',
       type: 'textarea',
-      required: true,
+      admin: { description: "Кур'єрська доставка" },
     },
     {
       name: 'deliveryTimeWindow',
       type: 'select',
-      required: true,
       options: DELIVERY_TIME_WINDOWS,
+      admin: { description: "Кур'єрська доставка" },
+    },
+    {
+      name: 'npOfficeNumber',
+      type: 'text',
+      admin: { description: 'Нова пошта — номер відділення/поштомату' },
+    },
+    {
+      name: 'pickupTime',
+      type: 'text',
+      admin: { description: 'Самовивіз — орієнтовний час візиту' },
     },
     {
       name: 'cardMessage',
       type: 'textarea',
       admin: { description: 'Текст листівки' },
+    },
+    {
+      name: 'paymentMethod',
+      type: 'select',
+      required: true,
+      defaultValue: 'online',
+      admin: { position: 'sidebar' },
+      options: [
+        { label: 'Онлайн-оплата (Apple Pay / Google Pay / Картка)', value: 'online' },
+        { label: 'Оплата за рахунком для бізнесу (ФОП / ТОВ)', value: 'business_invoice' },
+        { label: 'Оплата менеджеру після підтвердження', value: 'manager_confirm' },
+      ],
     },
     {
       name: 'comment',

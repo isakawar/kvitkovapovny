@@ -3,14 +3,12 @@ export type FaqItem = {
   answer: string
 }
 
-export function FaqAccordion({ items }: { items: FaqItem[] }) {
+export function FaqAccordion({ items, heading = 'Часті запитання' }: { items: FaqItem[]; heading?: string }) {
   if (items.length === 0) return null
 
   return (
     <section className="mx-auto max-w-3xl px-4 py-16">
-      <h2 className="mb-8 text-center text-2xl font-semibold tracking-wide text-ink uppercase">
-        Часті запитання
-      </h2>
+      <h2 className="mb-8 text-center text-2xl font-semibold tracking-wide text-ink uppercase">{heading}</h2>
       <div className="space-y-3">
         {items.map((item) => (
           <details key={item.question} className="group rounded-xl bg-white p-4 open:shadow-sm">

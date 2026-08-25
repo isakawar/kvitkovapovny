@@ -65,6 +65,17 @@ export const Categories: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    {
+      name: 'faqItems',
+      type: 'array',
+      admin: {
+        description: 'FAQ-блок під сіткою товарів на сторінці цієї категорії',
+      },
+      fields: [
+        { name: 'question', type: 'text', required: true },
+        { name: 'answer', type: 'textarea', required: true },
+      ],
+    },
   ],
   hooks: {
     afterChange: [

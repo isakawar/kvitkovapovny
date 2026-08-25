@@ -30,6 +30,13 @@ export const Products: CollectionConfig = {
       required: true,
     },
     {
+      name: 'pdpHeading',
+      type: 'text',
+      admin: {
+        description: 'Заголовок H1 на сторінці товару, якщо має відрізнятись від назви в кошику/картках (необовʼязково)',
+      },
+    },
+    {
       name: 'slug',
       type: 'text',
       required: true,
@@ -120,7 +127,103 @@ export const Products: CollectionConfig = {
           name: 'sku',
           type: 'text',
         },
+        {
+          name: 'recommended',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            description: 'Позначає варіант як обраний за замовчуванням, з бейджем "Рекомендовано" на сторінці товару',
+          },
+        },
       ],
+    },
+    {
+      name: 'deliveryFrequencies',
+      type: 'array',
+      admin: {
+        description:
+          'Частота доставок для вибору на сторінці товару (напр. Щотижня / Раз на 2 тижні / Щомісяця). Порожньо — блок не показується.',
+      },
+      fields: [{ name: 'label', type: 'text', required: true }],
+    },
+    {
+      name: 'deliveryDays',
+      type: 'array',
+      admin: {
+        description: 'Дні доставки для вибору на сторінці товару (напр. Вівторок / П\'ятниця). Порожньо — блок не показується.',
+      },
+      fields: [{ name: 'label', type: 'text', required: true }],
+    },
+    {
+      name: 'trustBadges',
+      type: 'array',
+      admin: {
+        description: 'Блок довіри під кнопкою купівлі на сторінці товару (необовʼязково)',
+      },
+      fields: [
+        { name: 'icon', type: 'text', admin: { description: 'Емодзі, напр. 🎁' } },
+        { name: 'label', type: 'text', required: true, admin: { description: 'Жирний заголовок' } },
+        { name: 'note', type: 'text', admin: { description: 'Короткий підпис (необовʼязково)' } },
+      ],
+    },
+    {
+      name: 'badge',
+      type: 'text',
+      admin: {
+        description: 'Напр. "ХІТ ПРОДАЖІВ" — стрічка в кутку картки товару (необовʼязково)',
+      },
+    },
+    {
+      name: 'bullets',
+      type: 'array',
+      admin: {
+        description: 'Список переваг з ✓ на картці товару (необовʼязково)',
+      },
+      fields: [{ name: 'label', type: 'text', required: true }],
+    },
+    {
+      name: 'priceSuffixLabel',
+      type: 'text',
+      admin: {
+        description: 'Дрібний текст біля ціни, напр. "1 700 грн / букет" (необовʼязково)',
+      },
+    },
+    {
+      name: 'ctaLabel',
+      type: 'text',
+      admin: {
+        description: 'Текст кнопки на картці товару, напр. "Обрати M" (за замовчуванням "У кошик")',
+      },
+    },
+    {
+      name: 'highlighted',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Виділяє картку та затемнює кнопку (для рекомендованого плану)',
+      },
+    },
+    {
+      name: 'audienceTags',
+      type: 'select',
+      hasMany: true,
+      options: [
+        { label: 'Для дому', value: 'home' },
+        { label: 'Для бізнесу', value: 'business' },
+        { label: 'Тестовий тиждень', value: 'trial' },
+      ],
+      admin: {
+        description: 'Для фільтрів-табів на сторінці категорії (необовʼязково)',
+      },
+    },
+    {
+      name: 'crossSell',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Показувати в блоці "Додати до замовлення" в кошику',
+      },
     },
     {
       name: 'inStock',

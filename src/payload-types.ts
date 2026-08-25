@@ -100,12 +100,16 @@ export interface Config {
     'site-settings': SiteSetting;
     'subscription-info': SubscriptionInfo;
     'wedding-page': WeddingPage;
+    'formats-section': FormatsSection;
+    'instagram-integration': InstagramIntegration;
   };
   globalsSelect: {
     hero: HeroSelect<false> | HeroSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'subscription-info': SubscriptionInfoSelect<false> | SubscriptionInfoSelect<true>;
     'wedding-page': WeddingPageSelect<false> | WeddingPageSelect<true>;
+    'formats-section': FormatsSectionSelect<false> | FormatsSectionSelect<true>;
+    'instagram-integration': InstagramIntegrationSelect<false> | InstagramIntegrationSelect<true>;
   };
   locale: null;
   widgets: {
@@ -218,6 +222,16 @@ export interface Category {
   description?: string | null;
   image?: (number | null) | Media;
   sortOrder?: number | null;
+  /**
+   * FAQ-блок під сіткою товарів на сторінці цієї категорії
+   */
+  faqItems?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -229,6 +243,10 @@ export interface Category {
 export interface Product {
   id: number;
   name: string;
+  /**
+   * Заголовок H1 на сторінці товару, якщо має відрізнятись від назви в кошику/картках (необовʼязково)
+   */
+  pdpHeading?: string | null;
   slug: string;
   /**
    * Той самий товар може належати кільком категоріям (напр. підписка одночасно й "Підписка на квіти", й "Весільна підписка")
@@ -275,9 +293,84 @@ export interface Product {
          */
         image?: (number | null) | Media;
         sku?: string | null;
+        /**
+         * Позначає варіант як обраний за замовчуванням, з бейджем "Рекомендовано" на сторінці товару
+         */
+        recommended?: boolean | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Частота доставок для вибору на сторінці товару (напр. Щотижня / Раз на 2 тижні / Щомісяця). Порожньо — блок не показується.
+   */
+  deliveryFrequencies?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Дні доставки для вибору на сторінці товару (напр. Вівторок / П'ятниця). Порожньо — блок не показується.
+   */
+  deliveryDays?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Блок довіри під кнопкою купівлі на сторінці товару (необовʼязково)
+   */
+  trustBadges?:
+    | {
+        /**
+         * Емодзі, напр. 🎁
+         */
+        icon?: string | null;
+        /**
+         * Жирний заголовок
+         */
+        label: string;
+        /**
+         * Короткий підпис (необовʼязково)
+         */
+        note?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Напр. "ХІТ ПРОДАЖІВ" — стрічка в кутку картки товару (необовʼязково)
+   */
+  badge?: string | null;
+  /**
+   * Список переваг з ✓ на картці товару (необовʼязково)
+   */
+  bullets?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Дрібний текст біля ціни, напр. "1 700 грн / букет" (необовʼязково)
+   */
+  priceSuffixLabel?: string | null;
+  /**
+   * Текст кнопки на картці товару, напр. "Обрати M" (за замовчуванням "У кошик")
+   */
+  ctaLabel?: string | null;
+  /**
+   * Виділяє картку та затемнює кнопку (для рекомендованого плану)
+   */
+  highlighted?: boolean | null;
+  /**
+   * Для фільтрів-табів на сторінці категорії (необовʼязково)
+   */
+  audienceTags?: ('home' | 'business' | 'trial')[] | null;
+  /**
+   * Показувати в блоці "Додати до замовлення" в кошику
+   */
+  crossSell?: boolean | null;
   inStock?: boolean | null;
   featured?: boolean | null;
   sortOrder?: number | null;
@@ -294,14 +387,43 @@ export interface Order {
   customerName: string;
   phone: string;
   email?: string | null;
-  deliveryCity: string;
+  /**
+   * Замовлення на подарунок іншому отримувачу
+   */
+  isGift?: boolean | null;
+  recipientName?: string | null;
+  recipientPhone?: string | null;
+  /**
+   * Не розкривати деталі замовлення отримувачу (сюрприз)
+   */
+  giftSurprise?: boolean | null;
+  deliveryMethod: 'courier' | 'nova_poshta' | 'pickup';
+  /**
+   * Кур'єр і Нова пошта
+   */
+  deliveryCity?: string | null;
   deliveryDate: string;
-  deliveryAddress: string;
-  deliveryTimeWindow: '09:00-12:00' | '12:00-15:00' | '15:00-18:00' | '18:00-21:00';
+  /**
+   * Кур'єрська доставка
+   */
+  deliveryAddress?: string | null;
+  /**
+   * Кур'єрська доставка
+   */
+  deliveryTimeWindow?: ('09:00-12:00' | '12:00-15:00' | '15:00-18:00' | '18:00-21:00') | null;
+  /**
+   * Нова пошта — номер відділення/поштомату
+   */
+  npOfficeNumber?: string | null;
+  /**
+   * Самовивіз — орієнтовний час візиту
+   */
+  pickupTime?: string | null;
   /**
    * Текст листівки
    */
   cardMessage?: string | null;
+  paymentMethod: 'online' | 'business_invoice' | 'manager_confirm';
   comment?: string | null;
   items: {
     product: number | Product;
@@ -525,6 +647,13 @@ export interface CategoriesSelect<T extends boolean = true> {
   description?: T;
   image?: T;
   sortOrder?: T;
+  faqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -535,6 +664,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface ProductsSelect<T extends boolean = true> {
   name?: T;
+  pdpHeading?: T;
   slug?: T;
   categories?: T;
   price?: T;
@@ -553,8 +683,41 @@ export interface ProductsSelect<T extends boolean = true> {
         priceModifier?: T;
         image?: T;
         sku?: T;
+        recommended?: T;
         id?: T;
       };
+  deliveryFrequencies?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  deliveryDays?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  trustBadges?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        note?: T;
+        id?: T;
+      };
+  badge?: T;
+  bullets?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  priceSuffixLabel?: T;
+  ctaLabel?: T;
+  highlighted?: T;
+  audienceTags?: T;
+  crossSell?: T;
   inStock?: T;
   featured?: T;
   sortOrder?: T;
@@ -570,11 +733,19 @@ export interface OrdersSelect<T extends boolean = true> {
   customerName?: T;
   phone?: T;
   email?: T;
+  isGift?: T;
+  recipientName?: T;
+  recipientPhone?: T;
+  giftSurprise?: T;
+  deliveryMethod?: T;
   deliveryCity?: T;
   deliveryDate?: T;
   deliveryAddress?: T;
   deliveryTimeWindow?: T;
+  npOfficeNumber?: T;
+  pickupTime?: T;
   cardMessage?: T;
+  paymentMethod?: T;
   comment?: T;
   items?:
     | T
@@ -689,6 +860,10 @@ export interface SiteSetting {
   contactEmail?: string | null;
   instagramUrl?: string | null;
   /**
+   * Адреса шоуруму/студії для самовивозу — показується на сторінці чекауту
+   */
+  showroomAddress?: string | null;
+  /**
    * Фото з Instagram для стрічки на головній сторінці
    */
   instagramPosts?:
@@ -792,6 +967,54 @@ export interface WeddingPage {
   createdAt?: string | null;
 }
 /**
+ * Блок із 4 картками під головним банером (дім, бізнес, весілля, сертифікат)
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "formats-section".
+ */
+export interface FormatsSection {
+  id: number;
+  cards?:
+    | {
+        title: string;
+        subtitle: string;
+        buttonLabel: string;
+        buttonHref: string;
+        image?: (number | null) | Media;
+        /**
+         * Визначає порядок карток зліва направо (менше число — раніше)
+         */
+        sortOrder?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Налаштування підключення до Instagram Graph API. Поки accessToken не заповнений, на сайті показується ручний список дописів із "Налаштування сайту" → Instagram.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "instagram-integration".
+ */
+export interface InstagramIntegration {
+  id: number;
+  /**
+   * Довгостроковий Page Access Token з дозволами instagram_basic, pages_show_list, pages_read_engagement (Meta Graph API Explorer → Access Token Debugger → Extend Access Token).
+   */
+  accessToken?: string | null;
+  /**
+   * Instagram Business Account ID. Отримується через GET /me/accounts, поле instagram_business_account для потрібної сторінки.
+   */
+  igUserId?: string | null;
+  /**
+   * Скільки останніх дописів підтягувати для стрічки на головній сторінці
+   */
+  postLimit?: number | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero_select".
  */
@@ -821,6 +1044,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   contactPhone?: T;
   contactEmail?: T;
   instagramUrl?: T;
+  showroomAddress?: T;
   instagramPosts?:
     | T
     | {
@@ -906,6 +1130,38 @@ export interface WeddingPageSelect<T extends boolean = true> {
         id?: T;
       };
   contactNote?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "formats-section_select".
+ */
+export interface FormatsSectionSelect<T extends boolean = true> {
+  cards?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        buttonLabel?: T;
+        buttonHref?: T;
+        image?: T;
+        sortOrder?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "instagram-integration_select".
+ */
+export interface InstagramIntegrationSelect<T extends boolean = true> {
+  accessToken?: T;
+  igUserId?: T;
+  postLimit?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

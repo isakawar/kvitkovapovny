@@ -21,16 +21,27 @@ export default async function ProductPage({ params }: { params: Promise<{ produc
     <AddToCartForm
       productId={String(product.id)}
       productSlug={product.slug}
-      name={product.name}
+      name={product.pdpHeading || product.name}
+      cartName={product.name}
       basePrice={product.price}
-      defaultImageUrl={mediaUrl(product.images?.[0]?.image, 'full')}
-      defaultImageAlt={product.images?.[0]?.alt || product.name}
+      priceSuffixLabel={product.priceSuffixLabel}
+      images={(product.images || [])
+        .map((img) => {
+          const url = mediaUrl(img.image, 'full')
+          return url ? { url, alt: img.alt || product.name } : null
+        })
+        .filter((img): img is { url: string; alt: string } => img !== null)}
       inStock={product.inStock ?? true}
       variants={(product.variants || []).map((v) => ({
         label: v.label,
         priceModifier: v.priceModifier ?? 0,
         imageUrl: mediaUrl(v.image, 'full'),
+        recommended: v.recommended,
       }))}
+      deliveryFrequencies={(product.deliveryFrequencies || []).map((f) => f.label)}
+      deliveryDays={(product.deliveryDays || []).map((d) => d.label)}
+      ctaLabel={product.ctaLabel}
+      trustBadges={(product.trustBadges || []).map((b) => ({ icon: b.icon, label: b.label, note: b.note }))}
       description={
         product.description && (
           <div className="text-sm text-ink-soft [&_p]:mb-3">

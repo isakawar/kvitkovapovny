@@ -2,30 +2,33 @@ import { getPayloadClient } from '@/lib/payload'
 import { Hero } from '@/components/storefront/Hero'
 import { TickerStrip } from '@/components/storefront/TickerStrip'
 import { SubscriptionExplainer } from '@/components/storefront/SubscriptionExplainer'
-import { CategoryGrid } from '@/components/storefront/CategoryGrid'
+import { FormatsGrid } from '@/components/storefront/FormatsGrid'
 import { WeddingPromo } from '@/components/storefront/WeddingPromo'
 import { ProductGrid } from '@/components/storefront/ProductGrid'
 import { InstagramFeed } from '@/components/storefront/InstagramFeed'
 import { TestimonialsGrid } from '@/components/storefront/TestimonialsGrid'
 import { FaqAccordion } from '@/components/storefront/FaqAccordion'
 import { mediaUrl } from '@/lib/media'
+import { getInstagramFeed } from '@/lib/instagram'
 
 export default async function HomePage() {
   const payload = await getPayloadClient()
 
-  const [hero, siteSettings, subscriptionInfo, weddingPage, categories, featuredProducts] = await Promise.all([
-    payload.findGlobal({ slug: 'hero' }),
-    payload.findGlobal({ slug: 'site-settings' }),
-    payload.findGlobal({ slug: 'subscription-info' }),
-    payload.findGlobal({ slug: 'wedding-page' }),
-    payload.find({ collection: 'categories', where: { _status: { equals: 'published' } }, sort: 'sortOrder', limit: 8 }),
-    payload.find({
-      collection: 'products',
-      where: { and: [{ _status: { equals: 'published' } }, { featured: { equals: true } }] },
-      sort: 'sortOrder',
-      limit: 8,
-    }),
-  ])
+  const [hero, siteSettings, subscriptionInfo, weddingPage, formatsSection, featuredProducts, instagramPosts] =
+    await Promise.all([
+      payload.findGlobal({ slug: 'hero' }),
+      payload.findGlobal({ slug: 'site-settings' }),
+      payload.findGlobal({ slug: 'subscription-info' }),
+      payload.findGlobal({ slug: 'wedding-page' }),
+      payload.findGlobal({ slug: 'formats-section' }),
+      payload.find({
+        collection: 'products',
+        where: { and: [{ _status: { equals: 'published' } }, { featured: { equals: true } }] },
+        sort: 'sortOrder',
+        limit: 8,
+      }),
+      getInstagramFeed(),
+    ])
 
   return (
     <>
@@ -44,12 +47,16 @@ export default async function HomePage() {
 
       {subscriptionInfo.tickerText && <TickerStrip text={subscriptionInfo.tickerText} />}
 
-      <CategoryGrid
-        categories={categories.docs.map((c) => ({
-          slug: c.slug,
-          name: c.name,
-          imageUrl: mediaUrl(c.image, 'card'),
-        }))}
+      <FormatsGrid
+        cards={[...(formatsSection.cards || [])]
+          .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+          .map((card) => ({
+            title: card.title,
+            subtitle: card.subtitle,
+            buttonLabel: card.buttonLabel,
+            buttonHref: card.buttonHref,
+            imageUrl: mediaUrl(card.image, 'card'),
+          }))}
       />
 
       <SubscriptionExplainer
@@ -89,15 +96,7 @@ export default async function HomePage() {
           .filter((t) => t !== null)}
       />
 
-      <InstagramFeed
-        instagramUrl={siteSettings.instagramUrl}
-        posts={(siteSettings.instagramPosts || [])
-          .map((p) => {
-            const imageUrl = mediaUrl(p.image, 'card')
-            return imageUrl ? { imageUrl, link: p.link } : null
-          })
-          .filter((p) => p !== null)}
-      />
+      <InstagramFeed instagramUrl={siteSettings.instagramUrl} posts={instagramPosts} />
 
       <FaqAccordion items={(siteSettings.faqItems || []).map((item) => ({ question: item.question, answer: item.answer }))} />
     </>
