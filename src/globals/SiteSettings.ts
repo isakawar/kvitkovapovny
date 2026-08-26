@@ -72,6 +72,18 @@ export const SiteSettings: GlobalConfig = {
       ],
     },
     {
+      name: 'googleRating',
+      type: 'text',
+      defaultValue: '5.0',
+      admin: { description: 'Рейтинг для плашки "★ 5.0 на основі відгуків у Google" над каруселлю відгуків' },
+    },
+    {
+      name: 'happySubscribersStat',
+      type: 'text',
+      defaultValue: '1000+ щасливих власників підписок',
+      admin: { description: 'Текст поруч з рейтингом Google над каруселлю відгуків' },
+    },
+    {
       name: 'deliveryCities',
       type: 'array',
       fields: [

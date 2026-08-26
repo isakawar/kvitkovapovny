@@ -18,32 +18,39 @@ export function FeatureStrip({ heading, items, cta }: FeatureStripProps) {
   if (items.length === 0) return null
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 text-center sm:px-6">
-      {heading && (
-        <h2
-          className="text-2xl tracking-wide text-ink sm:text-3xl"
-          style={{ fontWeight: 'var(--font-weight-brand-bold)' }}
-        >
-          {heading}
-        </h2>
-      )}
-      <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-ink/10">
-        {items.map((item, i) => (
-          <div key={i} className="flex flex-col items-center gap-3 px-4 sm:px-8">
-            <HomeIcon name={item.icon} className="h-10 w-10 shrink-0 text-accent" />
-            <p className="text-sm font-semibold tracking-wide text-ink uppercase">{item.title}</p>
-            {item.description && <p className="text-sm text-ink-soft">{item.description}</p>}
-          </div>
-        ))}
+    <section className="bg-[#1E1E1E] px-4 py-16 text-center sm:px-6">
+      <div className="mx-auto max-w-6xl">
+        {heading && (
+          <h2
+            className="text-2xl tracking-wide text-[#faf8e9] sm:text-3xl"
+            style={{ fontWeight: 'var(--font-weight-brand-bold)' }}
+          >
+            {heading}
+          </h2>
+        )}
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+          {items.map((item, i) => (
+            <div
+              key={i}
+              className="flex flex-col items-center gap-4 rounded-2xl border border-[#faf8e9]/10 bg-[#faf8e9]/5 px-6 py-10"
+            >
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#faf8e9]/10 text-accent-warm">
+                <HomeIcon name={item.icon} className="h-7 w-7" />
+              </span>
+              <p className="text-sm font-semibold tracking-wide text-[#faf8e9] uppercase">{item.title}</p>
+              {item.description && <p className="text-sm text-[#faf8e9]/70">{item.description}</p>}
+            </div>
+          ))}
+        </div>
+        {cta?.label && cta?.href && (
+          <Link
+            href={cta.href}
+            className="mt-10 inline-block text-sm font-semibold tracking-wide text-[#faf8e9] uppercase underline underline-offset-4 transition hover:text-accent-warm"
+          >
+            {cta.label}
+          </Link>
+        )}
       </div>
-      {cta?.label && cta?.href && (
-        <Link
-          href={cta.href}
-          className="mt-10 inline-block text-sm font-semibold tracking-wide text-ink uppercase underline underline-offset-4 transition hover:text-accent"
-        >
-          {cta.label}
-        </Link>
-      )}
     </section>
   )
 }

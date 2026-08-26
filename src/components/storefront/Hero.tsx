@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { BrandFlowerAccent } from './BrandFlowerAccent'
+import { SUBSCRIPTION_CONFIGURATOR_ID } from './subscriptionConfiguratorId'
 
 type CtaButton = {
   label: string
@@ -37,7 +38,7 @@ function CtaButtons({ ctaButtons, theme }: { ctaButtons: CtaButton[]; theme: 'ol
             theme === 'new'
               ? cta.style === 'secondary'
                 ? 'rounded-full border border-ink px-6 py-3 text-sm font-medium text-ink transition hover:bg-ink/5'
-                : 'rounded-full bg-accent px-6 py-3 text-sm font-medium text-cream transition hover:bg-accent/90'
+                : 'rounded-full bg-accent px-6 py-3 text-sm font-medium text-on-accent transition hover:bg-accent-hover'
               : cta.style === 'secondary'
                 ? 'rounded-full border border-cream/70 px-6 py-3 text-sm font-medium text-cream transition hover:bg-cream/10'
                 : 'rounded-full bg-ink px-6 py-3 text-sm font-medium text-cream transition hover:bg-ink/80'
@@ -71,11 +72,16 @@ export function Hero({
               {heading}
             </h1>
             {subheading && (
-              <p className="text-base text-ink-soft" style={{ fontWeight: 'var(--font-weight-brand-light)' }}>
+              <p className="text-base text-[#2C2C2C]" style={{ fontWeight: 'var(--font-weight-brand-light)' }}>
                 {subheading}
               </p>
             )}
-            <CtaButtons ctaButtons={ctaButtons} theme={theme} />
+            <a
+              href={`#${SUBSCRIPTION_CONFIGURATOR_ID}`}
+              className="w-fit rounded-full bg-accent px-6 py-3 text-sm font-medium text-on-accent transition hover:bg-accent-hover"
+            >
+              Обрати свій тариф
+            </a>
           </div>
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl bg-blush">
             {videoUrl ? (

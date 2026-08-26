@@ -36,9 +36,21 @@ export const HowItWorksSection: GlobalConfig = {
       minRows: 1,
       maxRows: 5,
       defaultValue: [
-        { icon: 'flower', title: 'Обираєте тариф', subtitle: 'Розмір букета, частота та день доставки' },
-        { icon: 'vase', title: 'Отримуєте подарунки', subtitle: 'Ваза, секатор, інструкція по догляду' },
-        { icon: 'sparkle', title: 'Насолоджуєтесь', subtitle: 'Свіжі квіти у вашому домі щотижня' },
+        {
+          icon: 'flower',
+          title: 'Обираєте тариф та день',
+          subtitle: 'Розмір букета та зручний день доставки',
+        },
+        {
+          icon: 'vase',
+          title: 'Отримуєте квіти та подарунки',
+          subtitle: 'Вазу та секатор — разом із першим букетом',
+        },
+        {
+          icon: 'sparkle',
+          title: 'Насолоджуєтесь свіжістю',
+          subtitle: 'І керуєте підпискою в 1 клік',
+        },
       ],
       fields: [
         { name: 'icon', type: 'select', required: true, options: iconOptions },

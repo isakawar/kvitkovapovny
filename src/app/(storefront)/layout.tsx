@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Montserrat } from 'next/font/google'
+import { Montserrat, Unbounded } from 'next/font/google'
 
 import { CartProvider } from '@/lib/cart-context'
 import { Header } from '@/components/storefront/Header'
@@ -11,6 +11,11 @@ import './globals.css'
 
 const montserrat = Montserrat({
   variable: '--font-montserrat',
+  subsets: ['latin', 'cyrillic'],
+})
+
+const unbounded = Unbounded({
+  variable: '--font-unbounded',
   subsets: ['latin', 'cyrillic'],
 })
 
@@ -43,7 +48,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html
       lang="uk"
       data-theme={siteSettings.designTheme || 'old'}
-      className={`${montserrat.variable} h-full antialiased`}
+      className={`${montserrat.variable} ${unbounded.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <CartProvider>

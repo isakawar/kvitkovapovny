@@ -8,6 +8,7 @@ export function TickerStrip({ text }: { text: string }) {
           <span key={i} className="flex items-center gap-8">
             <span>{text}</span>
             <span aria-hidden>✳</span>
+
           </span>
         ))}
       </div>

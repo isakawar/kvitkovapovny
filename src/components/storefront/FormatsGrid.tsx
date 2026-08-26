@@ -57,14 +57,14 @@ export function FormatsGrid({
                   />
                 )}
               </div>
-              <div className="relative flex flex-1 flex-col gap-1 p-5">
+              <div className="flex flex-1 flex-col gap-2 p-6">
                 <h3 className="text-base font-semibold text-ink">{card.title}</h3>
-                <p className="pr-10 text-sm text-ink-soft">{card.subtitle}</p>
+                <p className="text-sm text-ink-soft">{card.subtitle}</p>
                 <Link
                   href={card.buttonHref}
-                  aria-label={card.buttonLabel}
-                  className="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-accent text-cream transition group-hover:bg-accent/90"
+                  className="mt-3 inline-flex w-fit items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-on-accent transition hover:bg-accent-hover"
                 >
+                  {card.buttonLabel}
                   <ArrowIcon className="h-4 w-4" />
                 </Link>
               </div>

@@ -28,15 +28,15 @@ export function Logo({ className }: { className?: string }) {
           <span className="mt-1 text-[10px] tracking-[0.5em] text-ink-soft sm:text-xs">POVNYA</span>
         </span>
       </span>
-      <span className="hidden items-center gap-2 rounded-full bg-accent px-4 py-2 text-cream [html[data-theme='new']_&]:flex">
+      <span className="hidden items-baseline gap-2 text-ink [html[data-theme='new']_&]:flex">
         <span
-          className="text-sm tracking-[0.05em] sm:text-base"
-          style={{ fontWeight: 'var(--font-weight-brand-bold)' }}
+          className="text-lg tracking-tight sm:text-xl"
+          style={{ fontFamily: 'var(--font-heading)', fontWeight: 800 }}
         >
           KVITKOVA.
         </span>
         <span
-          className="text-sm tracking-[0.05em] sm:text-base"
+          className="text-xs tracking-[0.25em] text-ink-soft sm:text-sm"
           style={{ fontWeight: 'var(--font-weight-brand-light)' }}
         >
           POVNYA

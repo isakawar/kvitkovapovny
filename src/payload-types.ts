@@ -104,6 +104,7 @@ export interface Config {
     'instagram-integration': InstagramIntegration;
     'feature-strip': FeatureStrip;
     'how-it-works-section': HowItWorksSection;
+    'subscription-pricing': SubscriptionPricing;
   };
   globalsSelect: {
     hero: HeroSelect<false> | HeroSelect<true>;
@@ -114,6 +115,7 @@ export interface Config {
     'instagram-integration': InstagramIntegrationSelect<false> | InstagramIntegrationSelect<true>;
     'feature-strip': FeatureStripSelect<false> | FeatureStripSelect<true>;
     'how-it-works-section': HowItWorksSectionSelect<false> | HowItWorksSectionSelect<true>;
+    'subscription-pricing': SubscriptionPricingSelect<false> | SubscriptionPricingSelect<true>;
   };
   locale: null;
   widgets: {
@@ -346,6 +348,14 @@ export interface Product {
    * Напр. "ХІТ ПРОДАЖІВ" — стрічка в кутку картки товару (необовʼязково)
    */
   badge?: string | null;
+  /**
+   * Показує бейдж "Безкоштовна доставка" на картці товару
+   */
+  freeDeliveryBadge?: boolean | null;
+  /**
+   * Показує бейдж "Ваза у подарунок" на картці товару
+   */
+  vaseGiftBadge?: boolean | null;
   /**
    * Список переваг з ✓ на картці товару (необовʼязково)
    */
@@ -719,6 +729,8 @@ export interface ProductsSelect<T extends boolean = true> {
         id?: T;
       };
   badge?: T;
+  freeDeliveryBadge?: T;
+  vaseGiftBadge?: T;
   bullets?:
     | T
     | {
@@ -907,6 +919,14 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Рейтинг для плашки "★ 5.0 на основі відгуків у Google" над каруселлю відгуків
+   */
+  googleRating?: string | null;
+  /**
+   * Текст поруч з рейтингом Google над каруселлю відгуків
+   */
+  happySubscribersStat?: string | null;
   deliveryCities?:
     | {
         name: string;
@@ -1078,6 +1098,52 @@ export interface HowItWorksSection {
   createdAt?: string | null;
 }
 /**
+ * Ціни за розмірами для калькулятора підписки на головній. Ціна за 1 букет розраховується автоматично на сайті (ціна розміру / 4) — вводити її окремо не потрібно. Частота доставки на ціну не впливає, лише на графік.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscription-pricing".
+ */
+export interface SubscriptionPricing {
+  id: number;
+  sizes?:
+    | {
+        /**
+         * Напр. S, M, L, XXL
+         */
+        label: string;
+        /**
+         * Базова ціна підписки цього розміру, в копійках (напр. 680000 = 6800.00 грн)
+         */
+        price: number;
+        /**
+         * Напр. "Хіт", "Популярний" (необовʼязково)
+         */
+        badge?: string | null;
+        /**
+         * Показувати цей розмір у калькуляторі
+         */
+        active?: boolean | null;
+        /**
+         * Фото букета саме цього розміру для галереї в калькуляторі. Якщо порожньо — показуються загальні фото товару підписки.
+         */
+        images?:
+          | {
+              image: number | Media;
+              alt?: string | null;
+              /**
+               * Порядок показу — менше число показується раніше
+               */
+              sortOrder?: number | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero_select".
  */
@@ -1123,6 +1189,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         authorName?: T;
         id?: T;
       };
+  googleRating?: T;
+  happySubscribersStat?: T;
   deliveryCities?:
     | T
     | {
@@ -1267,6 +1335,32 @@ export interface HowItWorksSectionSelect<T extends boolean = true> {
         icon?: T;
         title?: T;
         subtitle?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscription-pricing_select".
+ */
+export interface SubscriptionPricingSelect<T extends boolean = true> {
+  sizes?:
+    | T
+    | {
+        label?: T;
+        price?: T;
+        badge?: T;
+        active?: T;
+        images?:
+          | T
+          | {
+              image?: T;
+              alt?: T;
+              sortOrder?: T;
+              id?: T;
+            };
         id?: T;
       };
   updatedAt?: T;

@@ -6,8 +6,14 @@ import { FeatureStrip } from '@/components/storefront/FeatureStrip'
 import { WeddingPromo } from '@/components/storefront/WeddingPromo'
 import { ProductGrid } from '@/components/storefront/ProductGrid'
 import { InstagramFeed } from '@/components/storefront/InstagramFeed'
-import { TestimonialsGrid } from '@/components/storefront/TestimonialsGrid'
+import { TestimonialsCarousel } from '@/components/storefront/TestimonialsCarousel'
 import { FaqAccordion } from '@/components/storefront/FaqAccordion'
+import { HowItWorks } from '@/components/storefront/HowItWorks'
+import {
+  SubscriptionConfigurator,
+  type SubscriptionConfiguratorProduct,
+} from '@/components/storefront/SubscriptionConfigurator'
+import { SUBSCRIPTION_CONFIGURATOR_ID } from '@/components/storefront/subscriptionConfiguratorId'
 import { mediaUrl } from '@/lib/media'
 import { getInstagramFeed } from '@/lib/instagram'
 
@@ -21,7 +27,10 @@ export default async function HomePage() {
     weddingPage,
     formatsSection,
     featureStrip,
+    howItWorksSection,
+    subscriptionPricing,
     featuredProducts,
+    subscriptionCategory,
     instagramPosts,
   ] = await Promise.all([
     payload.findGlobal({ slug: 'hero' }),
@@ -30,16 +39,64 @@ export default async function HomePage() {
     payload.findGlobal({ slug: 'wedding-page' }),
     payload.findGlobal({ slug: 'formats-section' }),
     payload.findGlobal({ slug: 'feature-strip' }),
+    payload.findGlobal({ slug: 'how-it-works-section' }),
+    payload.findGlobal({ slug: 'subscription-pricing' }),
     payload.find({
       collection: 'products',
       where: { and: [{ _status: { equals: 'published' } }, { featured: { equals: true } }] },
       sort: 'sortOrder',
       limit: 8,
     }),
+    payload.find({ collection: 'categories', where: { slug: { equals: 'pidpyska' } }, limit: 1 }),
     getInstagramFeed(),
   ])
 
   const theme = siteSettings.designTheme || 'old'
+
+  const configuratorSourceProduct = subscriptionCategory.docs[0]
+    ? (
+        await payload.find({
+          collection: 'products',
+          where: {
+            and: [
+              { _status: { equals: 'published' } },
+              { categories: { in: [subscriptionCategory.docs[0].id] } },
+              { highlighted: { equals: true } },
+            ],
+          },
+          limit: 1,
+        })
+      ).docs[0]
+    : undefined
+
+  const configuratorProduct: SubscriptionConfiguratorProduct | null = configuratorSourceProduct
+    ? {
+        productId: String(configuratorSourceProduct.id),
+        slug: configuratorSourceProduct.slug,
+        name: configuratorSourceProduct.name,
+        images: (configuratorSourceProduct.images || [])
+          .map((img) => {
+            const url = mediaUrl(img.image, 'full')
+            return url ? { url, alt: img.alt || configuratorSourceProduct.name } : null
+          })
+          .filter((img): img is { url: string; alt: string } => img !== null),
+        sizes: (subscriptionPricing.sizes || [])
+          .filter((s) => s.active !== false)
+          .map((s) => ({
+            label: s.label,
+            price: s.price,
+            badge: s.badge,
+            images: [...(s.images || [])]
+              .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+              .map((img) => {
+                const url = mediaUrl(img.image, 'full')
+                return url ? { url, alt: img.alt || `${s.label} — ${configuratorSourceProduct.name}` } : null
+              })
+              .filter((img): img is { url: string; alt: string } => img !== null),
+          })),
+        deliveryFrequencies: (configuratorSourceProduct.deliveryFrequencies || []).map((f) => f.label),
+      }
+    : null
 
   return (
     <>
@@ -69,6 +126,21 @@ export default async function HomePage() {
         />
       )}
 
+      {theme === 'new' && (
+        <HowItWorks
+          heading={howItWorksSection.heading}
+          steps={(howItWorksSection.steps || []).map((step) => ({
+            icon: step.icon,
+            title: step.title,
+            subtitle: step.subtitle,
+          }))}
+        />
+      )}
+
+      {theme === 'new' && configuratorProduct && (
+        <SubscriptionConfigurator id={SUBSCRIPTION_CONFIGURATOR_ID} product={configuratorProduct} />
+      )}
+
       <FormatsGrid
         theme={theme}
         heading={theme === 'new' ? formatsSection.heading : null}
@@ -84,6 +156,7 @@ export default async function HomePage() {
       />
 
       <SubscriptionExplainer
+        theme={theme}
         heading={subscriptionInfo.heading}
         intro={subscriptionInfo.intro}
         imageUrl={mediaUrl(subscriptionInfo.image, 'full')}
@@ -108,16 +181,21 @@ export default async function HomePage() {
           imageUrl: mediaUrl(p.images?.[0]?.image, 'card'),
           imageAlt: p.images?.[0]?.alt || p.name,
           inStock: p.inStock ?? true,
+          freeDeliveryBadge: p.freeDeliveryBadge,
+          vaseGiftBadge: p.vaseGiftBadge,
         }))}
       />
 
-      <TestimonialsGrid
+      <TestimonialsCarousel
         testimonials={(siteSettings.testimonials || [])
           .map((t) => {
             const imageUrl = mediaUrl(t.image, 'card')
             return imageUrl ? { imageUrl, authorName: t.authorName } : null
           })
           .filter((t) => t !== null)}
+        rating={siteSettings.googleRating}
+        statText={siteSettings.happySubscribersStat}
+        instagramUrl={siteSettings.instagramUrl}
       />
 
       <InstagramFeed instagramUrl={siteSettings.instagramUrl} posts={instagramPosts} />

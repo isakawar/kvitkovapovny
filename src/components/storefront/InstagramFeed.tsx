@@ -137,6 +137,11 @@ export function InstagramFeed({
 
   if (posts.length === 0) return null
 
+  // 6 divides evenly into every breakpoint's column count (2, 3, 6), so trimming
+  // to the largest multiple of 6 keeps the grid balanced with no gaps in the last row.
+  const displayCount = posts.length >= 6 ? Math.floor(posts.length / 6) * 6 : posts.length
+  const displayPosts = posts.slice(0, displayCount)
+
   return (
     <section className="mx-auto max-w-6xl px-4 py-16">
       <div className="mb-8 flex items-center justify-between">
@@ -148,7 +153,7 @@ export function InstagramFeed({
         )}
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
-        {posts.map((post, i) => (
+        {displayPosts.map((post, i) => (
           <button
             key={post.id}
             type="button"
@@ -162,10 +167,10 @@ export function InstagramFeed({
 
       {activeIndex !== null && (
         <Lightbox
-          post={posts[activeIndex]}
+          post={displayPosts[activeIndex]}
           onClose={() => setActiveIndex(null)}
-          onPrev={() => setActiveIndex((i) => (i === null ? null : (i - 1 + posts.length) % posts.length))}
-          onNext={() => setActiveIndex((i) => (i === null ? null : (i + 1) % posts.length))}
+          onPrev={() => setActiveIndex((i) => (i === null ? null : (i - 1 + displayPosts.length) % displayPosts.length))}
+          onNext={() => setActiveIndex((i) => (i === null ? null : (i + 1) % displayPosts.length))}
         />
       )}
     </section>

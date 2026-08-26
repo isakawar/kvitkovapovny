@@ -11,9 +11,16 @@ export type ProductCardData = {
   imageUrl?: string | null
   imageAlt?: string
   inStock: boolean
+  freeDeliveryBadge?: boolean | null
+  vaseGiftBadge?: boolean | null
 }
 
 export function ProductCard({ product }: { product: ProductCardData }) {
+  const badges = [
+    product.freeDeliveryBadge && 'Безкоштовна доставка',
+    product.vaseGiftBadge && 'Ваза у подарунок',
+  ].filter((label): label is string => Boolean(label))
+
   return (
     <Link
       href={`/product/${product.slug}`}
@@ -29,6 +36,18 @@ export function ProductCard({ product }: { product: ProductCardData }) {
             className="object-cover transition duration-300 group-hover:scale-105"
           />
         )}
+        {badges.length > 0 && (
+          <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
+            {badges.map((label) => (
+              <span
+                key={label}
+                className="rounded-full bg-cream/95 px-2.5 py-1 text-[11px] font-medium text-ink shadow-sm"
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+        )}
         {!product.inStock && (
           <div className="absolute inset-0 flex items-center justify-center bg-ink/50">
             <span className="rounded-full bg-cream px-4 py-1 text-xs font-medium text-ink">
@@ -38,9 +57,9 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         )}
         <BrandFlowerAccent className="pointer-events-none absolute bottom-2 right-2 z-10 hidden h-6 w-6 text-cream/90 [html[data-theme='new']_&]:block" />
       </div>
-      <div className="flex flex-1 flex-col gap-1 p-4">
-        <h3 className="text-sm font-medium text-ink">{product.name}</h3>
-        <p className="mt-auto text-sm font-semibold text-accent">{formatUAH(product.price)}</p>
+      <div className="flex flex-1 flex-col gap-2 p-5">
+        <h3 className="text-[15px] leading-snug font-medium text-ink">{product.name}</h3>
+        <p className="mt-auto text-base font-semibold text-accent">{formatUAH(product.price)}</p>
       </div>
     </Link>
   )

@@ -44,7 +44,7 @@ export function PricingCard({ product }: { product: PricingCardData }) {
       }`}
     >
       {product.badge && (
-        <span className="absolute top-3 right-3 z-10 rounded-full bg-accent px-3 py-1 text-xs font-semibold tracking-wide text-cream uppercase">
+        <span className="absolute top-3 right-3 z-10 rounded-full bg-accent px-3 py-1 text-xs font-semibold tracking-wide text-on-accent uppercase">
           {product.badge}
         </span>
       )}

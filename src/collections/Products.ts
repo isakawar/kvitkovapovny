@@ -174,6 +174,23 @@ export const Products: CollectionConfig = {
       },
     },
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'freeDeliveryBadge',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: { description: 'Показує бейдж "Безкоштовна доставка" на картці товару' },
+        },
+        {
+          name: 'vaseGiftBadge',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: { description: 'Показує бейдж "Ваза у подарунок" на картці товару' },
+        },
+      ],
+    },
+    {
       name: 'bullets',
       type: 'array',
       admin: {

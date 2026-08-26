@@ -34,7 +34,7 @@ export function CartDrawer({ crossSellProducts = [] }: { crossSellProducts?: Cro
           <path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 8H6" />
         </svg>
         {cart.totalQuantity > 0 && (
-          <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-medium text-cream">
+          <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-medium text-on-accent">
             {cart.totalQuantity}
           </span>
         )}

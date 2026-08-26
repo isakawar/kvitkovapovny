@@ -7,9 +7,12 @@
   --color-ink: #362f28;
   --color-ink-soft: #6b6155;
   --color-accent: #a8785f;
+  --color-accent-hover: color-mix(in srgb, #a8785f 88%, black);
   --color-accent-warm: #a8785f;
+  --color-on-accent: var(--color-cream);
   --font-weight-brand-bold: 600;
   --font-weight-brand-light: 400;
+  --font-heading: var(--font-montserrat);
 }
 
 :root[data-theme='new'] {
@@ -19,9 +22,12 @@
   --color-ink: #2b2b28;
   --color-ink-soft: #6d6a60;
   --color-accent: #9eaf00;
+  --color-accent-hover: #8a9900;
   --color-accent-warm: #e8871e;
+  --color-on-accent: #1e1e1e;
   --font-weight-brand-bold: 900;
   --font-weight-brand-light: 300;
+  --font-heading: var(--font-unbounded);
 }
 
 @theme inline {
@@ -31,13 +37,25 @@
   --color-ink: var(--color-ink);
   --color-ink-soft: var(--color-ink-soft);
   --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
   --color-accent-warm: var(--color-accent-warm);
+  --color-on-accent: var(--color-on-accent);
   --font-sans: var(--font-montserrat);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--color-cream);
   color: var(--color-ink);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
 }
 
 @layer components {
