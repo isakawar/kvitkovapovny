@@ -18,7 +18,7 @@ const TIME_WINDOWS = [
 ]
 
 const PAYMENT_METHODS = [
-  { value: 'online', label: 'Онлайн-оплата (Картка / Apple Pay / Google Pay через Monobank)' },
+  { value: 'online', label: 'Онлайн-оплата через Monobank' },
   { value: 'installments', label: 'Оплата частинами Monobank (розстрочка на 3-6 місяців)' },
   { value: 'business_invoice', label: 'Оплата за рахунком для бізнесу (ФОП / ТОВ)' },
 ]
