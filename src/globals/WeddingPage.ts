@@ -18,7 +18,18 @@ export const WeddingPage: GlobalConfig = {
       name: 'heading',
       type: 'text',
       required: true,
-      defaultValue: 'Квіткове оформлення весілля',
+      defaultValue: 'Квіти, які не зав\'януть після весілля',
+    },
+    {
+      name: 'subheading',
+      type: 'textarea',
+      defaultValue:
+        'Створіть весільний фонд квітів разом із гостями та отримуйте свіжі букети щотижня протягом року.',
+    },
+    {
+      name: 'ctaLabel',
+      type: 'text',
+      defaultValue: 'Залишити заявку',
     },
     {
       name: 'intro',
@@ -26,6 +37,52 @@ export const WeddingPage: GlobalConfig = {
       required: true,
       defaultValue:
         'Розробляємо індивідуальне квіткове оформлення під ваше весілля: арки, композиції на столи, букет нареченої, бутоньєрки. Кожен проєкт — окремий розрахунок під бюджет і стилістику свята.',
+    },
+    {
+      name: 'steps',
+      type: 'array',
+      minRows: 1,
+      maxRows: 5,
+      admin: { description: 'Блок "Як це працює"' },
+      defaultValue: [
+        {
+          icon: 'sparkle',
+          title: 'Реєстрація весілля',
+          subtitle: 'Ми створюємо банку Monobank та онлайн-картку з QR для гостей',
+        },
+        {
+          icon: 'flower',
+          title: 'Гості донатять на квіти',
+          subtitle: 'Гості закидають суму на букет і залишають привітання',
+        },
+        {
+          icon: 'home',
+          title: 'Рік краси у вашому домі',
+          subtitle: 'Щотижня ви отримуєте букет із теплими словами від гостя',
+        },
+      ],
+      fields: [
+        {
+          name: 'icon',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Доставка', value: 'truck' },
+            { label: 'Ваза', value: 'vase' },
+            { label: 'Пауза', value: 'pause' },
+            { label: 'Квітка', value: 'flower' },
+            { label: 'Дім', value: 'home' },
+            { label: 'Зірка', value: 'sparkle' },
+          ],
+        },
+        { name: 'title', type: 'text', required: true },
+        { name: 'subtitle', type: 'text' },
+      ],
+    },
+    {
+      name: 'formHeading',
+      type: 'text',
+      defaultValue: 'Плануєте весілля? Давайте зафіксуємо дату',
     },
     {
       name: 'coverImage',

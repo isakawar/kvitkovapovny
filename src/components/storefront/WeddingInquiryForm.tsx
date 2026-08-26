@@ -4,7 +4,13 @@ import { useState } from 'react'
 
 import { createWeddingInquiry } from '@/app/actions/createWeddingInquiry'
 
-export function WeddingInquiryForm({ contactNote }: { contactNote?: string | null }) {
+export function WeddingInquiryForm({
+  formHeading,
+  contactNote,
+}: {
+  formHeading?: string | null
+  contactNote?: string | null
+}) {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState(false)
@@ -18,10 +24,7 @@ export function WeddingInquiryForm({ contactNote }: { contactNote?: string | nul
     const result = await createWeddingInquiry({
       customerName: String(formData.get('customerName') || ''),
       phone: String(formData.get('phone') || ''),
-      email: String(formData.get('email') || '') || undefined,
       weddingDate: String(formData.get('weddingDate') || '') || undefined,
-      guestsCount: formData.get('guestsCount') ? Number(formData.get('guestsCount')) : undefined,
-      budget: String(formData.get('budget') || '') || undefined,
       comment: String(formData.get('comment') || '') || undefined,
     })
 
@@ -37,7 +40,7 @@ export function WeddingInquiryForm({ contactNote }: { contactNote?: string | nul
 
   if (done) {
     return (
-      <div className="rounded-2xl bg-white p-8 text-center">
+      <div id="wedding-form" className="rounded-2xl bg-white p-8 text-center">
         <p className="text-lg font-medium text-ink">Дякуємо за заявку!</p>
         {contactNote && <p className="mt-2 text-sm text-ink-soft">{contactNote}</p>}
       </div>
@@ -45,28 +48,29 @@ export function WeddingInquiryForm({ contactNote }: { contactNote?: string | nul
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4 rounded-2xl bg-white p-8">
-      <h3 className="text-lg font-medium text-ink">Заявка на консультацію</h3>
+    <form id="wedding-form" onSubmit={handleSubmit} className="grid scroll-mt-24 gap-4 rounded-2xl bg-white p-8">
+      <h3 className="text-lg font-medium text-ink">{formHeading || 'Плануєте весілля? Давайте зафіксуємо дату'}</h3>
       {contactNote && <p className="text-sm text-ink-soft">{contactNote}</p>}
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <input name="customerName" required placeholder="Ім'я та прізвище" className="input" />
-        <input name="phone" required placeholder="Телефон" className="input" />
-        <input name="email" type="email" placeholder="Email (необов'язково)" className="input" />
+        <input name="customerName" required placeholder="Імена молодят" className="input" />
         <input name="weddingDate" type="date" placeholder="Дата весілля" className="input" />
-        <input name="guestsCount" type="number" min="1" placeholder="Кількість гостей" className="input" />
-        <input name="budget" placeholder="Орієнтовний бюджет" className="input" />
+        <input name="phone" type="tel" required placeholder="+380" className="input" />
       </div>
-      <textarea name="comment" placeholder="Розкажіть про ваше весілля: стиль, локація, побажання" className="input min-h-24" />
+      <textarea
+        name="comment"
+        placeholder="Кількість гостей / побажання"
+        className="input min-h-24"
+      />
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <button
         type="submit"
         disabled={submitting}
-        className="w-fit rounded-full bg-ink px-6 py-3 text-sm font-medium text-cream transition hover:bg-ink/80 disabled:opacity-60"
+        className="w-fit rounded-full bg-accent px-6 py-3 text-sm font-medium text-on-accent transition hover:bg-accent-hover disabled:opacity-60"
       >
-        {submitting ? 'Надсилаємо…' : 'Надіслати заявку'}
+        {submitting ? 'Надсилаємо…' : 'Створити весільну підписку'}
       </button>
     </form>
   )

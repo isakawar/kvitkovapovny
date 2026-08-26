@@ -3,11 +3,13 @@ import Image from 'next/image'
 
 import { getPayloadClient } from '@/lib/payload'
 import { WeddingInquiryForm } from '@/components/storefront/WeddingInquiryForm'
+import { HowItWorks } from '@/components/storefront/HowItWorks'
 import { mediaUrl } from '@/lib/media'
 
 export const metadata: Metadata = {
-  title: 'Весільні підписки та оформлення | Kvitkova Povnya',
-  description: 'Індивідуальне квіткове оформлення весілля: арки, композиції, букет нареченої. Безкоштовна консультація.',
+  title: 'Весільна підписка на квіти | Kvitkova Povnya',
+  description:
+    'Створіть весільний фонд квітів разом із гостями та отримуйте свіжі букети щотижня протягом року.',
 }
 
 export default async function WeddingPage() {
@@ -24,16 +26,23 @@ export default async function WeddingPage() {
 
   return (
     <div>
-      <section className="relative flex h-[50vh] min-h-[320px] items-center justify-center overflow-hidden bg-ink">
+      <section className="relative flex h-[60vh] min-h-[400px] items-center justify-center overflow-hidden bg-ink">
         {coverUrl && <Image src={coverUrl} alt={weddingPage.heading} fill sizes="100vw" className="object-cover opacity-70" />}
-        <div className="relative z-10 mx-4 max-w-xl text-center text-cream">
-          <h1 className="text-3xl font-semibold uppercase tracking-wide sm:text-4xl">{weddingPage.heading}</h1>
+        <div className="relative z-10 mx-4 flex max-w-xl flex-col items-center gap-5 text-center text-cream">
+          <h1 className="text-3xl font-semibold tracking-wide sm:text-4xl">{weddingPage.heading}</h1>
+          {weddingPage.subheading && <p className="text-base text-cream/90">{weddingPage.subheading}</p>}
+          <a
+            href="#wedding-form"
+            className="inline-flex rounded-full bg-accent px-8 py-3 text-sm font-medium text-on-accent transition hover:bg-accent-hover"
+          >
+            {weddingPage.ctaLabel || 'Залишити заявку'}
+          </a>
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 py-12 text-center">
-        <p className="text-sm whitespace-pre-line text-ink-soft">{weddingPage.intro}</p>
-      </section>
+      {weddingPage.steps && weddingPage.steps.length > 0 && (
+        <HowItWorks heading="Як це працює" steps={weddingPage.steps} />
+      )}
 
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 pb-16">
@@ -54,7 +63,7 @@ export default async function WeddingPage() {
       )}
 
       <section className="mx-auto max-w-2xl px-4 pb-20">
-        <WeddingInquiryForm contactNote={weddingPage.contactNote} />
+        <WeddingInquiryForm formHeading={weddingPage.formHeading} contactNote={weddingPage.contactNote} />
       </section>
     </div>
   )
