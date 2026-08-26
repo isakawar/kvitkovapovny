@@ -3,6 +3,7 @@ import Image from 'next/image'
 
 import { CartDrawer, type CrossSellProduct } from './CartDrawer'
 import { Logo } from './Logo'
+import { MobileNav } from './MobileNav'
 
 function SearchIcon() {
   return (
@@ -89,8 +90,9 @@ export function Header({
       </nav>
       {theme === 'new' ? (
         <div className="flex items-center gap-4">
-          {theme === 'new' && <HeaderIconPlaceholders />}
+          <HeaderIconPlaceholders />
           <CartDrawer crossSellProducts={crossSellProducts} />
+          <MobileNav />
         </div>
       ) : (
         <CartDrawer crossSellProducts={crossSellProducts} />

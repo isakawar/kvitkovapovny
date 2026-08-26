@@ -89,3 +89,12 @@ h3 {
 .animate-ticker {
   animation: ticker 30s linear infinite;
 }
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

@@ -40,11 +40,11 @@ export function FormatsGrid({
             {heading}
           </h2>
         )}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
           {cards.map((card) => (
             <div
               key={card.title}
-              className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-md"
+              className="group flex w-[78%] shrink-0 snap-start flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-md sm:w-auto"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-blush">
                 {card.imageUrl && (
@@ -52,7 +52,7 @@ export function FormatsGrid({
                     src={card.imageUrl}
                     alt={card.title}
                     fill
-                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 80vw"
                     className="object-cover transition duration-300 group-hover:scale-105"
                   />
                 )}
@@ -62,7 +62,7 @@ export function FormatsGrid({
                 <p className="text-sm text-ink-soft">{card.subtitle}</p>
                 <Link
                   href={card.buttonHref}
-                  className="mt-3 inline-flex w-fit items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-on-accent transition hover:bg-accent-hover"
+                  className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-on-accent transition hover:bg-accent-hover"
                 >
                   {card.buttonLabel}
                   <ArrowIcon className="h-4 w-4" />
