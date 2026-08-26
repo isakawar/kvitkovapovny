@@ -25,19 +25,44 @@ export const FeatureStrip: GlobalConfig = {
   },
   fields: [
     {
+      name: 'heading',
+      type: 'text',
+      defaultValue: 'Квіткові підписки та доставка по Києву',
+    },
+    {
       name: 'items',
       type: 'array',
       minRows: 1,
       maxRows: 4,
       defaultValue: [
-        { icon: 'truck', title: 'Безкоштовна доставка по Києву' },
-        { icon: 'vase', title: 'Ваза та секатор у подарунок' },
-        { icon: 'pause', title: 'Можливість паузи підписки' },
+        {
+          icon: 'truck',
+          title: 'Безкоштовна доставка по Києву',
+          description: 'Кожна підписка доїжджає безкоштовно в межах Києва — свіжі квіти без додаткових витрат.',
+        },
+        {
+          icon: 'vase',
+          title: 'Ваза та секатор у подарунок',
+          description: 'До першої доставки додаємо вазу та флористичний секатор, щоб букет одразу почував себе вдома.',
+        },
+        {
+          icon: 'pause',
+          title: 'Можливість паузи підписки',
+          description: 'Керуйте підпискою онлайн: змінюйте дату, пропускайте доставку або ставте на паузу в будь-який момент.',
+        },
       ],
       fields: [
         { name: 'icon', type: 'select', required: true, options: iconOptions },
         { name: 'title', type: 'text', required: true },
-        { name: 'subtitle', type: 'text' },
+        { name: 'description', type: 'textarea' },
+      ],
+    },
+    {
+      name: 'cta',
+      type: 'group',
+      fields: [
+        { name: 'label', type: 'text', defaultValue: 'ОБРАТИ ПЛАН ПІДПИСКИ' },
+        { name: 'href', type: 'text', defaultValue: '/katalog' },
       ],
     },
   ],

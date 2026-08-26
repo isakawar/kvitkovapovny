@@ -4,6 +4,7 @@ import { Montserrat } from 'next/font/google'
 import { CartProvider } from '@/lib/cart-context'
 import { Header } from '@/components/storefront/Header'
 import { Footer } from '@/components/storefront/Footer'
+import { TickerStrip } from '@/components/storefront/TickerStrip'
 import { getPayloadClient } from '@/lib/payload'
 import { mediaUrl } from '@/lib/media'
 import './globals.css'
@@ -20,8 +21,9 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const payload = await getPayloadClient()
-  const [siteSettings, crossSellResult] = await Promise.all([
+  const [siteSettings, subscriptionInfo, crossSellResult] = await Promise.all([
     payload.findGlobal({ slug: 'site-settings' }),
+    payload.findGlobal({ slug: 'subscription-info' }),
     payload.find({
       collection: 'products',
       where: { and: [{ _status: { equals: 'published' } }, { crossSell: { equals: true } }] },
@@ -45,6 +47,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     >
       <body className="flex min-h-full flex-col">
         <CartProvider>
+          {subscriptionInfo.tickerText && <TickerStrip text={subscriptionInfo.tickerText} />}
           <Header
             theme={siteSettings.designTheme || 'old'}
             logoUrl={mediaUrl(siteSettings.logo, 'card')}

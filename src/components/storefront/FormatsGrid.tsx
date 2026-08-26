@@ -18,12 +18,28 @@ function ArrowIcon({ className }: { className?: string }) {
   )
 }
 
-export function FormatsGrid({ cards, theme }: { cards: FormatCardData[]; theme: 'old' | 'new' }) {
+export function FormatsGrid({
+  cards,
+  theme,
+  heading,
+}: {
+  cards: FormatCardData[]
+  theme: 'old' | 'new'
+  heading?: string | null
+}) {
   if (cards.length === 0) return null
 
   if (theme === 'new') {
     return (
       <section className="mx-auto max-w-6xl px-4 py-16">
+        {heading && (
+          <h2
+            className="mb-10 text-center text-2xl tracking-wide text-ink sm:text-3xl"
+            style={{ fontWeight: 'var(--font-weight-brand-bold)' }}
+          >
+            {heading}
+          </h2>
+        )}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {cards.map((card) => (
             <div

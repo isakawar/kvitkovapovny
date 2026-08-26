@@ -16,6 +16,11 @@ export const FormatsSection: GlobalConfig = {
   },
   fields: [
     {
+      name: 'heading',
+      type: 'text',
+      defaultValue: 'Наші послуги',
+    },
+    {
       name: 'cards',
       type: 'array',
       minRows: 1,

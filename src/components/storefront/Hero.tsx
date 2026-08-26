@@ -78,15 +78,27 @@ export function Hero({
             <CtaButtons ctaButtons={ctaButtons} theme={theme} />
           </div>
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl bg-blush">
-            {fallbackImageUrl && (
-              <Image
-                src={fallbackImageUrl}
-                alt={fallbackImageAlt}
-                fill
-                priority
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover"
+            {videoUrl ? (
+              <video
+                className="absolute inset-0 h-full w-full object-cover"
+                src={videoUrl}
+                poster={fallbackImageUrl || undefined}
+                autoPlay
+                muted
+                loop
+                playsInline
               />
+            ) : (
+              fallbackImageUrl && (
+                <Image
+                  src={fallbackImageUrl}
+                  alt={fallbackImageAlt}
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover"
+                />
+              )
             )}
           </div>
         </div>

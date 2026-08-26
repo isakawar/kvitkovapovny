@@ -1,10 +1,8 @@
 import { getPayloadClient } from '@/lib/payload'
 import { Hero } from '@/components/storefront/Hero'
-import { TickerStrip } from '@/components/storefront/TickerStrip'
 import { SubscriptionExplainer } from '@/components/storefront/SubscriptionExplainer'
 import { FormatsGrid } from '@/components/storefront/FormatsGrid'
 import { FeatureStrip } from '@/components/storefront/FeatureStrip'
-import { HowItWorks } from '@/components/storefront/HowItWorks'
 import { WeddingPromo } from '@/components/storefront/WeddingPromo'
 import { ProductGrid } from '@/components/storefront/ProductGrid'
 import { InstagramFeed } from '@/components/storefront/InstagramFeed'
@@ -23,7 +21,6 @@ export default async function HomePage() {
     weddingPage,
     formatsSection,
     featureStrip,
-    howItWorksSection,
     featuredProducts,
     instagramPosts,
   ] = await Promise.all([
@@ -33,7 +30,6 @@ export default async function HomePage() {
     payload.findGlobal({ slug: 'wedding-page' }),
     payload.findGlobal({ slug: 'formats-section' }),
     payload.findGlobal({ slug: 'feature-strip' }),
-    payload.findGlobal({ slug: 'how-it-works-section' }),
     payload.find({
       collection: 'products',
       where: { and: [{ _status: { equals: 'published' } }, { featured: { equals: true } }] },
@@ -63,18 +59,19 @@ export default async function HomePage() {
 
       {theme === 'new' && (
         <FeatureStrip
+          heading={featureStrip.heading}
           items={(featureStrip.items || []).map((item) => ({
             icon: item.icon,
             title: item.title,
-            subtitle: item.subtitle,
+            description: item.description,
           }))}
+          cta={featureStrip.cta}
         />
       )}
 
-      {subscriptionInfo.tickerText && <TickerStrip text={subscriptionInfo.tickerText} />}
-
       <FormatsGrid
         theme={theme}
+        heading={theme === 'new' ? formatsSection.heading : null}
         cards={[...(formatsSection.cards || [])]
           .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
           .map((card) => ({
@@ -85,17 +82,6 @@ export default async function HomePage() {
             imageUrl: mediaUrl(card.image, 'card'),
           }))}
       />
-
-      {theme === 'new' && (
-        <HowItWorks
-          heading={howItWorksSection.heading}
-          steps={(howItWorksSection.steps || []).map((step) => ({
-            icon: step.icon,
-            title: step.title,
-            subtitle: step.subtitle,
-          }))}
-        />
-      )}
 
       <SubscriptionExplainer
         heading={subscriptionInfo.heading}
