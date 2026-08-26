@@ -1,25 +1,49 @@
+'use client'
+
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import { BrandFlowerAccent } from './BrandFlowerAccent'
+import { FavoriteButton } from './FavoriteButton'
+import { useCart } from '@/lib/cart-context'
 import { formatUAH } from '@/lib/money'
 
 export type ProductCardData = {
+  productId: string
   slug: string
   name: string
   price: number
   imageUrl?: string | null
   imageAlt?: string
   inStock: boolean
+  badge?: string | null
   freeDeliveryBadge?: boolean | null
   vaseGiftBadge?: boolean | null
 }
 
 export function ProductCard({ product }: { product: ProductCardData }) {
+  const cart = useCart()
+  const [added, setAdded] = useState(false)
+
   const badges = [
     product.freeDeliveryBadge && 'Безкоштовна доставка',
     product.vaseGiftBadge && 'Ваза у подарунок',
   ].filter((label): label is string => Boolean(label))
+
+  function handleAdd(event: React.MouseEvent) {
+    event.preventDefault()
+    event.stopPropagation()
+    cart.addLine({
+      productId: product.productId,
+      productSlug: product.slug,
+      name: product.name,
+      image: product.imageUrl ?? undefined,
+      unitPrice: product.price,
+    })
+    setAdded(true)
+    setTimeout(() => setAdded(false), 1500)
+  }
 
   return (
     <Link
@@ -36,8 +60,13 @@ export function ProductCard({ product }: { product: ProductCardData }) {
             className="object-cover transition duration-300 group-hover:scale-105"
           />
         )}
+        {product.badge && (
+          <span className="absolute top-2 left-2 z-10 rounded-full bg-accent px-2.5 py-1 text-[11px] font-semibold tracking-wide text-on-accent uppercase">
+            {product.badge}
+          </span>
+        )}
         {badges.length > 0 && (
-          <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
+          <div className="absolute top-11 left-2 z-10 flex flex-col gap-1">
             {badges.map((label) => (
               <span
                 key={label}
@@ -48,6 +77,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
             ))}
           </div>
         )}
+        <FavoriteButton productSlug={product.slug} />
         {!product.inStock && (
           <div className="absolute inset-0 flex items-center justify-center bg-ink/50">
             <span className="rounded-full bg-cream px-4 py-1 text-xs font-medium text-ink">
@@ -60,6 +90,15 @@ export function ProductCard({ product }: { product: ProductCardData }) {
       <div className="flex flex-1 flex-col gap-2 p-5">
         <h3 className="text-[15px] leading-snug font-medium text-ink">{product.name}</h3>
         <p className="mt-auto text-base font-semibold text-accent">{formatUAH(product.price)}</p>
+        {product.inStock && (
+          <button
+            type="button"
+            onClick={handleAdd}
+            className="rounded-full bg-accent px-4 py-2 text-sm font-medium text-on-accent transition hover:bg-accent-hover sm:opacity-0 sm:transition sm:group-hover:opacity-100"
+          >
+            {added ? 'Додано ✓' : 'У кошик'}
+          </button>
+        )}
       </div>
     </Link>
   )

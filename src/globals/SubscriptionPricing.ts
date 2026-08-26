@@ -5,11 +5,11 @@ import { isOwnerOrFlorist } from '@/access/isOwnerOrFlorist'
 
 export const SubscriptionPricing: GlobalConfig = {
   slug: 'subscription-pricing',
-  label: 'Ціни підписки (калькулятор)',
+  label: 'Фото розмірів підписки (калькулятор)',
   admin: {
     group: 'Головна сторінка',
     description:
-      'Ціни за розмірами для калькулятора підписки на головній. Ціна за 1 букет розраховується автоматично на сайті (ціна розміру / 4) — вводити її окремо не потрібно. Частота доставки на ціну не впливає, лише на графік.',
+      'Фотогалереї для розмірів у калькуляторі підписки на головній. Ціна, назва розміру (S/M/L/XXL) та бейдж "Хіт" беруться напряму з варіантів товару "Підписка на квіти" (розділ Каталог → Товари, позначений як "Виділений") — тут редагується лише поле label (для збігу з назвою варіанту) і фото.',
   },
   access: {
     read: () => true,
@@ -19,41 +19,15 @@ export const SubscriptionPricing: GlobalConfig = {
     {
       name: 'sizes',
       type: 'array',
-      label: 'Розміри підписки',
-      minRows: 1,
-      defaultValue: [
-        { label: 'S', price: 500000, badge: '', active: true },
-        { label: 'M', price: 680000, badge: 'Хіт', active: true },
-        { label: 'L', price: 880000, badge: '', active: true },
-        { label: 'XXL', price: 1280000, badge: '', active: true },
-      ],
+      label: 'Фотогалереї розмірів',
       fields: [
         {
-          type: 'row',
-          fields: [
-            { name: 'label', type: 'text', required: true, admin: { description: 'Напр. S, M, L, XXL', width: '20%' } },
-            {
-              name: 'price',
-              type: 'number',
-              required: true,
-              min: 0,
-              admin: {
-                description: 'Базова ціна підписки цього розміру, в копійках (напр. 680000 = 6800.00 грн)',
-                width: '35%',
-              },
-            },
-            {
-              name: 'badge',
-              type: 'text',
-              admin: { description: 'Напр. "Хіт", "Популярний" (необовʼязково)', width: '25%' },
-            },
-            {
-              name: 'active',
-              type: 'checkbox',
-              defaultValue: true,
-              admin: { description: 'Показувати цей розмір у калькуляторі', width: '20%' },
-            },
-          ],
+          name: 'label',
+          type: 'text',
+          required: true,
+          admin: {
+            description: 'Має точно збігатися з назвою варіанту (S/M/L/XXL) у товарі "Підписка на квіти"',
+          },
         },
         {
           name: 'images',

@@ -56,6 +56,14 @@ export const SiteSettings: GlobalConfig = {
       admin: { description: 'Адреса шоуруму/студії для самовивозу — показується на сторінці чекауту' },
     },
     {
+      name: 'googleMapsUrl',
+      type: 'text',
+      defaultValue: 'https://maps.app.goo.gl/FDsoVNhec2FLPu4H6',
+      admin: {
+        description: 'Посилання Google Maps на шоурум — адреса у футері та на сторінці контактів веде сюди',
+      },
+    },
+    {
       name: 'deliveryCities',
       type: 'array',
       fields: [

@@ -27,6 +27,7 @@ export default async function CatalogPage() {
       </div>
       <ProductGrid
         products={products.docs.map((p) => ({
+          productId: String(p.id),
           slug: p.slug,
           name: p.name,
           price: p.price,

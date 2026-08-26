@@ -77,7 +77,7 @@ h3 {
   }
 }
 
-@keyframes ticker {
+@keyframes marquee {
   from {
     transform: translateX(0);
   }
@@ -86,8 +86,12 @@ h3 {
   }
 }
 
-.animate-ticker {
-  animation: ticker 30s linear infinite;
+.marquee {
+  animation: marquee 20s linear infinite;
+}
+
+.marquee:hover {
+  animation-play-state: paused;
 }
 
 .no-scrollbar {

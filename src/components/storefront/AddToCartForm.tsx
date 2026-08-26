@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useCart } from '@/lib/cart-context'
 import { formatUAH } from '@/lib/money'
 import { ProductGallery, type GalleryImage } from './ProductGallery'
+import { QuickOrderModal } from './QuickOrderModal'
 
 type Variant = {
   label: string
@@ -58,9 +59,11 @@ export function AddToCartForm({
   const [deliveryDayLabel, setDeliveryDayLabel] = useState(deliveryDays[0])
   const [quantity, setQuantity] = useState(1)
   const [added, setAdded] = useState(false)
+  const [quickOrderOpen, setQuickOrderOpen] = useState(false)
   const cart = useCart()
   const router = useRouter()
 
+  const isSimpleProduct = deliveryFrequencies.length === 0 && deliveryDays.length === 0
   const selectedVariant = variants.find((v) => v.label === variantLabel)
   const unitPrice = basePrice + (selectedVariant?.priceModifier ?? 0)
 
@@ -94,7 +97,7 @@ export function AddToCartForm({
           {priceSuffixLabel && <span className="text-sm text-ink-soft">({priceSuffixLabel})</span>}
         </div>
 
-        {variants.length > 0 && (
+        {!isSimpleProduct && variants.length > 0 && (
           <div>
             <p className="mb-2 text-sm font-medium text-ink">Розмір:</p>
             <div className="flex flex-wrap gap-2">
@@ -160,35 +163,56 @@ export function AddToCartForm({
         )}
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center rounded-full border border-ink/20">
-            <button
-              type="button"
-              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              className="px-3 py-2 text-ink-soft"
-              aria-label="Менше"
-            >
-              −
-            </button>
-            <span className="w-8 text-center text-sm text-ink">{quantity}</span>
-            <button
-              type="button"
-              onClick={() => setQuantity((q) => q + 1)}
-              className="px-3 py-2 text-ink-soft"
-              aria-label="Більше"
-            >
-              +
-            </button>
-          </div>
+          {!isSimpleProduct && (
+            <div className="flex items-center rounded-full border border-ink/20">
+              <button
+                type="button"
+                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                className="px-3 py-2 text-ink-soft"
+                aria-label="Менше"
+              >
+                −
+              </button>
+              <span className="w-8 text-center text-sm text-ink">{quantity}</span>
+              <button
+                type="button"
+                onClick={() => setQuantity((q) => q + 1)}
+                className="px-3 py-2 text-ink-soft"
+                aria-label="Більше"
+              >
+                +
+              </button>
+            </div>
+          )}
 
           <button
             type="button"
             disabled={!inStock}
             onClick={handleAdd}
-            className="flex-1 rounded-full bg-ink px-6 py-4 text-base font-semibold tracking-wide text-cream uppercase transition hover:bg-ink/80 disabled:cursor-not-allowed disabled:bg-ink/30"
+            className="flex-1 rounded-full bg-accent px-6 py-4 text-base font-semibold tracking-wide text-on-accent uppercase transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
           >
             {!inStock ? 'Немає в наявності' : added ? 'Додано ✓' : ctaLabel || 'У кошик'}
           </button>
         </div>
+
+        {isSimpleProduct && inStock && (
+          <button
+            type="button"
+            onClick={() => setQuickOrderOpen(true)}
+            className="rounded-full border border-ink/20 px-6 py-4 text-base font-semibold tracking-wide text-ink uppercase transition hover:border-ink/50"
+          >
+            Швидке замовлення
+          </button>
+        )}
+
+        {quickOrderOpen && (
+          <QuickOrderModal
+            productId={productId}
+            productName={cartName || name}
+            unitPrice={unitPrice}
+            onClose={() => setQuickOrderOpen(false)}
+          />
+        )}
 
         {trustBadges.length > 0 && (
           <div className="flex flex-col gap-3 rounded-2xl bg-blush/50 p-4">

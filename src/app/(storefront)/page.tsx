@@ -84,20 +84,21 @@ export default async function HomePage() {
             return url ? { url, alt: img.alt || configuratorSourceProduct.name } : null
           })
           .filter((img): img is { url: string; alt: string } => img !== null),
-        sizes: (subscriptionPricing.sizes || [])
-          .filter((s) => s.active !== false)
-          .map((s) => ({
-            label: s.label,
-            price: s.price,
-            badge: s.badge,
-            images: [...(s.images || [])]
+        sizes: (configuratorSourceProduct.variants || []).map((v) => {
+          const gallery = (subscriptionPricing.sizes || []).find((s) => s.label === v.label)
+          return {
+            label: v.label,
+            price: configuratorSourceProduct.price + (v.priceModifier ?? 0),
+            badge: v.recommended ? 'Хіт' : undefined,
+            images: [...(gallery?.images || [])]
               .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
               .map((img) => {
                 const url = mediaUrl(img.image, 'full')
-                return url ? { url, alt: img.alt || `${s.label} — ${configuratorSourceProduct.name}` } : null
+                return url ? { url, alt: img.alt || `${v.label} — ${configuratorSourceProduct.name}` } : null
               })
               .filter((img): img is { url: string; alt: string } => img !== null),
-          })),
+          }
+        }),
         deliveryFrequencies: (configuratorSourceProduct.deliveryFrequencies || []).map((f) => f.label),
       }
     : null
@@ -179,6 +180,7 @@ export default async function HomePage() {
       <ProductGrid
         title="Популярне"
         products={featuredProducts.docs.map((p) => ({
+          productId: String(p.id),
           slug: p.slug,
           name: p.name,
           price: p.price,

@@ -36,7 +36,7 @@ export const FormatsSection: GlobalConfig = {
         {
           title: 'БУКЕТИ',
           subtitle: 'Разова доставка авторських свіжих букетів',
-          buttonLabel: 'Переглянути каталог',
+          buttonLabel: 'Переглянути',
           buttonHref: '/katalog/buket',
           sortOrder: 2,
         },

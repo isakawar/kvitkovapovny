@@ -65,6 +65,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             instagramUrl={siteSettings.instagramUrl}
             telegramUrl={siteSettings.telegramUrl}
             showroomAddress={siteSettings.showroomAddress}
+            googleMapsUrl={siteSettings.googleMapsUrl}
           />
         </CartProvider>
       </body>

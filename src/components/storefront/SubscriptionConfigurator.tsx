@@ -1,12 +1,11 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import { useCart } from '@/lib/cart-context'
 import { formatUAH } from '@/lib/money'
 import { ProductGallery, type GalleryImage } from './ProductGallery'
 import { BrandFlowerAccent } from './BrandFlowerAccent'
+import { SubscriptionCheckoutModal } from './SubscriptionCheckoutModal'
 
 export type SubscriptionSizeOption = {
   label: string
@@ -49,13 +48,11 @@ export function SubscriptionConfigurator({
   id?: string
   product: SubscriptionConfiguratorProduct
 }) {
-  const cart = useCart()
-  const router = useRouter()
   const [variantLabel, setVariantLabel] = useState(
     product.sizes.find((s) => s.badge)?.label ?? product.sizes[0]?.label,
   )
   const [frequencyLabel, setFrequencyLabel] = useState(product.deliveryFrequencies[0])
-  const [added, setAdded] = useState(false)
+  const [checkoutOpen, setCheckoutOpen] = useState(false)
 
   if (product.sizes.length === 0) return null
 
@@ -79,20 +76,6 @@ export function SubscriptionConfigurator({
   ]
 
   const galleryImages = selectedVariant?.images.length ? selectedVariant.images : product.images
-
-  function handleOrder() {
-    const parts = [selectedVariant?.label, frequencyLabel].filter(Boolean)
-    cart.addLine({
-      productId: product.productId,
-      productSlug: product.slug,
-      name: product.name,
-      image: galleryImages[0]?.url,
-      variantLabel: parts.length > 0 ? parts.join(' · ') : undefined,
-      unitPrice: selectedSizePrice,
-    })
-    setAdded(true)
-    router.push('/cart')
-  }
 
   return (
     <section id={id} className="mx-auto max-w-6xl scroll-mt-24 px-4 py-8 sm:px-6 sm:py-16">
@@ -176,7 +159,7 @@ export function SubscriptionConfigurator({
             </div>
           )}
 
-          <details className="group rounded-2xl bg-blush/60 p-4 sm:p-6">
+          <details open className="group rounded-2xl bg-blush/60 p-4 sm:p-6">
             <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-ink">
               Підписка включає
               <span className="text-ink-soft transition group-open:rotate-45">+</span>
@@ -204,14 +187,27 @@ export function SubscriptionConfigurator({
             </div>
             <button
               type="button"
-              onClick={handleOrder}
+              onClick={() => setCheckoutOpen(true)}
               className="rounded-full bg-accent px-6 py-3 text-base font-medium text-on-accent transition hover:bg-accent-hover sm:ml-auto sm:px-8 sm:py-4"
             >
-              {added ? 'Додано ✓' : 'Оформити підписку →'}
+              Оформити підписку →
             </button>
           </div>
         </div>
       </div>
+
+      {checkoutOpen && (
+        <SubscriptionCheckoutModal
+          productId={product.productId}
+          productName={`${product.name} · ${variantLabel}`}
+          sizeLabel={variantLabel ?? ''}
+          frequencyLabel={frequencyLabel ?? 'Щотижня'}
+          deliveriesPerMonth={monthlyCount}
+          price={selectedSizePrice}
+          variantLabel={variantLabel}
+          onClose={() => setCheckoutOpen(false)}
+        />
+      )}
     </section>
   )
 }

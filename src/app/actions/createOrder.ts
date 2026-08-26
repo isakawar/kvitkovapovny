@@ -35,7 +35,14 @@ export type CreateOrderResult =
   | { ok: true; orderId: string; paymentMethod: PaymentMethod }
   | { ok: false; error: string }
 
-const DELIVERY_TIME_WINDOWS = ['09:00-12:00', '12:00-15:00', '15:00-18:00', '18:00-21:00'] as const
+const DELIVERY_TIME_WINDOWS = [
+  '09:00-12:00',
+  '10:00-14:00',
+  '12:00-15:00',
+  '14:00-18:00',
+  '15:00-18:00',
+  '18:00-21:00',
+] as const
 type DeliveryTimeWindow = (typeof DELIVERY_TIME_WINDOWS)[number]
 
 const DELIVERY_METHODS = ['courier', 'nova_poshta', 'pickup'] as const

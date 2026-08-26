@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 
 import { getPayloadClient } from '@/lib/payload'
 import { ProductGrid } from '@/components/storefront/ProductGrid'
+import { BouquetCatalog, type BouquetProductData } from '@/components/storefront/BouquetCatalog'
 import { PricingGrid, type PricingProductData } from '@/components/storefront/PricingGrid'
 import { FaqAccordion } from '@/components/storefront/FaqAccordion'
 import { mediaUrl } from '@/lib/media'
@@ -28,6 +29,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   })
 
   const isPricingCatalog = category.slug === 'pidpyska'
+  const isBouquetCatalog = category.slug === 'buket'
 
   return (
     <div className="pt-10">
@@ -49,6 +51,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
               productId: String(p.id),
               slug: p.slug,
               name: p.name,
+              cardSubtitle: p.cardSubtitle,
               price: p.price,
               priceSuffixLabel: p.priceSuffixLabel,
               imageUrl: mediaUrl(p.images?.[0]?.image, 'card'),
@@ -62,15 +65,39 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
             }),
           )}
         />
+      ) : isBouquetCatalog ? (
+        <BouquetCatalog
+          products={products.docs.map(
+            (p): BouquetProductData => ({
+              productId: String(p.id),
+              slug: p.slug,
+              name: p.name,
+              price: p.price,
+              imageUrl: mediaUrl(p.images?.[0]?.image, 'card'),
+              imageAlt: p.images?.[0]?.alt || p.name,
+              inStock: p.inStock ?? true,
+              badge: p.badge,
+              freeDeliveryBadge: p.freeDeliveryBadge,
+              vaseGiftBadge: p.vaseGiftBadge,
+              occasionTags: (p.occasionTags || []) as BouquetProductData['occasionTags'],
+              featured: p.featured ?? false,
+              sortOrder: p.sortOrder ?? 0,
+            }),
+          )}
+        />
       ) : (
         <ProductGrid
           products={products.docs.map((p) => ({
+            productId: String(p.id),
             slug: p.slug,
             name: p.name,
             price: p.price,
             imageUrl: mediaUrl(p.images?.[0]?.image, 'card'),
             imageAlt: p.images?.[0]?.alt || p.name,
             inStock: p.inStock ?? true,
+            badge: p.badge,
+            freeDeliveryBadge: p.freeDeliveryBadge,
+            vaseGiftBadge: p.vaseGiftBadge,
           }))}
         />
       )}

@@ -62,7 +62,7 @@ export function FormatsGrid({
                 <p className="text-sm text-ink-soft">{card.subtitle}</p>
                 <Link
                   href={card.buttonHref}
-                  className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-on-accent transition hover:bg-accent-hover"
+                  className="mt-auto inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-on-accent transition hover:bg-accent-hover"
                 >
                   {card.buttonLabel}
                   <ArrowIcon className="h-4 w-4" />
@@ -98,7 +98,7 @@ export function FormatsGrid({
               <p className="text-sm text-cream/90">{card.subtitle}</p>
               <Link
                 href={card.buttonHref}
-                className="mt-1 inline-flex w-fit items-center rounded-full bg-cream px-5 py-2 text-sm font-medium text-ink transition hover:bg-cream/90"
+                className="mt-1 inline-flex w-fit items-center whitespace-nowrap rounded-full bg-cream px-5 py-2 text-sm font-medium text-ink transition hover:bg-cream/90"
               >
                 {card.buttonLabel}
               </Link>
