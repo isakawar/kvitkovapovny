@@ -116,7 +116,7 @@ export const Orders: CollectionConfig = {
       defaultValue: 'online',
       admin: { position: 'sidebar' },
       options: [
-        { label: 'Онлайн-оплата (Картка / Apple Pay / Google Pay через Monobank)', value: 'online' },
+        { label: 'Онлайн-оплата через Monobank', value: 'online' },
         { label: 'Оплата частинами Monobank', value: 'installments' },
         { label: 'Оплата за рахунком для бізнесу (ФОП / ТОВ)', value: 'business_invoice' },
       ],

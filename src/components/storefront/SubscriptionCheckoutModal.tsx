@@ -257,7 +257,7 @@ export function SubscriptionCheckoutModal({
             disabled={submitting}
             className="mt-1 rounded-full bg-[#9EAF00] px-6 py-3 text-sm font-bold text-[#1E1E1E] transition hover:bg-[#9EAF00]/85 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {submitting ? 'Надсилаємо…' : 'Перейти до оплати'}
+            {submitting ? 'Надсилаємо…' : 'Перейти до оплати by mono'}
           </button>
         </form>
       </div>
