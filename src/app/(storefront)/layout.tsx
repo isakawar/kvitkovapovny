@@ -63,6 +63,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             contactPhone={siteSettings.contactPhone}
             contactEmail={siteSettings.contactEmail}
             instagramUrl={siteSettings.instagramUrl}
+            telegramUrl={siteSettings.telegramUrl}
+            showroomAddress={siteSettings.showroomAddress}
           />
         </CartProvider>
       </body>

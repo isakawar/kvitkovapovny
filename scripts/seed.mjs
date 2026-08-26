@@ -295,6 +295,8 @@ await payload.updateGlobal({
     contactPhone: '+380000000000',
     contactEmail: 'hello@kvitkovapovnya.com',
     instagramUrl: 'https://instagram.com/kvitkovapovnya',
+    telegramUrl: 'https://t.me/kvitkovapovnya',
+    showroomAddress: 'м. Київ, вул. Хрещатик, 1',
     deliveryCities: [{ name: 'Київ', active: true }],
     faqItems: [
       { question: 'Що таке підписка на квіти?', answer: 'Регулярна доставка свіжих квіткових композицій прямо до дверей.', sortOrder: 1 },
@@ -352,41 +354,40 @@ await payload.updateGlobal({
 })
 
 console.log('Seeding formats section...')
-const certificateImg = await uploadAsset('flower-2.png', 'Подарунковий сертифікат')
 await payload.updateGlobal({
   slug: 'formats-section',
   data: {
     cards: [
       {
         title: 'ДЛЯ ДОМУ',
-        subtitle: 'Регулярна доставка для затишку вашої оселі',
+        subtitle: 'Регулярна підписка для затишку вашої оселі',
         buttonLabel: 'Обрати тариф',
         buttonHref: '/katalog/pidpyska',
         image: catSubscriptionImg.id,
         sortOrder: 1,
       },
       {
-        title: 'ДЛЯ БІЗНЕСУ ТА ОФІСІВ',
-        subtitle: 'Декор рецепцій, ресторанів та шоурумів (оплата за рахунком)',
-        buttonLabel: 'Запросити КП',
-        buttonHref: '/business',
-        image: catBusinessImg.id,
+        title: 'БУКЕТИ',
+        subtitle: 'Разова доставка авторських свіжих букетів',
+        buttonLabel: 'Переглянути каталог',
+        buttonHref: '/katalog/buket',
+        image: catBouquetsImg.id,
         sortOrder: 2,
       },
       {
-        title: 'ВЕСІЛЬНА ПІДПИСКА',
-        subtitle: 'Подарунок для молодят: місяць квітів після весілля',
-        buttonLabel: 'Дізнатися більше',
-        buttonHref: '/wedding',
-        image: catWeddingImg.id,
+        title: 'ДЛЯ БІЗНЕСУ ТА ОФІСІВ',
+        subtitle: 'Оформлення рецепцій, ресторанів, шоурумів',
+        buttonLabel: 'Запросити КП',
+        buttonHref: '/business',
+        image: catBusinessImg.id,
         sortOrder: 3,
       },
       {
-        title: 'ПОДАРУНКОВИЙ СЕРТИФІКАТ',
-        subtitle: 'Елегантний бокс із сертифікатом для близьких',
-        buttonLabel: 'Купити сертифікат',
-        buttonHref: '/gift-certificates',
-        image: certificateImg.id,
+        title: 'ВЕСІЛЬНА ФЛОРИСТИКА',
+        subtitle: 'Декор подій та весільні підписки',
+        buttonLabel: 'Дізнатися більше',
+        buttonHref: '/wedding',
+        image: catWeddingImg.id,
         sortOrder: 4,
       },
     ],

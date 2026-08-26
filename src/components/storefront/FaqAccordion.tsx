@@ -7,7 +7,7 @@ export function FaqAccordion({ items, heading = 'Часті запитання' 
   if (items.length === 0) return null
 
   return (
-    <section className="mx-auto max-w-3xl px-4 py-16">
+    <section id="faq" className="mx-auto max-w-3xl px-4 py-16 scroll-mt-24">
       <h2 className="mb-8 text-center text-2xl font-semibold tracking-wide text-ink uppercase">{heading}</h2>
       <div className="space-y-3">
         {items.map((item) => (

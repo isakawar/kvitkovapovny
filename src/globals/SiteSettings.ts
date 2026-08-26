@@ -46,6 +46,11 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
     },
     {
+      name: 'telegramUrl',
+      type: 'text',
+      admin: { description: 'Посилання на Telegram (канал або чат для звʼязку) — використовується у футері' },
+    },
+    {
       name: 'showroomAddress',
       type: 'text',
       admin: { description: 'Адреса шоуруму/студії для самовивозу — показується на сторінці чекауту' },

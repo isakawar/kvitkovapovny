@@ -890,6 +890,10 @@ export interface SiteSetting {
   contactEmail?: string | null;
   instagramUrl?: string | null;
   /**
+   * Посилання на Telegram (канал або чат для звʼязку) — використовується у футері
+   */
+  telegramUrl?: string | null;
+  /**
    * Адреса шоуруму/студії для самовивозу — показується на сторінці чекауту
    */
   showroomAddress?: string | null;
@@ -1005,7 +1009,7 @@ export interface WeddingPage {
   createdAt?: string | null;
 }
 /**
- * Блок із 4 картками під головним банером (дім, бізнес, весілля, сертифікат)
+ * Блок із 4 картками під головним банером (дім, букети, бізнес, весілля)
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "formats-section".
@@ -1174,6 +1178,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   contactPhone?: T;
   contactEmail?: T;
   instagramUrl?: T;
+  telegramUrl?: T;
   showroomAddress?: T;
   instagramPosts?:
     | T

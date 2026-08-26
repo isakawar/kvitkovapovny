@@ -72,7 +72,10 @@ export function Header({
       </Link>
       <nav className="hidden gap-6 text-sm sm:flex">
         <Link href="/katalog/pidpyska" className="hover:text-accent">
-          Підписка для дому
+          Підписка
+        </Link>
+        <Link href="/katalog/buket" className="hover:text-accent">
+          Каталог букетів
         </Link>
         <Link href="/business" className="hover:text-accent">
           Для бізнесу
@@ -80,8 +83,8 @@ export function Header({
         <Link href="/wedding" className="hover:text-accent">
           Весілля
         </Link>
-        <Link href="/gift-certificates" className="hover:text-accent">
-          Подарункові сертифікати
+        <Link href="/contacts" className="hover:text-accent">
+          Про нас
         </Link>
       </nav>
       {theme === 'new' ? (
