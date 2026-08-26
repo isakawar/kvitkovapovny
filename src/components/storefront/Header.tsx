@@ -31,7 +31,15 @@ function HeartIcon() {
   )
 }
 
-function HeaderIconPlaceholders() {
+function TikTokIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
+      <path d="M16.6 5.82a4.28 4.28 0 0 1-3.14-1.39V15.7a5.1 5.1 0 1 1-4.4-5.05v2.1a3 3 0 1 0 2.4 2.94V2h2.06a4.28 4.28 0 0 0 3.08 3.65v2.17a6.3 6.3 0 0 1-3.14-1.02v.02Z" />
+    </svg>
+  )
+}
+
+function HeaderIconPlaceholders({ tiktokUrl }: { tiktokUrl?: string | null }) {
   return (
     <div className="hidden items-center gap-4 text-ink sm:[html[data-theme='new']_&]:flex">
       <span role="img" aria-label="Пошук" className="cursor-default">
@@ -43,6 +51,11 @@ function HeaderIconPlaceholders() {
       <span role="img" aria-label="Список бажань" className="cursor-default">
         <HeartIcon />
       </span>
+      {tiktokUrl && (
+        <a href={tiktokUrl} target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="transition hover:text-accent">
+          <TikTokIcon />
+        </a>
+      )}
     </div>
   )
 }
@@ -51,10 +64,12 @@ export function Header({
   theme,
   logoUrl,
   crossSellProducts,
+  tiktokUrl,
 }: {
   theme: 'old' | 'new'
   logoUrl?: string | null
   crossSellProducts?: CrossSellProduct[]
+  tiktokUrl?: string | null
 }) {
   return (
     <header
@@ -93,7 +108,7 @@ export function Header({
       </nav>
       {theme === 'new' ? (
         <div className="flex items-center gap-4">
-          <HeaderIconPlaceholders />
+          <HeaderIconPlaceholders tiktokUrl={tiktokUrl} />
           <CartDrawer crossSellProducts={crossSellProducts} />
           <MobileNav />
         </div>

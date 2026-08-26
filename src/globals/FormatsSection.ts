@@ -43,8 +43,8 @@ export const FormatsSection: GlobalConfig = {
         {
           title: 'ДЛЯ БІЗНЕСУ ТА ОФІСІВ',
           subtitle: 'Оформлення рецепцій, ресторанів, шоурумів',
-          buttonLabel: 'Запросити КП',
-          buttonHref: '/business',
+          buttonLabel: 'Дізнатись більше',
+          buttonHref: '/dlya-biznesu',
           sortOrder: 3,
         },
         {

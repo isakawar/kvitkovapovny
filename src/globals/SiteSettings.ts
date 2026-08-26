@@ -51,6 +51,12 @@ export const SiteSettings: GlobalConfig = {
       admin: { description: 'Посилання на Telegram (канал або чат для звʼязку) — використовується у футері' },
     },
     {
+      name: 'tiktokUrl',
+      type: 'text',
+      defaultValue: 'https://www.tiktok.com/@kvitkovapovnya',
+      admin: { description: 'Посилання на TikTok — використовується у хедері' },
+    },
+    {
       name: 'showroomAddress',
       type: 'text',
       admin: { description: 'Адреса шоуруму/студії для самовивозу — показується на сторінці чекауту' },
