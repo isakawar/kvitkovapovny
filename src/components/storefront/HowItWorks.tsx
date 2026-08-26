@@ -1,4 +1,4 @@
-import type { HomeIconName } from './HomeIcons'
+import { HomeIcon, type HomeIconName } from './HomeIcons'
 import { BrandFlowerAccent } from './BrandFlowerAccent'
 
 export type HowItWorksStepData = {
@@ -18,20 +18,25 @@ export function HowItWorks({ heading, steps }: { heading: string; steps: HowItWo
         <BrandFlowerAccent className="h-6 w-6 shrink-0 text-accent" />
       </div>
 
-      <div className="grid grid-cols-1 gap-8 text-center sm:grid-cols-3 sm:gap-6 sm:px-10">
+      <div className="mx-auto flex max-w-md flex-col sm:max-w-none sm:flex-row sm:gap-6">
         {steps.map((step, i) => (
-          <div key={i} className="flex flex-col gap-2 px-2">
-            <div className="flex items-center justify-center sm:justify-start">
+          <div key={i} className="flex gap-4 sm:flex-1 sm:flex-col sm:items-center sm:gap-3">
+            <div className="flex flex-col items-center">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blush text-accent">
+                <HomeIcon name={step.icon} className="h-6 w-6" />
+              </span>
+              {i < steps.length - 1 && <span className="my-1 w-px flex-1 bg-ink/15 sm:hidden" />}
+            </div>
+            <div className="flex flex-col gap-1 pb-8 sm:items-center sm:pb-0 sm:text-center">
               <span
-                className="text-4xl text-accent sm:text-5xl"
-                style={{ fontFamily: 'var(--font-heading)', fontWeight: 800 }}
+                className="text-xs font-semibold tracking-widest text-accent"
+                style={{ fontFamily: 'var(--font-heading)' }}
               >
                 {String(i + 1).padStart(2, '0')}
               </span>
-              {i < steps.length - 1 && <div className="mx-3 hidden h-px flex-1 bg-ink/15 sm:mx-6 sm:block" />}
+              <p className="text-base font-semibold text-ink">{step.title}</p>
+              {step.subtitle && <p className="text-sm text-ink-soft">{step.subtitle}</p>}
             </div>
-            <p className="text-base font-semibold text-ink">{step.title}</p>
-            {step.subtitle && <p className="text-sm text-ink-soft">{step.subtitle}</p>}
           </div>
         ))}
       </div>
