@@ -8,18 +8,26 @@ export type GalleryImage = {
   alt?: string
 }
 
-export function ProductGallery({ images, activeOverrideUrl }: { images: GalleryImage[]; activeOverrideUrl?: string | null }) {
+export function ProductGallery({
+  images,
+  activeOverrideUrl,
+  aspectClassName = 'aspect-square',
+}: {
+  images: GalleryImage[]
+  activeOverrideUrl?: string | null
+  aspectClassName?: string
+}) {
   const [userSelectedIndex, setUserSelectedIndex] = useState<number | null>(null)
 
   const overrideIndex = activeOverrideUrl ? images.findIndex((img) => img.url === activeOverrideUrl) : -1
   const activeIndex = userSelectedIndex ?? (overrideIndex >= 0 ? overrideIndex : 0)
   const active = images[activeIndex]
 
-  if (images.length === 0) return <div className="aspect-square rounded-2xl bg-blush" />
+  if (images.length === 0) return <div className={`${aspectClassName} rounded-2xl bg-blush`} />
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative aspect-square overflow-hidden rounded-2xl bg-blush">
+      <div className={`relative ${aspectClassName} overflow-hidden rounded-2xl bg-blush`}>
         {active && (
           <Image
             key={active.url}

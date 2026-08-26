@@ -4,6 +4,7 @@ import Link from 'next/link'
 type ListItem = { label: string }
 
 type SubscriptionExplainerProps = {
+  theme: 'old' | 'new'
   heading: string
   intro: string
   imageUrl?: string | null
@@ -18,6 +19,7 @@ type SubscriptionExplainerProps = {
 }
 
 export function SubscriptionExplainer({
+  theme,
   heading,
   intro,
   imageUrl,
@@ -30,6 +32,10 @@ export function SubscriptionExplainer({
   ctaLabel,
   ctaHref,
 }: SubscriptionExplainerProps) {
+  // In the new theme, this bullet-list breakdown is superseded by the
+  // HowItWorks graphic steps rendered earlier on the page — showing both
+  // duplicates the same "how the subscription works" content twice.
+  const showLists = theme === 'old'
   return (
     <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:grid-cols-2 sm:items-center">
       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-blush">
@@ -44,7 +50,7 @@ export function SubscriptionExplainer({
           </p>
         ))}
 
-        {frequencies.length > 0 && (
+        {showLists && frequencies.length > 0 && (
           <div>
             {frequenciesHeading && <p className="mb-2 text-sm font-medium text-ink">{frequenciesHeading}</p>}
             <ul className="list-disc space-y-1 pl-5 text-sm text-ink-soft">
@@ -55,7 +61,7 @@ export function SubscriptionExplainer({
           </div>
         )}
 
-        {minimumIncludes.length > 0 && (
+        {showLists && minimumIncludes.length > 0 && (
           <div>
             {minimumHeading && <p className="mb-2 text-sm font-medium text-ink">{minimumHeading}</p>}
             <ul className="list-disc space-y-1 pl-5 text-sm text-ink-soft">
@@ -66,7 +72,7 @@ export function SubscriptionExplainer({
           </div>
         )}
 
-        {eachDeliveryIncludes.length > 0 && (
+        {showLists && eachDeliveryIncludes.length > 0 && (
           <div>
             {eachDeliveryHeading && <p className="mb-2 text-sm font-medium text-ink">{eachDeliveryHeading}</p>}
             <ul className="list-disc space-y-1 pl-5 text-sm text-ink-soft">

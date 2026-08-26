@@ -11,12 +11,19 @@ import { Categories } from './collections/Categories'
 import { Products } from './collections/Products'
 import { Orders } from './collections/Orders'
 import { WeddingInquiries } from './collections/WeddingInquiries'
+import { BusinessInquiries } from './collections/BusinessInquiries'
+import { CustomBouquetRequests } from './collections/CustomBouquetRequests'
 import { Hero } from './globals/Hero'
 import { SiteSettings } from './globals/SiteSettings'
 import { SubscriptionInfo } from './globals/SubscriptionInfo'
 import { WeddingPage } from './globals/WeddingPage'
 import { FormatsSection } from './globals/FormatsSection'
 import { InstagramIntegration } from './globals/InstagramIntegration'
+import { FeatureStrip } from './globals/FeatureStrip'
+import { HowItWorksSection } from './globals/HowItWorksSection'
+import { SubscriptionPricing } from './globals/SubscriptionPricing'
+import { Testimonials } from './globals/Testimonials'
+import { FaqSection } from './globals/FaqSection'
 import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
@@ -29,8 +36,20 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Categories, Products, Orders, WeddingInquiries],
-  globals: [Hero, SiteSettings, SubscriptionInfo, WeddingPage, FormatsSection, InstagramIntegration],
+  collections: [Users, Media, Categories, Products, Orders, WeddingInquiries, CustomBouquetRequests, BusinessInquiries],
+  globals: [
+    Hero,
+    SiteSettings,
+    SubscriptionInfo,
+    WeddingPage,
+    FormatsSection,
+    InstagramIntegration,
+    FeatureStrip,
+    HowItWorksSection,
+    SubscriptionPricing,
+    Testimonials,
+    FaqSection,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

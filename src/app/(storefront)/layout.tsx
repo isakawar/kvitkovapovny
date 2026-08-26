@@ -1,15 +1,21 @@
 import type { Metadata } from 'next'
-import { Montserrat } from 'next/font/google'
+import { Montserrat, Unbounded } from 'next/font/google'
 
 import { CartProvider } from '@/lib/cart-context'
 import { Header } from '@/components/storefront/Header'
 import { Footer } from '@/components/storefront/Footer'
+import { TickerStrip } from '@/components/storefront/TickerStrip'
 import { getPayloadClient } from '@/lib/payload'
 import { mediaUrl } from '@/lib/media'
 import './globals.css'
 
 const montserrat = Montserrat({
   variable: '--font-montserrat',
+  subsets: ['latin', 'cyrillic'],
+})
+
+const unbounded = Unbounded({
+  variable: '--font-unbounded',
   subsets: ['latin', 'cyrillic'],
 })
 
@@ -20,8 +26,9 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const payload = await getPayloadClient()
-  const [siteSettings, crossSellResult] = await Promise.all([
+  const [siteSettings, subscriptionInfo, crossSellResult] = await Promise.all([
     payload.findGlobal({ slug: 'site-settings' }),
+    payload.findGlobal({ slug: 'subscription-info' }),
     payload.find({
       collection: 'products',
       where: { and: [{ _status: { equals: 'published' } }, { crossSell: { equals: true } }] },
@@ -38,15 +45,27 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }))
 
   return (
-    <html lang="uk" className={`${montserrat.variable} h-full antialiased`}>
+    <html
+      lang="uk"
+      data-theme={siteSettings.designTheme || 'old'}
+      className={`${montserrat.variable} ${unbounded.variable} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col">
         <CartProvider>
-          <Header logoUrl={mediaUrl(siteSettings.logo, 'card')} crossSellProducts={crossSellProducts} />
+          {subscriptionInfo.tickerText && <TickerStrip text={subscriptionInfo.tickerText} />}
+          <Header
+            theme={siteSettings.designTheme || 'old'}
+            logoUrl={mediaUrl(siteSettings.logo, 'card')}
+            crossSellProducts={crossSellProducts}
+          />
           <main className="flex-1">{children}</main>
           <Footer
             contactPhone={siteSettings.contactPhone}
             contactEmail={siteSettings.contactEmail}
             instagramUrl={siteSettings.instagramUrl}
+            telegramUrl={siteSettings.telegramUrl}
+            showroomAddress={siteSettings.showroomAddress}
+            googleMapsUrl={siteSettings.googleMapsUrl}
           />
         </CartProvider>
       </body>

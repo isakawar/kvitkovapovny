@@ -52,3 +52,5 @@ next-env.d.ts
 
 # scraped assets used only by scripts/seed.mjs, not ours to redistribute in git history
 /scripts/seed-assets
+
+.superpowers/

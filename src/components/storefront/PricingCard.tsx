@@ -3,13 +3,14 @@
 import { useState } from 'react'
 import Image from 'next/image'
 
-import { useCart } from '@/lib/cart-context'
 import { formatUAH } from '@/lib/money'
+import { SubscriptionCheckoutModal } from './SubscriptionCheckoutModal'
 
 export type PricingCardData = {
   productId: string
   slug: string
   name: string
+  cardSubtitle?: string | null
   price: number
   priceSuffixLabel?: string | null
   imageUrl?: string | null
@@ -22,29 +23,17 @@ export type PricingCardData = {
 }
 
 export function PricingCard({ product }: { product: PricingCardData }) {
-  const cart = useCart()
-  const [added, setAdded] = useState(false)
-
-  function handleAdd() {
-    cart.addLine({
-      productId: product.productId,
-      productSlug: product.slug,
-      name: product.name,
-      image: product.imageUrl ?? undefined,
-      unitPrice: product.price,
-    })
-    setAdded(true)
-    setTimeout(() => setAdded(false), 1500)
-  }
+  const [checkoutOpen, setCheckoutOpen] = useState(false)
 
   return (
     <div
-      className={`relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-md ${
-        product.highlighted ? 'ring-2 ring-ink' : ''
+      className={`relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition outline-none focus:outline-none focus-visible:outline-none ${
+        product.highlighted ? 'ring-1 ring-[#9EAF00]/40' : 'hover:shadow-md'
       }`}
+      style={product.highlighted ? { boxShadow: '0px 10px 30px rgba(158, 175, 0, 0.15)' } : undefined}
     >
       {product.badge && (
-        <span className="absolute top-3 right-3 z-10 rounded-full bg-accent px-3 py-1 text-xs font-semibold tracking-wide text-cream uppercase">
+        <span className="absolute top-3 right-3 z-10 rounded-full bg-accent px-3 py-1 text-xs font-semibold tracking-wide text-on-accent uppercase">
           {product.badge}
         </span>
       )}
@@ -62,11 +51,14 @@ export function PricingCard({ product }: { product: PricingCardData }) {
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-5">
-        <h3 className="text-base font-semibold text-ink">{product.name}</h3>
+        <div>
+          <h3 className="text-base font-semibold text-ink">{product.name}</h3>
+          {product.cardSubtitle && <p className="mt-0.5 text-sm text-ink-soft">{product.cardSubtitle}</p>}
+        </div>
 
         <div className="flex items-baseline gap-2">
-          <span className="text-xl font-semibold text-accent">{formatUAH(product.price)}</span>
-          {product.priceSuffixLabel && <span className="text-xs text-ink-soft">{product.priceSuffixLabel}</span>}
+          <span className="text-xl font-semibold text-[#1E1E1E]">{formatUAH(product.price)}</span>
+          {product.priceSuffixLabel && <span className="text-xs text-[#7A7A7A]">{product.priceSuffixLabel}</span>}
         </div>
 
         {product.bullets.length > 0 && (
@@ -80,16 +72,28 @@ export function PricingCard({ product }: { product: PricingCardData }) {
         <button
           type="button"
           disabled={!product.inStock}
-          onClick={handleAdd}
-          className={`mt-auto rounded-full px-6 py-3 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${
+          onClick={() => setCheckoutOpen(true)}
+          className={`mt-auto rounded-full px-6 py-3 text-sm transition disabled:cursor-not-allowed disabled:opacity-40 ${
             product.highlighted
-              ? 'bg-ink text-cream hover:bg-ink/80'
-              : 'bg-blush text-ink hover:bg-blush/70'
+              ? 'bg-[#9EAF00] font-bold text-[#1E1E1E] hover:bg-[#9EAF00]/85'
+              : 'bg-blush font-medium text-ink hover:bg-blush/70'
           }`}
         >
-          {!product.inStock ? 'Немає в наявності' : added ? 'Додано ✓' : product.ctaLabel || 'У кошик'}
+          {!product.inStock ? 'Немає в наявності' : product.ctaLabel || 'Обрати'}
         </button>
       </div>
+
+      {checkoutOpen && (
+        <SubscriptionCheckoutModal
+          productId={product.productId}
+          productName={product.name}
+          sizeLabel={product.name}
+          frequencyLabel="Щотижня"
+          deliveriesPerMonth={4}
+          price={product.price}
+          onClose={() => setCheckoutOpen(false)}
+        />
+      )}
     </div>
   )
 }

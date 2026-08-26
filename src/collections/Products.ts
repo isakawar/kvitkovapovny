@@ -37,6 +37,14 @@ export const Products: CollectionConfig = {
       },
     },
     {
+      name: 'cardSubtitle',
+      type: 'text',
+      admin: {
+        description:
+          'Короткий підпис під назвою на картці товару, напр. "Компактний затишний букет" (необовʼязково)',
+      },
+    },
+    {
       name: 'slug',
       type: 'text',
       required: true,
@@ -174,6 +182,23 @@ export const Products: CollectionConfig = {
       },
     },
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'freeDeliveryBadge',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: { description: 'Показує бейдж "Безкоштовна доставка" на картці товару' },
+        },
+        {
+          name: 'vaseGiftBadge',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: { description: 'Показує бейдж "Ваза у подарунок" на картці товару' },
+        },
+      ],
+    },
+    {
       name: 'bullets',
       type: 'array',
       admin: {
@@ -214,6 +239,19 @@ export const Products: CollectionConfig = {
       ],
       admin: {
         description: 'Для фільтрів-табів на сторінці категорії (необовʼязково)',
+      },
+    },
+    {
+      name: 'occasionTags',
+      type: 'select',
+      hasMany: true,
+      options: [
+        { label: 'День народження', value: 'birthday' },
+        { label: 'Романтичні', value: 'romantic' },
+        { label: 'Ніжні', value: 'gentle' },
+      ],
+      admin: {
+        description: 'Для фільтрів-табів на сторінці категорії "Букети" (необовʼязково)',
       },
     },
     {

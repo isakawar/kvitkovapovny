@@ -7,7 +7,7 @@ export const Hero: GlobalConfig = {
   slug: 'hero',
   label: 'Головний банер',
   admin: {
-    group: 'Контент сайту',
+    group: 'Головна сторінка',
   },
   access: {
     read: () => true,

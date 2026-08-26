@@ -5,6 +5,14 @@ export default async function ContactsPage() {
   const siteSettings = await payload.findGlobal({ slug: 'site-settings' })
 
   const cities = (siteSettings.deliveryCities || []).filter((c) => c.active !== false)
+  const mapsHref =
+    siteSettings.googleMapsUrl ||
+    (siteSettings.showroomAddress
+      ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(siteSettings.showroomAddress)}`
+      : null)
+  const mapsEmbedSrc = siteSettings.showroomAddress
+    ? `https://www.google.com/maps?q=${encodeURIComponent(siteSettings.showroomAddress)}&output=embed`
+    : null
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-16">
@@ -34,10 +42,34 @@ export default async function ContactsPage() {
             </a>
           </p>
         )}
+        {siteSettings.showroomAddress && (
+          <p>
+            Адреса:{' '}
+            {mapsHref ? (
+              <a href={mapsHref} target="_blank" rel="noopener noreferrer" className="text-[#9EAF00] underline">
+                {siteSettings.showroomAddress}
+              </a>
+            ) : (
+              siteSettings.showroomAddress
+            )}
+          </p>
+        )}
         {cities.length > 0 && (
           <p>Доставляємо: {cities.map((c) => c.name).join(', ')}</p>
         )}
       </div>
+
+      {mapsEmbedSrc && (
+        <div className="mt-8 overflow-hidden rounded-2xl border border-ink/10">
+          <iframe
+            src={mapsEmbedSrc}
+            title="Ми на карті"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="h-80 w-full border-0 sm:h-96"
+          />
+        </div>
+      )}
     </div>
   )
 }

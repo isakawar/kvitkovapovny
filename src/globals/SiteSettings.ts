@@ -7,13 +7,27 @@ export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   label: 'Налаштування сайту',
   admin: {
-    group: 'Контент сайту',
+    group: 'Налаштування',
   },
   access: {
     read: () => true,
     update: isOwnerOrFlorist,
   },
   fields: [
+    {
+      name: 'designTheme',
+      type: 'select',
+      label: 'Дизайн сайту',
+      defaultValue: 'old',
+      options: [
+        { label: 'Старий дизайн', value: 'old' },
+        { label: 'Новий дизайн (ребрендінг)', value: 'new' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Перемикає весь сайт між старою та новою фірмовою темою',
+      },
+    },
     {
       name: 'logo',
       type: 'upload',
@@ -32,30 +46,22 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
     },
     {
+      name: 'telegramUrl',
+      type: 'text',
+      admin: { description: 'Посилання на Telegram (канал або чат для звʼязку) — використовується у футері' },
+    },
+    {
       name: 'showroomAddress',
       type: 'text',
       admin: { description: 'Адреса шоуруму/студії для самовивозу — показується на сторінці чекауту' },
     },
     {
-      name: 'instagramPosts',
-      type: 'array',
-      admin: { description: 'Фото з Instagram для стрічки на головній сторінці' },
-      fields: [
-        { name: 'image', type: 'upload', relationTo: 'media', required: true },
-        { name: 'link', type: 'text', admin: { description: 'Посилання на пост (необовʼязково)' } },
-      ],
-    },
-    {
-      name: 'testimonials',
-      type: 'array',
+      name: 'googleMapsUrl',
+      type: 'text',
+      defaultValue: 'https://maps.app.goo.gl/FDsoVNhec2FLPu4H6',
       admin: {
-        description:
-          'Скріншоти відгуків клієнтів (напр. з Instagram Stories/Highlights — завантаж скріншот сюди, Instagram не дає підтягувати їх автоматично)',
+        description: 'Посилання Google Maps на шоурум — адреса у футері та на сторінці контактів веде сюди',
       },
-      fields: [
-        { name: 'image', type: 'upload', relationTo: 'media', required: true },
-        { name: 'authorName', type: 'text', admin: { description: "Ім'я клієнта (необовʼязково)" } },
-      ],
     },
     {
       name: 'deliveryCities',
@@ -65,22 +71,12 @@ export const SiteSettings: GlobalConfig = {
         { name: 'active', type: 'checkbox', defaultValue: true },
       ],
     },
-    {
-      name: 'faqItems',
-      type: 'array',
-      fields: [
-        { name: 'question', type: 'text', required: true },
-        { name: 'answer', type: 'textarea', required: true },
-        { name: 'sortOrder', type: 'number', defaultValue: 0 },
-      ],
-    },
   ],
   hooks: {
     afterChange: [
       ({ doc }) => {
         try {
-          revalidatePath('/')
-          revalidatePath('/contacts')
+          revalidatePath('/', 'layout')
         } catch {
           // No-op outside a Next.js request context (e.g. seed scripts).
         }

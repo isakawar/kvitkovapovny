@@ -9,8 +9,71 @@ export type FormatCardData = {
   imageUrl?: string | null
 }
 
-export function FormatsGrid({ cards }: { cards: FormatCardData[] }) {
+function ArrowIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M7 17 17 7" />
+      <path d="M9 7h8v8" />
+    </svg>
+  )
+}
+
+export function FormatsGrid({
+  cards,
+  theme,
+  heading,
+}: {
+  cards: FormatCardData[]
+  theme: 'old' | 'new'
+  heading?: string | null
+}) {
   if (cards.length === 0) return null
+
+  if (theme === 'new') {
+    return (
+      <section className="mx-auto max-w-6xl px-4 py-16">
+        {heading && (
+          <h2
+            className="mb-10 text-center text-2xl tracking-wide text-ink sm:text-3xl"
+            style={{ fontWeight: 'var(--font-weight-brand-bold)' }}
+          >
+            {heading}
+          </h2>
+        )}
+        <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
+          {cards.map((card) => (
+            <div
+              key={card.title}
+              className="group flex w-[78%] shrink-0 snap-start flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-md sm:w-auto"
+            >
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-blush">
+                {card.imageUrl && (
+                  <Image
+                    src={card.imageUrl}
+                    alt={card.title}
+                    fill
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 80vw"
+                    className="object-cover transition duration-300 group-hover:scale-105"
+                  />
+                )}
+              </div>
+              <div className="flex flex-1 flex-col gap-2 p-6">
+                <h3 className="text-base font-semibold text-ink">{card.title}</h3>
+                <p className="text-sm text-ink-soft">{card.subtitle}</p>
+                <Link
+                  href={card.buttonHref}
+                  className="mt-auto inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-on-accent transition hover:bg-accent-hover"
+                >
+                  {card.buttonLabel}
+                  <ArrowIcon className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-16">
@@ -35,7 +98,7 @@ export function FormatsGrid({ cards }: { cards: FormatCardData[] }) {
               <p className="text-sm text-cream/90">{card.subtitle}</p>
               <Link
                 href={card.buttonHref}
-                className="mt-1 inline-flex w-fit items-center rounded-full bg-cream px-5 py-2 text-sm font-medium text-ink transition hover:bg-cream/90"
+                className="mt-1 inline-flex w-fit items-center whitespace-nowrap rounded-full bg-cream px-5 py-2 text-sm font-medium text-ink transition hover:bg-cream/90"
               >
                 {card.buttonLabel}
               </Link>

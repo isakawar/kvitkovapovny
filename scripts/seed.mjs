@@ -295,7 +295,15 @@ await payload.updateGlobal({
     contactPhone: '+380000000000',
     contactEmail: 'hello@kvitkovapovnya.com',
     instagramUrl: 'https://instagram.com/kvitkovapovnya',
+    telegramUrl: 'https://t.me/kvitkovapovnya',
+    showroomAddress: 'м. Київ, вул. Хрещатик, 1',
     deliveryCities: [{ name: 'Київ', active: true }],
+  },
+})
+
+await payload.updateGlobal({
+  slug: 'faq-section',
+  data: {
     faqItems: [
       { question: 'Що таке підписка на квіти?', answer: 'Регулярна доставка свіжих квіткових композицій прямо до дверей.', sortOrder: 1 },
       { question: 'Як оформити замовлення?', answer: 'Оберіть товар або підписку в каталозі, додайте в кошик і заповніть форму доставки.', sortOrder: 2 },
@@ -352,47 +360,47 @@ await payload.updateGlobal({
 })
 
 console.log('Seeding formats section...')
-const certificateImg = await uploadAsset('flower-2.png', 'Подарунковий сертифікат')
 await payload.updateGlobal({
   slug: 'formats-section',
   data: {
     cards: [
       {
         title: 'ДЛЯ ДОМУ',
-        subtitle: 'Регулярна доставка для затишку вашої оселі',
+        subtitle: 'Регулярна підписка для затишку вашої оселі',
         buttonLabel: 'Обрати тариф',
         buttonHref: '/katalog/pidpyska',
         image: catSubscriptionImg.id,
         sortOrder: 1,
       },
       {
-        title: 'ДЛЯ БІЗНЕСУ ТА ОФІСІВ',
-        subtitle: 'Декор рецепцій, ресторанів та шоурумів (оплата за рахунком)',
-        buttonLabel: 'Запросити КП',
-        buttonHref: '/business',
-        image: catBusinessImg.id,
+        title: 'БУКЕТИ',
+        subtitle: 'Разова доставка авторських свіжих букетів',
+        buttonLabel: 'Переглянути каталог',
+        buttonHref: '/katalog/buket',
+        image: catBouquetsImg.id,
         sortOrder: 2,
       },
       {
-        title: 'ВЕСІЛЬНА ПІДПИСКА',
-        subtitle: 'Подарунок для молодят: місяць квітів після весілля',
-        buttonLabel: 'Дізнатися більше',
-        buttonHref: '/wedding',
-        image: catWeddingImg.id,
+        title: 'ДЛЯ БІЗНЕСУ ТА ОФІСІВ',
+        subtitle: 'Оформлення рецепцій, ресторанів, шоурумів',
+        buttonLabel: 'Запросити КП',
+        buttonHref: '/business',
+        image: catBusinessImg.id,
         sortOrder: 3,
       },
       {
-        title: 'ПОДАРУНКОВИЙ СЕРТИФІКАТ',
-        subtitle: 'Елегантний бокс із сертифікатом для близьких',
-        buttonLabel: 'Купити сертифікат',
-        buttonHref: '/gift-certificates',
-        image: certificateImg.id,
+        title: 'ВЕСІЛЬНА ФЛОРИСТИКА',
+        subtitle: 'Декор подій та весільні підписки',
+        buttonLabel: 'Дізнатися більше',
+        buttonHref: '/wedding',
+        image: catWeddingImg.id,
         sortOrder: 4,
       },
     ],
   },
 })
 
+console.log('Seeding Instagram posts + testimonials...')
 const igFiles = ['ig-1.jpg', 'ig-2.jpg', 'ig-3.jpg', 'ig-4.jpg', 'ig-5.jpg', 'ig-6.jpg']
 const igMedia = await Promise.all(igFiles.map((f) => uploadAsset(f, 'Instagram — kvitkovapovnya')))
 // Testimonials are screenshots of Instagram Story Highlights (e.g. "відгуки") uploaded
@@ -400,9 +408,14 @@ const igMedia = await Promise.all(igFiles.map((f) => uploadAsset(f, 'Instagram �
 // Demo-seeded here by reusing two of the Instagram post images above as placeholders;
 // replace with real review screenshots via /admin.
 await payload.updateGlobal({
-  slug: 'site-settings',
+  slug: 'instagram-integration',
   data: {
     instagramPosts: igMedia.map((m) => ({ image: m.id, link: 'https://instagram.com/kvitkovapovnya' })),
+  },
+})
+await payload.updateGlobal({
+  slug: 'testimonials',
+  data: {
     testimonials: [
       { image: igMedia[0].id, authorName: 'Олена' },
       { image: igMedia[1].id, authorName: 'Марина' },
