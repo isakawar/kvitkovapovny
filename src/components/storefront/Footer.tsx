@@ -7,6 +7,7 @@ type FooterProps = {
   contactEmail?: string | null
   instagramUrl?: string | null
   telegramUrl?: string | null
+  tiktokUrl?: string | null
   showroomAddress?: string | null
   googleMapsUrl?: string | null
 }
@@ -26,6 +27,14 @@ function TelegramIcon() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-5 w-5" aria-hidden>
       <path d="m21 4-8.5 16-3-6.5L3 10.5Z" strokeLinejoin="round" />
       <path d="M21 4 9.5 13.5" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function TikTokIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
+      <path d="M16.6 5.82a4.28 4.28 0 0 1-3.14-1.39V15.7a5.1 5.1 0 1 1-4.4-5.05v2.1a3 3 0 1 0 2.4 2.94V2h2.06a4.28 4.28 0 0 0 3.08 3.65v2.17a6.3 6.3 0 0 1-3.14-1.02v.02Z" />
     </svg>
   )
 }
@@ -77,6 +86,7 @@ export function Footer({
   contactEmail,
   instagramUrl,
   telegramUrl,
+  tiktokUrl,
   showroomAddress,
   googleMapsUrl,
 }: FooterProps) {
@@ -113,6 +123,17 @@ export function Footer({
                 className="text-ink transition hover:text-accent"
               >
                 <TelegramIcon />
+              </a>
+            )}
+            {tiktokUrl && (
+              <a
+                href={tiktokUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok"
+                className="text-ink transition hover:text-accent"
+              >
+                <TikTokIcon />
               </a>
             )}
           </div>
