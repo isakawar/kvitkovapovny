@@ -7,7 +7,8 @@ import Link from 'next/link'
 const NAV_LINKS = [
   { label: 'Підписка', href: '/katalog/pidpyska' },
   { label: 'Каталог букетів', href: '/katalog/buket' },
-  { label: 'Для бізнесу', href: '/business' },
+  { label: 'Зібрати букет', href: '/custom-bouquet' },
+  { label: 'Для бізнесу', href: '/dlya-biznesu' },
   { label: 'Весілля', href: '/wedding' },
   { label: 'Про нас', href: '/contacts' },
 ]

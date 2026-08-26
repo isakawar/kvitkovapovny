@@ -78,7 +78,10 @@ export function Header({
         <Link href="/katalog/buket" className="hover:text-accent">
           Каталог букетів
         </Link>
-        <Link href="/business" className="hover:text-accent">
+        <Link href="/custom-bouquet" className="hover:text-accent">
+          Зібрати букет
+        </Link>
+        <Link href="/dlya-biznesu" className="hover:text-accent">
           Для бізнесу
         </Link>
         <Link href="/wedding" className="hover:text-accent">

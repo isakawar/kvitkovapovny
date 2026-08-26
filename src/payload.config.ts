@@ -11,6 +11,8 @@ import { Categories } from './collections/Categories'
 import { Products } from './collections/Products'
 import { Orders } from './collections/Orders'
 import { WeddingInquiries } from './collections/WeddingInquiries'
+import { BusinessInquiries } from './collections/BusinessInquiries'
+import { CustomBouquetRequests } from './collections/CustomBouquetRequests'
 import { Hero } from './globals/Hero'
 import { SiteSettings } from './globals/SiteSettings'
 import { SubscriptionInfo } from './globals/SubscriptionInfo'
@@ -34,7 +36,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Categories, Products, Orders, WeddingInquiries],
+  collections: [Users, Media, Categories, Products, Orders, WeddingInquiries, CustomBouquetRequests, BusinessInquiries],
   globals: [
     Hero,
     SiteSettings,

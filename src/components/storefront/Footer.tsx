@@ -8,6 +8,7 @@ type FooterProps = {
   instagramUrl?: string | null
   telegramUrl?: string | null
   showroomAddress?: string | null
+  googleMapsUrl?: string | null
 }
 
 function InstagramIcon() {
@@ -29,10 +30,26 @@ function TelegramIcon() {
   )
 }
 
+function PinIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      className="h-4 w-4 shrink-0"
+      aria-hidden
+    >
+      <path d="M12 21s7-6.1 7-11.5a7 7 0 1 0-14 0C5 14.9 12 21 12 21Z" strokeLinejoin="round" />
+      <circle cx="12" cy="9.5" r="2.25" />
+    </svg>
+  )
+}
+
 const serviceLinks = [
   { label: 'Підписка на квіти', href: '/katalog/pidpyska' },
   { label: 'Разові букети', href: '/katalog/buket' },
-  { label: 'Оформлення бізнесу', href: '/business' },
+  { label: 'Оформлення бізнесу', href: '/dlya-biznesu' },
   { label: 'Весільний декор', href: '/wedding' },
 ]
 
@@ -55,7 +72,17 @@ function FooterColumnHeading({ children }: { children: React.ReactNode }) {
   )
 }
 
-export function Footer({ contactPhone, contactEmail, instagramUrl, telegramUrl, showroomAddress }: FooterProps) {
+export function Footer({
+  contactPhone,
+  contactEmail,
+  instagramUrl,
+  telegramUrl,
+  showroomAddress,
+  googleMapsUrl,
+}: FooterProps) {
+  const mapsHref =
+    googleMapsUrl || (showroomAddress ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(showroomAddress)}` : null)
+
   return (
     <footer className="border-t border-ink/10 bg-cream px-6 py-14 text-sm text-ink-soft sm:px-10">
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -134,7 +161,26 @@ export function Footer({ contactPhone, contactEmail, instagramUrl, telegramUrl, 
                 </a>
               </li>
             )}
-            {showroomAddress && <li>{showroomAddress}</li>}
+            {showroomAddress && (
+              <li>
+                {mapsHref ? (
+                  <a
+                    href={mapsHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-start gap-1.5 transition hover:text-[#9EAF00] hover:underline"
+                  >
+                    <PinIcon />
+                    {showroomAddress}
+                  </a>
+                ) : (
+                  <span className="inline-flex items-start gap-1.5">
+                    <PinIcon />
+                    {showroomAddress}
+                  </span>
+                )}
+              </li>
+            )}
           </ul>
           {telegramUrl && (
             <a
