@@ -18,23 +18,18 @@ export function HowItWorks({ heading, steps }: { heading: string; steps: HowItWo
         <BrandFlowerAccent className="h-6 w-6 shrink-0 text-accent" />
       </div>
 
-      <div className="flex items-center px-4 sm:px-10">
-        {steps.map((step, i) => (
-          <div key={i} className="flex flex-1 items-center last:flex-none">
-            <span
-              className="text-4xl text-accent sm:text-5xl"
-              style={{ fontFamily: 'var(--font-heading)', fontWeight: 800 }}
-            >
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            {i < steps.length - 1 && <div className="mx-3 h-px flex-1 bg-ink/15 sm:mx-6" />}
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-6 grid grid-cols-1 gap-8 text-center sm:grid-cols-3 sm:gap-6">
+      <div className="grid grid-cols-1 gap-8 text-center sm:grid-cols-3 sm:gap-6 sm:px-10">
         {steps.map((step, i) => (
           <div key={i} className="flex flex-col gap-2 px-2">
+            <div className="flex items-center justify-center sm:justify-start">
+              <span
+                className="text-4xl text-accent sm:text-5xl"
+                style={{ fontFamily: 'var(--font-heading)', fontWeight: 800 }}
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              {i < steps.length - 1 && <div className="mx-3 hidden h-px flex-1 bg-ink/15 sm:mx-6 sm:block" />}
+            </div>
             <p className="text-base font-semibold text-ink">{step.title}</p>
             {step.subtitle && <p className="text-sm text-ink-soft">{step.subtitle}</p>}
           </div>
