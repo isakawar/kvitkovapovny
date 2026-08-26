@@ -62,7 +62,7 @@ export const FeatureStrip: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'label', type: 'text', defaultValue: 'ОБРАТИ ПЛАН ПІДПИСКИ' },
-        { name: 'href', type: 'text', defaultValue: '/katalog' },
+        { name: 'href', type: 'text', defaultValue: '/#pidpyska-configurator' },
       ],
     },
   ],
