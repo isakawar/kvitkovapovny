@@ -4,6 +4,7 @@ import * as migration_20260825_125545_add_feature_strip_and_how_it_works from '.
 import * as migration_20260826_150506_add_feature_strip_and_formats_headings from './20260826_150506_add_feature_strip_and_formats_headings';
 import * as migration_20260826_163117_add_google_rating_and_stat_to_site_settings from './20260826_163117_add_google_rating_and_stat_to_site_settings';
 import * as migration_20260826_164338_add_telegram_url_to_site_settings from './20260826_164338_add_telegram_url_to_site_settings';
+import * as migration_20260826_175326_restructure_content_globals from './20260826_175326_restructure_content_globals';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260826_164338_add_telegram_url_to_site_settings.up,
     down: migration_20260826_164338_add_telegram_url_to_site_settings.down,
-    name: '20260826_164338_add_telegram_url_to_site_settings'
+    name: '20260826_164338_add_telegram_url_to_site_settings',
+  },
+  {
+    up: migration_20260826_175326_restructure_content_globals.up,
+    down: migration_20260826_175326_restructure_content_globals.down,
+    name: '20260826_175326_restructure_content_globals',
   },
 ];

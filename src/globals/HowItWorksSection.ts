@@ -16,7 +16,7 @@ export const HowItWorksSection: GlobalConfig = {
   slug: 'how-it-works-section',
   label: 'Блок "Як це працює"',
   admin: {
-    group: 'Контент сайту',
+    group: 'Головна сторінка',
     description: 'Заголовок і пронумеровані кроки (лише в новому дизайні)',
   },
   access: {

@@ -7,7 +7,7 @@ export const SubscriptionInfo: GlobalConfig = {
   slug: 'subscription-info',
   label: 'Блок "Про підписку"',
   admin: {
-    group: 'Контент сайту',
+    group: 'Головна сторінка',
   },
   access: {
     read: () => true,

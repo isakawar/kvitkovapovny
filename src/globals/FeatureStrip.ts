@@ -16,7 +16,7 @@ export const FeatureStrip: GlobalConfig = {
   slug: 'feature-strip',
   label: 'Стрічка переваг',
   admin: {
-    group: 'Контент сайту',
+    group: 'Головна сторінка',
     description: 'Ряд із 3 переваг з іконками під головним банером (лише в новому дизайні)',
   },
   access: {

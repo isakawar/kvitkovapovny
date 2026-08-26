@@ -43,8 +43,8 @@ async function fetchFromGraphApi(igUserId: string, accessToken: string, limit: n
 
 async function getManualFallbackPosts(): Promise<InstagramFeedPost[]> {
   const payload = await getPayloadClient()
-  const siteSettings = await payload.findGlobal({ slug: 'site-settings' })
-  return (siteSettings.instagramPosts || [])
+  const integration = await payload.findGlobal({ slug: 'instagram-integration' })
+  return (integration.instagramPosts || [])
     .map((post): InstagramFeedPost | null => {
       const imageUrl = mediaUrl(post.image, 'card')
       if (!imageUrl) return null

@@ -5,11 +5,11 @@ import { isOwnerOrFlorist } from '@/access/isOwnerOrFlorist'
 
 export const InstagramIntegration: GlobalConfig = {
   slug: 'instagram-integration',
-  label: 'Instagram (автопідтягування постів)',
+  label: 'Instagram',
   admin: {
-    group: 'Контент сайту',
+    group: 'Соціальний доказ',
     description:
-      'Налаштування підключення до Instagram Graph API. Поки accessToken не заповнений, на сайті показується ручний список дописів із "Налаштування сайту" → Instagram.',
+      'Налаштування підключення до Instagram Graph API та ручний список дописів. Поки accessToken не заповнений, на сайті показується ручний список нижче.',
   },
   // Read access is intentionally restricted (not `() => true`) — accessToken must
   // never be exposed via the public REST/GraphQL API. Server components still get
@@ -42,6 +42,19 @@ export const InstagramIntegration: GlobalConfig = {
       admin: {
         description: 'Скільки останніх дописів підтягувати для стрічки на головній сторінці',
       },
+    },
+    {
+      name: 'instagramPosts',
+      type: 'array',
+      label: 'Ручний список дописів',
+      admin: {
+        description:
+          'Показується на сайті, поки не заповнені accessToken та igUserId вище (автопідключення до Graph API)',
+      },
+      fields: [
+        { name: 'image', type: 'upload', relationTo: 'media', required: true },
+        { name: 'link', type: 'text', admin: { description: 'Посилання на пост (необовʼязково)' } },
+      ],
     },
   ],
   hooks: {

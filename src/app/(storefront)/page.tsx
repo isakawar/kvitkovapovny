@@ -29,6 +29,8 @@ export default async function HomePage() {
     featureStrip,
     howItWorksSection,
     subscriptionPricing,
+    testimonials,
+    faqSection,
     featuredProducts,
     subscriptionCategory,
     instagramPosts,
@@ -41,6 +43,8 @@ export default async function HomePage() {
     payload.findGlobal({ slug: 'feature-strip' }),
     payload.findGlobal({ slug: 'how-it-works-section' }),
     payload.findGlobal({ slug: 'subscription-pricing' }),
+    payload.findGlobal({ slug: 'testimonials' }),
+    payload.findGlobal({ slug: 'faq-section' }),
     payload.find({
       collection: 'products',
       where: { and: [{ _status: { equals: 'published' } }, { featured: { equals: true } }] },
@@ -187,20 +191,20 @@ export default async function HomePage() {
       />
 
       <TestimonialsCarousel
-        testimonials={(siteSettings.testimonials || [])
+        testimonials={(testimonials.testimonials || [])
           .map((t) => {
             const imageUrl = mediaUrl(t.image, 'card')
             return imageUrl ? { imageUrl, authorName: t.authorName } : null
           })
           .filter((t) => t !== null)}
-        rating={siteSettings.googleRating}
-        statText={siteSettings.happySubscribersStat}
+        rating={testimonials.googleRating}
+        statText={testimonials.happySubscribersStat}
         instagramUrl={siteSettings.instagramUrl}
       />
 
       <InstagramFeed instagramUrl={siteSettings.instagramUrl} posts={instagramPosts} />
 
-      <FaqAccordion items={(siteSettings.faqItems || []).map((item) => ({ question: item.question, answer: item.answer }))} />
+      <FaqAccordion items={(faqSection.faqItems || []).map((item) => ({ question: item.question, answer: item.answer }))} />
     </>
   )
 }

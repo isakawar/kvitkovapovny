@@ -20,6 +20,8 @@ import { InstagramIntegration } from './globals/InstagramIntegration'
 import { FeatureStrip } from './globals/FeatureStrip'
 import { HowItWorksSection } from './globals/HowItWorksSection'
 import { SubscriptionPricing } from './globals/SubscriptionPricing'
+import { Testimonials } from './globals/Testimonials'
+import { FaqSection } from './globals/FaqSection'
 import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
@@ -43,6 +45,8 @@ export default buildConfig({
     FeatureStrip,
     HowItWorksSection,
     SubscriptionPricing,
+    Testimonials,
+    FaqSection,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

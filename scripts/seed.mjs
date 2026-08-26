@@ -298,6 +298,12 @@ await payload.updateGlobal({
     telegramUrl: 'https://t.me/kvitkovapovnya',
     showroomAddress: 'м. Київ, вул. Хрещатик, 1',
     deliveryCities: [{ name: 'Київ', active: true }],
+  },
+})
+
+await payload.updateGlobal({
+  slug: 'faq-section',
+  data: {
     faqItems: [
       { question: 'Що таке підписка на квіти?', answer: 'Регулярна доставка свіжих квіткових композицій прямо до дверей.', sortOrder: 1 },
       { question: 'Як оформити замовлення?', answer: 'Оберіть товар або підписку в каталозі, додайте в кошик і заповніть форму доставки.', sortOrder: 2 },
@@ -394,6 +400,7 @@ await payload.updateGlobal({
   },
 })
 
+console.log('Seeding Instagram posts + testimonials...')
 const igFiles = ['ig-1.jpg', 'ig-2.jpg', 'ig-3.jpg', 'ig-4.jpg', 'ig-5.jpg', 'ig-6.jpg']
 const igMedia = await Promise.all(igFiles.map((f) => uploadAsset(f, 'Instagram — kvitkovapovnya')))
 // Testimonials are screenshots of Instagram Story Highlights (e.g. "відгуки") uploaded
@@ -401,9 +408,14 @@ const igMedia = await Promise.all(igFiles.map((f) => uploadAsset(f, 'Instagram �
 // Demo-seeded here by reusing two of the Instagram post images above as placeholders;
 // replace with real review screenshots via /admin.
 await payload.updateGlobal({
-  slug: 'site-settings',
+  slug: 'instagram-integration',
   data: {
     instagramPosts: igMedia.map((m) => ({ image: m.id, link: 'https://instagram.com/kvitkovapovnya' })),
+  },
+})
+await payload.updateGlobal({
+  slug: 'testimonials',
+  data: {
     testimonials: [
       { image: igMedia[0].id, authorName: 'Олена' },
       { image: igMedia[1].id, authorName: 'Марина' },

@@ -7,7 +7,7 @@ export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   label: 'Налаштування сайту',
   admin: {
-    group: 'Контент сайту',
+    group: 'Налаштування',
   },
   access: {
     read: () => true,
@@ -56,53 +56,11 @@ export const SiteSettings: GlobalConfig = {
       admin: { description: 'Адреса шоуруму/студії для самовивозу — показується на сторінці чекауту' },
     },
     {
-      name: 'instagramPosts',
-      type: 'array',
-      admin: { description: 'Фото з Instagram для стрічки на головній сторінці' },
-      fields: [
-        { name: 'image', type: 'upload', relationTo: 'media', required: true },
-        { name: 'link', type: 'text', admin: { description: 'Посилання на пост (необовʼязково)' } },
-      ],
-    },
-    {
-      name: 'testimonials',
-      type: 'array',
-      admin: {
-        description:
-          'Скріншоти відгуків клієнтів (напр. з Instagram Stories/Highlights — завантаж скріншот сюди, Instagram не дає підтягувати їх автоматично)',
-      },
-      fields: [
-        { name: 'image', type: 'upload', relationTo: 'media', required: true },
-        { name: 'authorName', type: 'text', admin: { description: "Ім'я клієнта (необовʼязково)" } },
-      ],
-    },
-    {
-      name: 'googleRating',
-      type: 'text',
-      defaultValue: '5.0',
-      admin: { description: 'Рейтинг для плашки "★ 5.0 на основі відгуків у Google" над каруселлю відгуків' },
-    },
-    {
-      name: 'happySubscribersStat',
-      type: 'text',
-      defaultValue: '1000+ щасливих власників підписок',
-      admin: { description: 'Текст поруч з рейтингом Google над каруселлю відгуків' },
-    },
-    {
       name: 'deliveryCities',
       type: 'array',
       fields: [
         { name: 'name', type: 'text', required: true },
         { name: 'active', type: 'checkbox', defaultValue: true },
-      ],
-    },
-    {
-      name: 'faqItems',
-      type: 'array',
-      fields: [
-        { name: 'question', type: 'text', required: true },
-        { name: 'answer', type: 'textarea', required: true },
-        { name: 'sortOrder', type: 'number', defaultValue: 0 },
       ],
     },
   ],

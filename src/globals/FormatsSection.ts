@@ -7,7 +7,7 @@ export const FormatsSection: GlobalConfig = {
   slug: 'formats-section',
   label: 'Блок "Формати підписки"',
   admin: {
-    group: 'Контент сайту',
+    group: 'Головна сторінка',
     description: 'Блок із 4 картками під головним банером (дім, букети, бізнес, весілля)',
   },
   access: {

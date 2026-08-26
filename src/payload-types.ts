@@ -105,6 +105,8 @@ export interface Config {
     'feature-strip': FeatureStrip;
     'how-it-works-section': HowItWorksSection;
     'subscription-pricing': SubscriptionPricing;
+    testimonials: Testimonial;
+    'faq-section': FaqSection;
   };
   globalsSelect: {
     hero: HeroSelect<false> | HeroSelect<true>;
@@ -116,6 +118,8 @@ export interface Config {
     'feature-strip': FeatureStripSelect<false> | FeatureStripSelect<true>;
     'how-it-works-section': HowItWorksSectionSelect<false> | HowItWorksSectionSelect<true>;
     'subscription-pricing': SubscriptionPricingSelect<false> | SubscriptionPricingSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    'faq-section': FaqSectionSelect<false> | FaqSectionSelect<true>;
   };
   locale: null;
   widgets: {
@@ -897,52 +901,10 @@ export interface SiteSetting {
    * Адреса шоуруму/студії для самовивозу — показується на сторінці чекауту
    */
   showroomAddress?: string | null;
-  /**
-   * Фото з Instagram для стрічки на головній сторінці
-   */
-  instagramPosts?:
-    | {
-        image: number | Media;
-        /**
-         * Посилання на пост (необовʼязково)
-         */
-        link?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Скріншоти відгуків клієнтів (напр. з Instagram Stories/Highlights — завантаж скріншот сюди, Instagram не дає підтягувати їх автоматично)
-   */
-  testimonials?:
-    | {
-        image: number | Media;
-        /**
-         * Ім'я клієнта (необовʼязково)
-         */
-        authorName?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Рейтинг для плашки "★ 5.0 на основі відгуків у Google" над каруселлю відгуків
-   */
-  googleRating?: string | null;
-  /**
-   * Текст поруч з рейтингом Google над каруселлю відгуків
-   */
-  happySubscribersStat?: string | null;
   deliveryCities?:
     | {
         name: string;
         active?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  faqItems?:
-    | {
-        question: string;
-        answer: string;
-        sortOrder?: number | null;
         id?: string | null;
       }[]
     | null;
@@ -1035,7 +997,7 @@ export interface FormatsSection {
   createdAt?: string | null;
 }
 /**
- * Налаштування підключення до Instagram Graph API. Поки accessToken не заповнений, на сайті показується ручний список дописів із "Налаштування сайту" → Instagram.
+ * Налаштування підключення до Instagram Graph API та ручний список дописів. Поки accessToken не заповнений, на сайті показується ручний список нижче.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "instagram-integration".
@@ -1054,6 +1016,19 @@ export interface InstagramIntegration {
    * Скільки останніх дописів підтягувати для стрічки на головній сторінці
    */
   postLimit?: number | null;
+  /**
+   * Показується на сайті, поки не заповнені accessToken та igUserId вище (автопідключення до Graph API)
+   */
+  instagramPosts?:
+    | {
+        image: number | Media;
+        /**
+         * Посилання на пост (необовʼязково)
+         */
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1148,6 +1123,57 @@ export interface SubscriptionPricing {
   createdAt?: string | null;
 }
 /**
+ * Скріншоти відгуків та рейтинг, що показуються в каруселі "Відгуки" на головній сторінці
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  /**
+   * Рейтинг для плашки "★ 5.0 на основі відгуків у Google" над каруселлю
+   */
+  googleRating?: string | null;
+  /**
+   * Текст поруч з рейтингом Google над каруселлю
+   */
+  happySubscribersStat?: string | null;
+  /**
+   * Скріншоти відгуків клієнтів (напр. з Instagram Stories/Highlights — завантаж скріншот сюди, Instagram не дає підтягувати їх автоматично)
+   */
+  testimonials?:
+    | {
+        image: number | Media;
+        /**
+         * Ім'я клієнта (необовʼязково)
+         */
+        authorName?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Питання-відповіді в акордеоні "Часті запитання" внизу головної сторінки
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-section".
+ */
+export interface FaqSection {
+  id: number;
+  faqItems?:
+    | {
+        question: string;
+        answer: string;
+        sortOrder?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero_select".
  */
@@ -1180,35 +1206,11 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   instagramUrl?: T;
   telegramUrl?: T;
   showroomAddress?: T;
-  instagramPosts?:
-    | T
-    | {
-        image?: T;
-        link?: T;
-        id?: T;
-      };
-  testimonials?:
-    | T
-    | {
-        image?: T;
-        authorName?: T;
-        id?: T;
-      };
-  googleRating?: T;
-  happySubscribersStat?: T;
   deliveryCities?:
     | T
     | {
         name?: T;
         active?: T;
-        id?: T;
-      };
-  faqItems?:
-    | T
-    | {
-        question?: T;
-        answer?: T;
-        sortOrder?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -1300,6 +1302,13 @@ export interface InstagramIntegrationSelect<T extends boolean = true> {
   accessToken?: T;
   igUserId?: T;
   postLimit?: T;
+  instagramPosts?:
+    | T
+    | {
+        image?: T;
+        link?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1366,6 +1375,41 @@ export interface SubscriptionPricingSelect<T extends boolean = true> {
               sortOrder?: T;
               id?: T;
             };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  googleRating?: T;
+  happySubscribersStat?: T;
+  testimonials?:
+    | T
+    | {
+        image?: T;
+        authorName?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-section_select".
+ */
+export interface FaqSectionSelect<T extends boolean = true> {
+  faqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        sortOrder?: T;
         id?: T;
       };
   updatedAt?: T;
