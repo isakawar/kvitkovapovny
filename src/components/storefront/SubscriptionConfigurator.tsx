@@ -95,8 +95,8 @@ export function SubscriptionConfigurator({
   }
 
   return (
-    <section id={id} className="mx-auto max-w-6xl scroll-mt-24 px-4 py-16 sm:px-6">
-      <div className="mb-10 flex items-center justify-center gap-3">
+    <section id={id} className="mx-auto max-w-6xl scroll-mt-24 px-4 py-8 sm:px-6 sm:py-16">
+      <div className="mb-4 flex items-center justify-center gap-3 sm:mb-10">
         <BrandFlowerAccent className="h-6 w-6 shrink-0 text-accent" />
         <h2
           className="text-center text-2xl tracking-wide text-ink sm:text-3xl"
@@ -107,25 +107,25 @@ export function SubscriptionConfigurator({
         <BrandFlowerAccent className="h-6 w-6 shrink-0 text-accent" />
       </div>
 
-      <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
-        <div className="flex flex-col gap-3">
+      <div className="grid gap-6 lg:grid-cols-2 lg:items-start lg:gap-10">
+        <div className="flex flex-col gap-2 sm:gap-3">
           <div className="relative">
-            <ProductGallery key={variantLabel} images={galleryImages} />
-            <span className="absolute top-4 left-4 z-10 rounded-full bg-ink px-4 py-1.5 text-sm font-medium text-cream">
+            <ProductGallery key={variantLabel} images={galleryImages} aspectClassName="aspect-[16/9] sm:aspect-square" />
+            <span className="absolute top-3 left-3 z-10 rounded-full bg-ink px-3 py-1 text-xs font-medium text-cream sm:top-4 sm:left-4 sm:px-4 sm:py-1.5 sm:text-sm">
               Розмір {variantLabel}
             </span>
           </div>
-          <p className="text-xs text-ink-soft">
+          <p className="hidden text-xs text-ink-soft sm:block">
             Фото з наших попередніх підписок. Склад букета щотижня змінюється залежно від сезону.
           </p>
         </div>
 
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-5 sm:gap-8">
           <div>
-            <p className="mb-3 text-xs font-semibold tracking-wide text-ink-soft uppercase">
+            <p className="mb-2 text-xs font-semibold tracking-wide text-ink-soft uppercase sm:mb-3">
               Крок 1 · Розмір букета
             </p>
-            <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3">
               {product.sizes.map((v) => {
                 const active = v.label === variantLabel
                 return (
@@ -133,17 +133,17 @@ export function SubscriptionConfigurator({
                     key={v.label}
                     type="button"
                     onClick={() => setVariantLabel(v.label)}
-                    className={`relative flex flex-col items-center gap-1 rounded-2xl border px-3 py-4 transition ${
+                    className={`relative flex flex-col items-center gap-1 rounded-2xl border px-2 py-3 transition sm:px-3 sm:py-4 ${
                       active ? 'border-accent bg-accent text-on-accent' : 'border-ink/15 text-ink hover:border-ink/40'
                     }`}
                   >
                     {v.badge && (
-                      <span className="absolute -top-2.5 rounded-full bg-accent px-2 py-0.5 text-[10px] font-semibold tracking-wide text-on-accent uppercase">
+                      <span className="absolute -top-2.5 rounded-full bg-accent px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-on-accent uppercase sm:px-2 sm:text-[10px]">
                         {v.badge}
                       </span>
                     )}
-                    <span className="text-xl font-semibold">{v.label}</span>
-                    <span className={`text-xs ${active ? 'text-on-accent/70' : 'text-ink-soft'}`}>
+                    <span className="text-base font-semibold sm:text-xl">{v.label}</span>
+                    <span className={`text-[11px] sm:text-xs ${active ? 'text-on-accent/70' : 'text-ink-soft'}`}>
                       {formatUAH(Math.round(v.price / 4))}
                     </span>
                   </button>
@@ -154,7 +154,7 @@ export function SubscriptionConfigurator({
 
           {product.deliveryFrequencies.length > 0 && (
             <div>
-              <p className="mb-3 text-xs font-semibold tracking-wide text-ink-soft uppercase">
+              <p className="mb-2 text-xs font-semibold tracking-wide text-ink-soft uppercase sm:mb-3">
                 Крок 2 · Як часто доставляти
               </p>
               <div className="flex flex-wrap gap-2">
@@ -176,9 +176,12 @@ export function SubscriptionConfigurator({
             </div>
           )}
 
-          <div className="flex flex-col gap-3 rounded-2xl bg-blush/60 p-6">
-            <p className="text-sm font-semibold text-ink">Підписка включає</p>
-            <ul className="flex flex-col gap-2.5">
+          <details className="group rounded-2xl bg-blush/60 p-4 sm:p-6">
+            <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-ink">
+              Підписка включає
+              <span className="text-ink-soft transition group-open:rotate-45">+</span>
+            </summary>
+            <ul className="mt-3 flex flex-col gap-2.5">
               {checklist.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-sm text-ink">
                   <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
@@ -186,21 +189,23 @@ export function SubscriptionConfigurator({
                 </li>
               ))}
             </ul>
-          </div>
+          </details>
 
-          <div className="flex flex-wrap items-end justify-between gap-6 border-t border-ink/10 pt-6">
-            <div>
-              <p className="text-xs text-ink-soft">Ціна за 1 букет</p>
-              <p className="text-lg font-semibold text-ink">{formatUAH(pricePerBouquet)}</p>
-            </div>
-            <div>
-              <p className="text-xs text-ink-soft">Разом за підписку</p>
-              <p className="text-2xl font-semibold text-accent">{formatUAH(selectedSizePrice)}</p>
+          <div className="flex flex-col gap-4 border-t border-ink/10 pt-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between sm:gap-6 sm:pt-6">
+            <div className="flex items-end justify-between gap-4 sm:contents">
+              <div>
+                <p className="text-xs text-ink-soft">Ціна за 1 букет</p>
+                <p className="text-lg font-semibold text-ink">{formatUAH(pricePerBouquet)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-ink-soft">Разом за підписку</p>
+                <p className="text-2xl font-semibold text-accent">{formatUAH(selectedSizePrice)}</p>
+              </div>
             </div>
             <button
               type="button"
               onClick={handleOrder}
-              className="ml-auto rounded-full bg-accent px-8 py-4 text-base font-medium text-on-accent transition hover:bg-accent-hover"
+              className="rounded-full bg-accent px-6 py-3 text-base font-medium text-on-accent transition hover:bg-accent-hover sm:ml-auto sm:px-8 sm:py-4"
             >
               {added ? 'Додано ✓' : 'Оформити підписку →'}
             </button>
