@@ -14,6 +14,7 @@ import * as migration_20260826_192259_add_google_maps_url_to_site_settings from 
 import * as migration_20260826_192853_add_wedding_page_subscription_fields from './20260826_192853_add_wedding_page_subscription_fields';
 import * as migration_20260826_194634_add_business_inquiries from './20260826_194634_add_business_inquiries';
 import * as migration_20260826_195855_add_tiktok_url_to_site_settings from './20260826_195855_add_tiktok_url_to_site_settings';
+import * as migration_20260826_200500_backfill_rebrand_content from './20260826_200500_backfill_rebrand_content';
 
 export const migrations = [
   {
@@ -95,5 +96,10 @@ export const migrations = [
     up: migration_20260826_195855_add_tiktok_url_to_site_settings.up,
     down: migration_20260826_195855_add_tiktok_url_to_site_settings.down,
     name: '20260826_195855_add_tiktok_url_to_site_settings'
+  },
+  {
+    up: migration_20260826_200500_backfill_rebrand_content.up,
+    down: migration_20260826_200500_backfill_rebrand_content.down,
+    name: '20260826_200500_backfill_rebrand_content'
   },
 ];
