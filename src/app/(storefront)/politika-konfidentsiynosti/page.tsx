@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/pageMetadata'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/politika-konfidentsiynosti',
   title: 'Політика конфіденційності | Kvitkova Povnya',
   description: 'Політика конфіденційності та обробки персональних даних Kvitkova Povnya.',
-  alternates: { canonical: '/politika-konfidentsiynosti' },
-}
+})
 
 export default function PrivacyPolicyPage() {
   return (

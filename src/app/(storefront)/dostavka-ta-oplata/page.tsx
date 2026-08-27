@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/pageMetadata'
 
 import { getPayloadClient } from '@/lib/payload'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/dostavka-ta-oplata',
   title: 'Доставка та оплата | Kvitkova Povnya',
   description: 'Умови доставки квіткових підписок і букетів та способи оплати.',
-  alternates: { canonical: '/dostavka-ta-oplata' },
-}
+})
 
 export default async function DeliveryAndPaymentPage() {
   const payload = await getPayloadClient()

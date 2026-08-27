@@ -7,6 +7,7 @@ import { getPayloadClient } from '@/lib/payload'
 import { AddToCartForm } from '@/components/storefront/AddToCartForm'
 import { mediaUrl } from '@/lib/media'
 import { richTextToPlainText } from '@/lib/richTextToPlainText'
+import { pageMetadata } from '@/lib/pageMetadata'
 import type { Category } from '@/payload-types'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
@@ -37,14 +38,11 @@ export async function generateMetadata({
     `${product.name} — замовити з доставкою по Києву від Kvitkova Povnya.`
   const imageUrl = mediaUrl(product.images?.[0]?.image, 'full')
 
+  const base = pageMetadata({ path: `/product/${product.slug}`, title, description })
   return {
-    title,
-    description,
-    alternates: { canonical: `/product/${product.slug}` },
+    ...base,
     openGraph: {
-      title,
-      description,
-      url: `${SITE_URL}/product/${product.slug}`,
+      ...base.openGraph,
       images: imageUrl ? [{ url: imageUrl }] : undefined,
     },
   }

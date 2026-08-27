@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { cache } from 'react'
 import { notFound } from 'next/navigation'
+import { pageMetadata } from '@/lib/pageMetadata'
 
 import { getPayloadClient } from '@/lib/payload'
 import { ProductGrid } from '@/components/storefront/ProductGrid'
@@ -35,12 +36,7 @@ export async function generateMetadata({
       ? 'Оберіть ідеальний розмір та частоту доставок квітів для дому або офісу.'
       : category.description || `${category.name} з доставкою по Києву від Kvitkova Povnya.`
 
-  return {
-    title,
-    description,
-    alternates: { canonical: `/katalog/${category.slug}` },
-    openGraph: { title, description, url: `/katalog/${category.slug}` },
-  }
+  return pageMetadata({ path: `/katalog/${category.slug}`, title, description })
 }
 
 export default async function CategoryPage({ params }: { params: Promise<{ categorySlug: string }> }) {

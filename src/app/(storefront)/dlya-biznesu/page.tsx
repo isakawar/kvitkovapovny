@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/pageMetadata'
 
 import { BusinessInquiryForm } from '@/components/storefront/BusinessInquiryForm'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/dlya-biznesu',
   title: 'Квіти для бізнесу | Kvitkova Povnya',
   description:
     'Автоматична підписка на живі квіти для закладів та офісів у Києві: повне обслуговування, вази, закриваючі документи.',
-  alternates: { canonical: '/dlya-biznesu' },
-}
+})
 
 const audienceTags = ['Для ресторанів', 'Для готелів & б\'юті', 'Для IT-офісів', 'Для шоурумів']
 
