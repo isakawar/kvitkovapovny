@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { getPayloadClient } from '@/lib/payload'
 import { Hero } from '@/components/storefront/Hero'
 import { SubscriptionExplainer } from '@/components/storefront/SubscriptionExplainer'
@@ -16,6 +18,10 @@ import {
 import { SUBSCRIPTION_CONFIGURATOR_ID } from '@/components/storefront/subscriptionConfiguratorId'
 import { mediaUrl } from '@/lib/media'
 import { getInstagramFeed } from '@/lib/instagram'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+}
 
 export default async function HomePage() {
   const payload = await getPayloadClient()

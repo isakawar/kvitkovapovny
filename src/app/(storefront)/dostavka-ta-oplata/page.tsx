@@ -5,6 +5,7 @@ import { getPayloadClient } from '@/lib/payload'
 export const metadata: Metadata = {
   title: 'Доставка та оплата | Kvitkova Povnya',
   description: 'Умови доставки квіткових підписок і букетів та способи оплати.',
+  alternates: { canonical: '/dostavka-ta-oplata' },
 }
 
 export default async function DeliveryAndPaymentPage() {

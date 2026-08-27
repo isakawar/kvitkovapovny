@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: 'Весільна підписка на квіти | Kvitkova Povnya',
   description:
     'Створіть весільний фонд квітів разом із гостями та отримуйте свіжі букети щотижня протягом року.',
+  alternates: { canonical: '/wedding' },
 }
 
 export default async function WeddingPage() {

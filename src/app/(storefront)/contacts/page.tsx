@@ -1,4 +1,12 @@
+import type { Metadata } from 'next'
+
 import { getPayloadClient } from '@/lib/payload'
+
+export const metadata: Metadata = {
+  title: 'Контакти | Kvitkova Povnya',
+  description: 'Телефон, адреса шоуруму та соцмережі Kvitkova Povnya — квіткова підписка та букети з доставкою по Києву.',
+  alternates: { canonical: '/contacts' },
+}
 
 export default async function ContactsPage() {
   const payload = await getPayloadClient()

@@ -1005,9 +1005,13 @@ export interface SiteSetting {
    */
   telegramUrl?: string | null;
   /**
-   * Посилання на TikTok — використовується у хедері
+   * Посилання на TikTok — використовується у футері
    */
   tiktokUrl?: string | null;
+  /**
+   * Посилання на Threads — лише для структурованих даних (sameAs), без іконки у футері
+   */
+  threadsUrl?: string | null;
   /**
    * Адреса шоуруму/студії для самовивозу — показується на сторінці чекауту
    */
@@ -1323,6 +1327,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   instagramUrl?: T;
   telegramUrl?: T;
   tiktokUrl?: T;
+  threadsUrl?: T;
   showroomAddress?: T;
   googleMapsUrl?: T;
   deliveryCities?:

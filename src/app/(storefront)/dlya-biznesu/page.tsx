@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: 'Квіти для бізнесу | Kvitkova Povnya',
   description:
     'Автоматична підписка на живі квіти для закладів та офісів у Києві: повне обслуговування, вази, закриваючі документи.',
+  alternates: { canonical: '/dlya-biznesu' },
 }
 
 const audienceTags = ['Для ресторанів', 'Для готелів & б\'юті', 'Для IT-офісів', 'Для шоурумів']
