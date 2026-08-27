@@ -20,7 +20,11 @@ const unbounded = Unbounded({
 })
 
 export const metadata: Metadata = {
-  title: 'Kvitkova Povnya — підписка на квіти та букети',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'),
+  title: {
+    default: 'Kvitkova Povnya — підписка на квіти та букети',
+    template: '%s',
+  },
   description: 'Підписка на квіти та разові букети з доставкою по Києву.',
 }
 
