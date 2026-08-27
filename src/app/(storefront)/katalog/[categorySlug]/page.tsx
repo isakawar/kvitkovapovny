@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+import { cache } from 'react'
 import { notFound } from 'next/navigation'
 
 import { getPayloadClient } from '@/lib/payload'
@@ -7,16 +9,45 @@ import { PricingGrid, type PricingProductData } from '@/components/storefront/Pr
 import { FaqAccordion } from '@/components/storefront/FaqAccordion'
 import { mediaUrl } from '@/lib/media'
 
-export default async function CategoryPage({ params }: { params: Promise<{ categorySlug: string }> }) {
-  const { categorySlug } = await params
+const getCategory = cache(async (categorySlug: string) => {
   const payload = await getPayloadClient()
-
-  const categoryResult = await payload.find({
+  const result = await payload.find({
     collection: 'categories',
     where: { and: [{ slug: { equals: categorySlug } }, { _status: { equals: 'published' } }] },
     limit: 1,
   })
-  const category = categoryResult.docs[0]
+  return result.docs[0]
+})
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ categorySlug: string }>
+}): Promise<Metadata> {
+  const { categorySlug } = await params
+  const category = await getCategory(categorySlug)
+  if (!category) return {}
+
+  const title =
+    category.slug === 'pidpyska' ? 'Підписка на квіти в Києві | Kvitkova Povnya' : `${category.name} | Kvitkova Povnya`
+  const description =
+    category.slug === 'pidpyska'
+      ? 'Оберіть ідеальний розмір та частоту доставок квітів для дому або офісу.'
+      : category.description || `${category.name} з доставкою по Києву від Kvitkova Povnya.`
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `/katalog/${category.slug}` },
+    openGraph: { title, description, url: `/katalog/${category.slug}` },
+  }
+}
+
+export default async function CategoryPage({ params }: { params: Promise<{ categorySlug: string }> }) {
+  const { categorySlug } = await params
+  const payload = await getPayloadClient()
+
+  const category = await getCategory(categorySlug)
   if (!category) notFound()
 
   const products = await payload.find({
