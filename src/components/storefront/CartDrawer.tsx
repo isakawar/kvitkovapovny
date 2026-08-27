@@ -7,6 +7,7 @@ import Link from 'next/link'
 
 import { useCart } from '@/lib/cart-context'
 import { formatUAH } from '@/lib/money'
+import { track } from '@/lib/analytics'
 
 export type CrossSellProduct = {
   productId: string
@@ -24,7 +25,22 @@ export function CartDrawer({ crossSellProducts = [] }: { crossSellProducts?: Cro
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          if (cart.lines.length > 0) {
+            track('view_cart', {
+              currency: 'UAH',
+              value: cart.totalPrice / 100,
+              items: cart.lines.map((line) => ({
+                item_id: line.productId,
+                item_name: line.name,
+                item_variant: line.variantLabel,
+                price: line.unitPrice / 100,
+                quantity: line.quantity,
+              })),
+            })
+          }
+          setOpen(true)
+        }}
         className="relative flex items-center justify-center rounded-full p-2 text-ink transition hover:bg-blush"
         aria-label="Кошик"
       >

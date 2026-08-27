@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import { getPayloadClient } from '@/lib/payload'
 import { formatUAH } from '@/lib/money'
+import { PurchaseTracker } from '@/components/storefront/PurchaseTracker'
 
 export default async function OrderConfirmationPage({ params }: { params: Promise<{ orderId: string }> }) {
   const { orderId } = await params
@@ -16,12 +17,25 @@ export default async function OrderConfirmationPage({ params }: { params: Promis
   }
   if (!order) notFound()
 
-  const awaitingPayment =
-    (order.paymentMethod === 'online' || order.paymentMethod === 'installments') && order.paymentStatus === 'pending'
+  const requiresOnlinePayment = order.paymentMethod === 'online' || order.paymentMethod === 'installments'
+  const awaitingPayment = requiresOnlinePayment && order.paymentStatus === 'pending'
   const paymentFailed = order.paymentStatus === 'failed'
 
   return (
     <div className="mx-auto max-w-lg px-4 py-20 text-center">
+      <PurchaseTracker
+        orderId={String(order.id)}
+        initialPaymentStatus={order.paymentStatus ?? 'not_required'}
+        requiresOnlinePayment={requiresOnlinePayment}
+        value={(order.orderTotal ?? 0) / 100}
+        items={order.items.map((item) => ({
+          item_id: typeof item.product === 'object' ? String(item.product.id) : String(item.product),
+          item_name: item.productName,
+          item_variant: item.variantLabel ?? undefined,
+          price: item.unitPrice / 100,
+          quantity: item.quantity,
+        }))}
+      />
       <h1 className="mb-3 text-2xl font-semibold text-ink">Дякуємо за замовлення!</h1>
       <p className="mb-4 text-sm text-ink-soft">
         Номер замовлення: <span className="font-medium text-ink">#{String(order.id).slice(-6)}</span>

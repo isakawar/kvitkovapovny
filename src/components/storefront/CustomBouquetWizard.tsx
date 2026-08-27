@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 
 import { createCustomBouquetRequest } from '@/app/actions/createCustomBouquetRequest'
 import { formatUAH } from '@/lib/money'
+import { track } from '@/lib/analytics'
 
 type Gamma = 'gentle' | 'bright' | 'classic' | 'florist_choice'
 
@@ -66,6 +67,7 @@ export function CustomBouquetWizard() {
       setSubmitting(false)
       return
     }
+    track('submit_custom_form', { form_type: 'custom_bouquet', gamma, value: effectiveBudget })
     setDone(true)
   }
 

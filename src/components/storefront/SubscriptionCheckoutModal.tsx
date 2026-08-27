@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { createOrder } from '@/app/actions/createOrder'
 import { createPaymentInvoice } from '@/app/actions/createPaymentInvoice'
 import { formatUAH } from '@/lib/money'
+import { track } from '@/lib/analytics'
 
 export type SubscriptionCheckoutModalProps = {
   productId: string
@@ -99,6 +100,13 @@ export function SubscriptionCheckoutModal({
       setSubmitting(false)
       return
     }
+
+    track('begin_checkout', {
+      currency: 'UAH',
+      value: price / 100,
+      frequency: frequencyLabel,
+      items: [{ item_id: productId, item_name: productName, item_variant: variantLabel, price: price / 100, quantity: 1 }],
+    })
 
     const payment = await createPaymentInvoice(result.orderId)
     if (!payment.ok) {

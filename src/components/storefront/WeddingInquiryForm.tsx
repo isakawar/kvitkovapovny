@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 import { createWeddingInquiry } from '@/app/actions/createWeddingInquiry'
+import { track } from '@/lib/analytics'
 
 export function WeddingInquiryForm({
   formHeading,
@@ -35,6 +36,7 @@ export function WeddingInquiryForm({
       return
     }
 
+    track('submit_lead_form', { form_type: 'wedding' })
     setDone(true)
   }
 

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 import { createBusinessInquiry } from '@/app/actions/createBusinessInquiry'
+import { track } from '@/lib/analytics'
 
 const businessTypeOptions = [
   { label: 'Ресторан', value: 'restaurant' },
@@ -39,6 +40,7 @@ export function BusinessInquiryForm() {
       return
     }
 
+    track('submit_b2b_form', { form_type: 'b2b' })
     setDone(true)
   }
 
