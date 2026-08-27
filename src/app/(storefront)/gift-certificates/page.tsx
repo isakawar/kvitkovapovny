@@ -4,6 +4,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Подарунковий сертифікат | Kvitkova Povnya',
   description: 'Елегантний бокс із подарунковим сертифікатом на квіткову підписку для близьких.',
+  alternates: { canonical: '/gift-certificates' },
 }
 
 export default function GiftCertificatesPage() {

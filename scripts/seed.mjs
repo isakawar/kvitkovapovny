@@ -292,11 +292,11 @@ await payload.updateGlobal({
   slug: 'site-settings',
   data: {
     logo: logo.id,
-    contactPhone: '+380000000000',
+    contactPhone: '+380954782806',
     contactEmail: 'hello@kvitkovapovnya.com',
     instagramUrl: 'https://instagram.com/kvitkovapovnya',
     telegramUrl: 'https://t.me/kvitkovapovnya',
-    showroomAddress: 'м. Київ, вул. Хрещатик, 1',
+    showroomAddress: 'м. Київ, вул. Нагірна, 18/16',
     deliveryCities: [{ name: 'Київ', active: true }],
   },
 })

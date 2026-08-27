@@ -4,6 +4,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Гарантія свіжості | Kvitkova Povnya',
   description: 'Гарантія свіжості квітів у підписках і букетах Kvitkova Povnya.',
+  alternates: { canonical: '/garantiya-svizhosti' },
 }
 
 export default function FreshnessGuaranteePage() {

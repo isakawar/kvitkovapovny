@@ -19,8 +19,10 @@ const unbounded = Unbounded({
   subsets: ['latin', 'cyrillic'],
 })
 
+const SITE_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Kvitkova Povnya — підписка на квіти та букети',
     template: '%s',
@@ -48,6 +50,24 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     imageUrl: mediaUrl(p.images?.[0]?.image, 'thumbnail'),
   }))
 
+  const logoUrl = mediaUrl(siteSettings.logo, 'card')
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Florist',
+    name: 'Kvitkova Povnya',
+    url: SITE_URL,
+    logo: logoUrl ? new URL(logoUrl, SITE_URL).toString() : undefined,
+    image: logoUrl ? new URL(logoUrl, SITE_URL).toString() : undefined,
+    telephone: siteSettings.contactPhone || undefined,
+    email: siteSettings.contactEmail || undefined,
+    address: siteSettings.showroomAddress
+      ? { '@type': 'PostalAddress', streetAddress: siteSettings.showroomAddress, addressLocality: 'Київ', addressCountry: 'UA' }
+      : undefined,
+    sameAs: [siteSettings.instagramUrl, siteSettings.telegramUrl, siteSettings.tiktokUrl, siteSettings.threadsUrl].filter(
+      (url): url is string => Boolean(url),
+    ),
+  }
+
   return (
     <html
       lang="uk"
@@ -55,6 +75,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${montserrat.variable} ${unbounded.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
         <CartProvider>
           {subscriptionInfo.tickerText && <TickerStrip text={subscriptionInfo.tickerText} />}
           <Header

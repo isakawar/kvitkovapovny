@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Договір оферти | Kvitkova Povnya',
   description: 'Публічна оферта на продаж квіткових підписок і букетів Kvitkova Povnya.',
+  alternates: { canonical: '/oferta' },
 }
 
 export default function OfertaPage() {

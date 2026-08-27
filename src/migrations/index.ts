@@ -15,6 +15,8 @@ import * as migration_20260826_192853_add_wedding_page_subscription_fields from 
 import * as migration_20260826_194634_add_business_inquiries from './20260826_194634_add_business_inquiries';
 import * as migration_20260826_195855_add_tiktok_url_to_site_settings from './20260826_195855_add_tiktok_url_to_site_settings';
 import * as migration_20260826_200500_backfill_rebrand_content from './20260826_200500_backfill_rebrand_content';
+import * as migration_20260827_090000_backfill_real_nap_data from './20260827_090000_backfill_real_nap_data';
+import * as migration_20260827_094019_add_threads_url_to_site_settings from './20260827_094019_add_threads_url_to_site_settings';
 
 export const migrations = [
   {
@@ -95,11 +97,21 @@ export const migrations = [
   {
     up: migration_20260826_195855_add_tiktok_url_to_site_settings.up,
     down: migration_20260826_195855_add_tiktok_url_to_site_settings.down,
-    name: '20260826_195855_add_tiktok_url_to_site_settings'
+    name: '20260826_195855_add_tiktok_url_to_site_settings',
   },
   {
     up: migration_20260826_200500_backfill_rebrand_content.up,
     down: migration_20260826_200500_backfill_rebrand_content.down,
-    name: '20260826_200500_backfill_rebrand_content'
+    name: '20260826_200500_backfill_rebrand_content',
+  },
+  {
+    up: migration_20260827_090000_backfill_real_nap_data.up,
+    down: migration_20260827_090000_backfill_real_nap_data.down,
+    name: '20260827_090000_backfill_real_nap_data',
+  },
+  {
+    up: migration_20260827_094019_add_threads_url_to_site_settings.up,
+    down: migration_20260827_094019_add_threads_url_to_site_settings.down,
+    name: '20260827_094019_add_threads_url_to_site_settings'
   },
 ];

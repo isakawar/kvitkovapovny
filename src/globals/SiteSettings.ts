@@ -54,7 +54,13 @@ export const SiteSettings: GlobalConfig = {
       name: 'tiktokUrl',
       type: 'text',
       defaultValue: 'https://www.tiktok.com/@kvitkovapovnya',
-      admin: { description: 'Посилання на TikTok — використовується у хедері' },
+      admin: { description: 'Посилання на TikTok — використовується у футері' },
+    },
+    {
+      name: 'threadsUrl',
+      type: 'text',
+      defaultValue: 'https://www.threads.com/@kvitkova.povnya',
+      admin: { description: 'Посилання на Threads — лише для структурованих даних (sameAs), без іконки у футері' },
     },
     {
       name: 'showroomAddress',

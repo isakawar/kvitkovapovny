@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Політика конфіденційності | Kvitkova Povnya',
   description: 'Політика конфіденційності та обробки персональних даних Kvitkova Povnya.',
+  alternates: { canonical: '/politika-konfidentsiynosti' },
 }
 
 export default function PrivacyPolicyPage() {

@@ -7,6 +7,7 @@ import { mediaUrl } from '@/lib/media'
 export const metadata: Metadata = {
   title: 'Каталог товарів | Kvitkova Povnya',
   description: 'Усі букети, підписки на квіти та товари Kvitkova Povnya в одному каталозі.',
+  alternates: { canonical: '/katalog' },
 }
 
 export default async function CatalogPage() {
