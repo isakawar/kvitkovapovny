@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { pageMetadata } from '@/lib/pageMetadata'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/garantiya-svizhosti',
   title: 'Гарантія свіжості | Kvitkova Povnya',
   description: 'Гарантія свіжості квітів у підписках і букетах Kvitkova Povnya.',
-  alternates: { canonical: '/garantiya-svizhosti' },
-}
+})
 
 export default function FreshnessGuaranteePage() {
   return (

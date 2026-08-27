@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import { pageMetadata } from '@/lib/pageMetadata'
 
 import { getPayloadClient } from '@/lib/payload'
 import { WeddingInquiryForm } from '@/components/storefront/WeddingInquiryForm'
 import { HowItWorks } from '@/components/storefront/HowItWorks'
 import { mediaUrl } from '@/lib/media'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/wedding',
   title: 'Весільна підписка на квіти | Kvitkova Povnya',
-  description:
-    'Створіть весільний фонд квітів разом із гостями та отримуйте свіжі букети щотижня протягом року.',
-  alternates: { canonical: '/wedding' },
-}
+  description: 'Створіть весільний фонд квітів разом із гостями та отримуйте свіжі букети щотижня протягом року.',
+})
 
 export default async function WeddingPage() {
   const payload = await getPayloadClient()

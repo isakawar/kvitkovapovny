@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/pageMetadata'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/oferta',
   title: 'Договір оферти | Kvitkova Povnya',
   description: 'Публічна оферта на продаж квіткових підписок і букетів Kvitkova Povnya.',
-  alternates: { canonical: '/oferta' },
-}
+})
 
 export default function OfertaPage() {
   return (

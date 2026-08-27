@@ -1,14 +1,15 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/pageMetadata'
 
 import { getPayloadClient } from '@/lib/payload'
 import { ProductGrid } from '@/components/storefront/ProductGrid'
 import { mediaUrl } from '@/lib/media'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/katalog',
   title: 'Каталог товарів | Kvitkova Povnya',
   description: 'Усі букети, підписки на квіти та товари Kvitkova Povnya в одному каталозі.',
-  alternates: { canonical: '/katalog' },
-}
+})
 
 export default async function CatalogPage() {
   const payload = await getPayloadClient()

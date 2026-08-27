@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { pageMetadata } from '@/lib/pageMetadata'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/gift-certificates',
   title: 'Подарунковий сертифікат | Kvitkova Povnya',
   description: 'Елегантний бокс із подарунковим сертифікатом на квіткову підписку для близьких.',
-  alternates: { canonical: '/gift-certificates' },
-}
+})
 
 export default function GiftCertificatesPage() {
   return (
