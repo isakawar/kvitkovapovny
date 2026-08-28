@@ -96,7 +96,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             theme={siteSettings.designTheme || 'old'}
             logoUrl={mediaUrl(siteSettings.logo, 'card')}
             crossSellProducts={crossSellProducts}
-            threadsUrl={siteSettings.threadsUrl}
           />
           <main className="flex-1">{children}</main>
           <Footer
@@ -105,6 +104,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             instagramUrl={siteSettings.instagramUrl}
             telegramUrl={siteSettings.telegramUrl}
             tiktokUrl={siteSettings.tiktokUrl}
+            threadsUrl={siteSettings.threadsUrl}
             showroomAddress={siteSettings.showroomAddress}
             googleMapsUrl={siteSettings.googleMapsUrl}
           />

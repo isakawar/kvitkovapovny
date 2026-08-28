@@ -1009,7 +1009,7 @@ export interface SiteSetting {
    */
   tiktokUrl?: string | null;
   /**
-   * Посилання на Threads — використовується у хедері
+   * Посилання на Threads — використовується у футері
    */
   threadsUrl?: string | null;
   /**

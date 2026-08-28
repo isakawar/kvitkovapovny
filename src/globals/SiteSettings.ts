@@ -60,7 +60,7 @@ export const SiteSettings: GlobalConfig = {
       name: 'threadsUrl',
       type: 'text',
       defaultValue: 'https://www.threads.com/@kvitkova.povnya',
-      admin: { description: 'Посилання на Threads — використовується у хедері' },
+      admin: { description: 'Посилання на Threads — використовується у футері' },
     },
     {
       name: 'showroomAddress',
