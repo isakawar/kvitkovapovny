@@ -111,12 +111,15 @@ export const Products: CollectionConfig = {
             },
             {
               name: 'price',
+              label: 'Ціна, грн',
               type: 'number',
               required: true,
               min: 0,
               admin: {
-                description:
-                  'Базова ціна в копійках (щоб уникнути похибок округлення), напр. 45000 = 450.00 грн',
+                description: 'Базова ціна товару в гривнях, напр. 450 або 1700.',
+                components: {
+                  Field: '@/components/admin/PriceField#PriceField',
+                },
               },
             },
             {
@@ -162,10 +165,14 @@ export const Products: CollectionConfig = {
                 },
                 {
                   name: 'priceModifier',
+                  label: 'Зміна ціни, грн',
                   type: 'number',
                   defaultValue: 0,
                   admin: {
-                    description: 'Копійки, може бути відʼємним',
+                    description: 'На скільки грн цей варіант дорожчий (або дешевший — тоді зі знаком мінус) за базову ціну.',
+                    components: {
+                      Field: '@/components/admin/PriceField#PriceField',
+                    },
                   },
                 },
                 {

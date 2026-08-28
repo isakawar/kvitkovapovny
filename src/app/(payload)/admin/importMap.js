@@ -1,4 +1,5 @@
 import { ProductCardPreview as ProductCardPreview_37ed59a957a9f3b93a176ecc64af64a8 } from '@/components/admin/ProductCardPreview'
+import { PriceField as PriceField_9fbb07b2225a3c78e2cc8cafd6034e19 } from '@/components/admin/PriceField'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -27,6 +28,7 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 /** @type import('payload').ImportMap */
 export const importMap = {
   "@/components/admin/ProductCardPreview#ProductCardPreview": ProductCardPreview_37ed59a957a9f3b93a176ecc64af64a8,
+  "@/components/admin/PriceField#PriceField": PriceField_9fbb07b2225a3c78e2cc8cafd6034e19,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
