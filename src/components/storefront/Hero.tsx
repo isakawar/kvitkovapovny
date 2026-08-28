@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { BrandFlowerAccent } from './BrandFlowerAccent'
+import { HeroMedia } from './HeroMedia'
 import { SUBSCRIPTION_CONFIGURATOR_ID } from './subscriptionConfiguratorId'
 
 type CtaButton = {
@@ -84,28 +84,12 @@ export function Hero({
             </a>
           </div>
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl bg-blush">
-            {videoUrl ? (
-              <video
-                className="absolute inset-0 h-full w-full object-cover"
-                src={videoUrl}
-                poster={fallbackImageUrl || undefined}
-                autoPlay
-                muted
-                loop
-                playsInline
-              />
-            ) : (
-              fallbackImageUrl && (
-                <Image
-                  src={fallbackImageUrl}
-                  alt={fallbackImageAlt}
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover"
-                />
-              )
-            )}
+            <HeroMedia
+              videoUrl={videoUrl}
+              posterUrl={fallbackImageUrl}
+              alt={fallbackImageAlt}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+            />
           </div>
         </div>
         <BrandFlowerAccent className="pointer-events-none absolute right-6 top-6 z-10 hidden h-16 w-16 text-cream/70 [html[data-theme='new']_&]:block sm:h-20 sm:w-20" />
@@ -115,21 +99,7 @@ export function Hero({
 
   return (
     <section className="relative flex h-[60vh] max-h-[560px] min-h-[380px] w-full items-center justify-center overflow-hidden bg-blush">
-      {videoUrl ? (
-        <video
-          className="absolute inset-0 h-full w-full object-cover"
-          src={videoUrl}
-          poster={fallbackImageUrl || undefined}
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
-      ) : (
-        fallbackImageUrl && (
-          <Image src={fallbackImageUrl} alt={fallbackImageAlt} fill priority sizes="100vw" className="object-cover" />
-        )
-      )}
+      <HeroMedia videoUrl={videoUrl} posterUrl={fallbackImageUrl} alt={fallbackImageAlt} sizes="100vw" />
       <div className="absolute inset-0 bg-ink/30 backdrop-blur-[2px]" />
       <div className="relative z-10 mx-4 flex max-w-xl flex-col items-center gap-6 rounded-2xl bg-ink/20 px-8 py-10 text-center text-cream backdrop-blur-md">
         <h1
