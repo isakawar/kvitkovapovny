@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import type { InstagramFeedPost } from '@/lib/instagram'
+import { track } from '@/lib/analytics'
 
 function FeedTile({ post }: { post: InstagramFeedPost }) {
   if (post.mediaType === 'video') {
@@ -115,6 +116,7 @@ function Lightbox({
               href={post.permalink}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => track('click_instagram', { location: 'instagram_feed_post' })}
               className="text-sm text-accent underline"
             >
               Переглянути в Instagram
@@ -147,7 +149,13 @@ export function InstagramFeed({
       <div className="mb-8 flex items-center justify-between">
         <h2 className="text-2xl font-semibold tracking-wide text-ink uppercase">Ми в Instagram</h2>
         {instagramUrl && (
-          <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-accent underline">
+          <a
+            href={instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track('click_instagram', { location: 'instagram_feed' })}
+            className="text-sm text-accent underline"
+          >
             Підписатись
           </a>
         )}

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Montserrat, Unbounded } from 'next/font/google'
+import { GoogleTagManager } from '@next/third-parties/google'
 
 import { CartProvider } from '@/lib/cart-context'
 import { Header } from '@/components/storefront/Header'
@@ -75,6 +76,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${montserrat.variable} ${unbounded.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <>
+            <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+            <noscript>
+              <iframe
+                src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
+                height="0"
+                width="0"
+                style={{ display: 'none', visibility: 'hidden' }}
+              />
+            </noscript>
+          </>
+        )}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
         <CartProvider>
           {subscriptionInfo.tickerText && <TickerStrip text={subscriptionInfo.tickerText} />}

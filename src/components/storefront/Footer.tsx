@@ -1,5 +1,8 @@
+'use client'
+
 import Link from 'next/link'
 
+import { track } from '@/lib/analytics'
 import { Logo } from './Logo'
 
 type FooterProps = {
@@ -109,6 +112,7 @@ export function Footer({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
+                onClick={() => track('click_instagram', { location: 'footer' })}
                 className="text-ink transition hover:text-accent"
               >
                 <InstagramIcon />
@@ -120,6 +124,7 @@ export function Footer({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Telegram"
+                onClick={() => track('click_telegram', { location: 'footer' })}
                 className="text-ink transition hover:text-accent"
               >
                 <TelegramIcon />
@@ -170,7 +175,11 @@ export function Footer({
           <ul className="space-y-2">
             {contactPhone && (
               <li>
-                <a href={`tel:${contactPhone}`} className="hover:text-accent">
+                <a
+                  href={`tel:${contactPhone}`}
+                  onClick={() => track('click_phone', { location: 'footer' })}
+                  className="hover:text-accent"
+                >
                   {contactPhone}
                 </a>
               </li>
@@ -208,6 +217,7 @@ export function Footer({
               href={telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => track('click_telegram', { location: 'footer_cta' })}
               className="mt-4 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-cream transition hover:bg-ink/80"
             >
               <TelegramIcon />

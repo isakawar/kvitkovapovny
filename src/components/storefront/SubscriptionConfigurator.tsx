@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 import { formatUAH } from '@/lib/money'
+import { track } from '@/lib/analytics'
 import { ProductGallery, type GalleryImage } from './ProductGallery'
 import { BrandFlowerAccent } from './BrandFlowerAccent'
 import { SubscriptionCheckoutModal } from './SubscriptionCheckoutModal'
@@ -115,7 +116,21 @@ export function SubscriptionConfigurator({
                   <button
                     key={v.label}
                     type="button"
-                    onClick={() => setVariantLabel(v.label)}
+                    onClick={() => {
+                      setVariantLabel(v.label)
+                      track('select_item', {
+                        item_list_name: 'subscription_plans',
+                        items: [
+                          {
+                            item_id: product.productId,
+                            item_name: product.name,
+                            item_variant: v.label,
+                            price: v.price / 100,
+                            quantity: 1,
+                          },
+                        ],
+                      })
+                    }}
                     className={`relative flex flex-col items-center gap-1 rounded-2xl border px-2 py-3 transition sm:px-3 sm:py-4 ${
                       active ? 'border-accent bg-accent text-on-accent' : 'border-ink/15 text-ink hover:border-ink/40'
                     }`}
@@ -187,7 +202,22 @@ export function SubscriptionConfigurator({
             </div>
             <button
               type="button"
-              onClick={() => setCheckoutOpen(true)}
+              onClick={() => {
+                track('add_to_cart', {
+                  currency: 'UAH',
+                  value: selectedSizePrice / 100,
+                  items: [
+                    {
+                      item_id: product.productId,
+                      item_name: product.name,
+                      item_variant: variantLabel,
+                      price: selectedSizePrice / 100,
+                      quantity: 1,
+                    },
+                  ],
+                })
+                setCheckoutOpen(true)
+              }}
               className="rounded-full bg-accent px-6 py-3 text-base font-medium text-on-accent transition hover:bg-accent-hover sm:ml-auto sm:px-8 sm:py-4"
             >
               Оформити підписку →

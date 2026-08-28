@@ -3,6 +3,8 @@
 import { useRef, useState } from 'react'
 import Image from 'next/image'
 
+import { track } from '@/lib/analytics'
+
 export type TestimonialData = {
   imageUrl: string
   authorName?: string | null
@@ -122,6 +124,7 @@ export function TestimonialsCarousel({
             href={instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track('click_instagram', { location: 'testimonials' })}
             className="inline-flex items-center gap-1.5 rounded-full border border-ink px-6 py-3 text-sm font-medium text-ink transition hover:bg-ink hover:text-cream"
           >
             Дивитися всі відгуки в Instagram{handle ? ` @${handle}` : ''} ↗

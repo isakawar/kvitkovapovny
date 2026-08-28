@@ -8,6 +8,7 @@ import { useCart } from '@/lib/cart-context'
 import { formatUAH } from '@/lib/money'
 import { createOrder } from '@/app/actions/createOrder'
 import { createPaymentInvoice } from '@/app/actions/createPaymentInvoice'
+import { track } from '@/lib/analytics'
 import { NovaPoshtaFields } from './NovaPoshtaFields'
 
 const TIME_WINDOWS = [
@@ -81,6 +82,18 @@ export function CheckoutForm({ cities, showroomAddress }: { cities: string[]; sh
     }
 
     if (result.paymentMethod === 'online' || result.paymentMethod === 'installments') {
+      track('begin_checkout', {
+        currency: 'UAH',
+        value: cart.totalPrice / 100,
+        items: cart.lines.map((l) => ({
+          item_id: l.productId,
+          item_name: l.name,
+          item_variant: l.variantLabel,
+          price: l.unitPrice / 100,
+          quantity: l.quantity,
+        })),
+      })
+
       const payment = await createPaymentInvoice(result.orderId)
       setSubmitting(false)
 
