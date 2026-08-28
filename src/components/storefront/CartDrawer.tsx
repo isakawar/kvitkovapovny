@@ -18,6 +18,27 @@ type ApiProduct = {
   relatedProducts?: unknown[] | null
 }
 
+function TrashIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M3 6h18" />
+      <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" />
+      <path d="M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" />
+      <path d="M10 11v6M14 11v6" />
+    </svg>
+  )
+}
+
 export function CartDrawer({ crossSellProducts = [] }: { crossSellProducts?: CrossSellProduct[] }) {
   const [open, setOpen] = useState(false)
   const [loaded, setLoaded] = useState<{ sig: string; items: CrossSellItem[] }>({ sig: '', items: [] })
@@ -161,15 +182,22 @@ export function CartDrawer({ crossSellProducts = [] }: { crossSellProducts?: Cro
                                 +
                               </button>
                             </div>
-                            <span className="text-xs text-ink-soft">× {formatUAH(line.unitPrice)}</span>
+                            <span className="text-xs text-ink-soft">{formatUAH(line.unitPrice)} / шт.</span>
                           </div>
+                          {line.quantity > 1 && (
+                            <p className="mt-1 text-xs font-medium text-ink">
+                              Разом за позицію: {formatUAH(line.unitPrice * line.quantity)}
+                            </p>
+                          )}
                         </div>
                         <button
                           type="button"
-                          className="text-xs text-ink-soft underline"
+                          className="shrink-0 self-start rounded-full p-1.5 text-ink-soft transition hover:bg-blush hover:text-red-600"
                           onClick={() => cart.removeLine(line.productId, line.variantLabel)}
+                          aria-label="Видалити"
+                          title="Видалити"
                         >
-                          Видалити
+                          <TrashIcon />
                         </button>
                       </li>
                     ))}
@@ -180,7 +208,7 @@ export function CartDrawer({ crossSellProducts = [] }: { crossSellProducts?: Cro
                       <p className="mb-3 text-xs font-semibold tracking-wide text-ink uppercase">Додайте до букета</p>
                       <div className="flex flex-col gap-2">
                         {crossSellList.map((p) => (
-                          <div key={p.productId} className="flex items-center gap-3 rounded-xl bg-blush/40 p-2">
+                          <div key={p.productId} className="flex items-center gap-3 rounded-xl bg-blush/40 px-3 py-2">
                             <div className="relative h-[50px] w-[50px] shrink-0 overflow-hidden rounded-lg bg-blush">
                               {p.imageUrl && <Image src={p.imageUrl} alt={p.name} fill sizes="50px" className="object-cover" />}
                             </div>
