@@ -256,16 +256,15 @@ export interface Category {
  */
 export interface Product {
   id: number;
-  name: string;
-  /**
-   * Заголовок H1 на сторінці товару, якщо має відрізнятись від назви в кошику/картках (необовʼязково)
-   */
-  pdpHeading?: string | null;
-  /**
-   * Короткий підпис під назвою на картці товару, напр. "Компактний затишний букет" (необовʼязково)
-   */
-  cardSubtitle?: string | null;
   slug: string;
+  /**
+   * Показувати в блоці "Додати до замовлення" в кошику
+   */
+  crossSell?: boolean | null;
+  inStock?: boolean | null;
+  featured?: boolean | null;
+  sortOrder?: number | null;
+  name: string;
   /**
    * Той самий товар може належати кільком категоріям (напр. підписка одночасно й "Підписка на квіти", й "Весільна підписка")
    */
@@ -274,6 +273,10 @@ export interface Product {
    * Базова ціна в копійках (щоб уникнути похибок округлення), напр. 45000 = 450.00 грн
    */
   price: number;
+  /**
+   * Дрібний текст біля ціни, напр. "1 700 грн / букет" (необовʼязково)
+   */
+  priceSuffixLabel?: string | null;
   description?: {
     root: {
       type: string;
@@ -289,6 +292,9 @@ export interface Product {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Перетягуйте, щоб змінити порядок. Перше фото — головне.
+   */
   images?:
     | {
         image: number | Media;
@@ -337,25 +343,9 @@ export interface Product {
       }[]
     | null;
   /**
-   * Блок довіри під кнопкою купівлі на сторінці товару (необовʼязково)
+   * Короткий підпис під назвою на картці товару, напр. "Компактний затишний букет" (необовʼязково)
    */
-  trustBadges?:
-    | {
-        /**
-         * Емодзі, напр. 🎁
-         */
-        icon?: string | null;
-        /**
-         * Жирний заголовок
-         */
-        label: string;
-        /**
-         * Короткий підпис (необовʼязково)
-         */
-        note?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  cardSubtitle?: string | null;
   /**
    * Напр. "ХІТ ПРОДАЖІВ" — стрічка в кутку картки товару (необовʼязково)
    */
@@ -378,10 +368,6 @@ export interface Product {
       }[]
     | null;
   /**
-   * Дрібний текст біля ціни, напр. "1 700 грн / букет" (необовʼязково)
-   */
-  priceSuffixLabel?: string | null;
-  /**
    * Текст кнопки на картці товару, напр. "Обрати M" (за замовчуванням "У кошик")
    */
   ctaLabel?: string | null;
@@ -398,12 +384,29 @@ export interface Product {
    */
   occasionTags?: ('birthday' | 'romantic' | 'gentle')[] | null;
   /**
-   * Показувати в блоці "Додати до замовлення" в кошику
+   * Заголовок H1 на сторінці товару, якщо має відрізнятись від назви в кошику/картках (необовʼязково)
    */
-  crossSell?: boolean | null;
-  inStock?: boolean | null;
-  featured?: boolean | null;
-  sortOrder?: number | null;
+  pdpHeading?: string | null;
+  /**
+   * Блок довіри під кнопкою купівлі на сторінці товару (необовʼязково)
+   */
+  trustBadges?:
+    | {
+        /**
+         * Емодзі, напр. 🎁
+         */
+        icon?: string | null;
+        /**
+         * Жирний заголовок
+         */
+        label: string;
+        /**
+         * Короткий підпис (необовʼязково)
+         */
+        note?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -762,12 +765,15 @@ export interface CategoriesSelect<T extends boolean = true> {
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
-  name?: T;
-  pdpHeading?: T;
-  cardSubtitle?: T;
   slug?: T;
+  crossSell?: T;
+  inStock?: T;
+  featured?: T;
+  sortOrder?: T;
+  name?: T;
   categories?: T;
   price?: T;
+  priceSuffixLabel?: T;
   description?: T;
   images?:
     | T
@@ -798,14 +804,7 @@ export interface ProductsSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
-  trustBadges?:
-    | T
-    | {
-        icon?: T;
-        label?: T;
-        note?: T;
-        id?: T;
-      };
+  cardSubtitle?: T;
   badge?: T;
   freeDeliveryBadge?: T;
   vaseGiftBadge?: T;
@@ -815,15 +814,19 @@ export interface ProductsSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
-  priceSuffixLabel?: T;
   ctaLabel?: T;
   highlighted?: T;
   audienceTags?: T;
   occasionTags?: T;
-  crossSell?: T;
-  inStock?: T;
-  featured?: T;
-  sortOrder?: T;
+  pdpHeading?: T;
+  trustBadges?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        note?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
