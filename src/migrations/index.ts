@@ -19,6 +19,7 @@ import * as migration_20260827_090000_backfill_real_nap_data from './20260827_09
 import * as migration_20260827_094019_add_threads_url_to_site_settings from './20260827_094019_add_threads_url_to_site_settings';
 import * as migration_20260828_192458_add_product_images_hasmany from './20260828_192458_add_product_images_hasmany';
 import * as migration_20260828_193553_add_related_products_to_products from './20260828_193553_add_related_products_to_products';
+import * as migration_20260828_211545_add_cart_gift_note_to_site_settings from './20260828_211545_add_cart_gift_note_to_site_settings';
 
 export const migrations = [
   {
@@ -124,6 +125,11 @@ export const migrations = [
   {
     up: migration_20260828_193553_add_related_products_to_products.up,
     down: migration_20260828_193553_add_related_products_to_products.down,
-    name: '20260828_193553_add_related_products_to_products'
+    name: '20260828_193553_add_related_products_to_products',
+  },
+  {
+    up: migration_20260828_211545_add_cart_gift_note_to_site_settings.up,
+    down: migration_20260828_211545_add_cart_gift_note_to_site_settings.down,
+    name: '20260828_211545_add_cart_gift_note_to_site_settings'
   },
 ];

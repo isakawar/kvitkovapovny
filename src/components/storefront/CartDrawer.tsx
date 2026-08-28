@@ -39,7 +39,13 @@ function TrashIcon() {
   )
 }
 
-export function CartDrawer({ crossSellProducts = [] }: { crossSellProducts?: CrossSellProduct[] }) {
+export function CartDrawer({
+  crossSellProducts = [],
+  giftNote,
+}: {
+  crossSellProducts?: CrossSellProduct[]
+  giftNote?: string | null
+}) {
   const [open, setOpen] = useState(false)
   const [loaded, setLoaded] = useState<{ sig: string; items: CrossSellItem[] }>({ sig: '', items: [] })
   const cart = useCart()
@@ -149,9 +155,11 @@ export function CartDrawer({ crossSellProducts = [] }: { crossSellProducts?: Cro
                 <p className="text-sm text-ink-soft">Кошик порожній</p>
               ) : (
                 <>
-                  <p className="mb-4 rounded-xl bg-blush/60 px-3 py-2 text-xs font-medium text-ink">
-                    🎁 До вашого замовлення додано: Ваза та секатор у ПОДАРУНОК
-                  </p>
+                  {giftNote && (
+                    <p className="mb-4 rounded-xl bg-blush/60 px-3 py-2 text-xs font-medium text-ink">
+                      {giftNote}
+                    </p>
+                  )}
 
                   <ul className="flex-1 space-y-4 overflow-y-auto">
                     {cart.lines.map((line) => (

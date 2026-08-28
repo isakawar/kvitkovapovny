@@ -96,6 +96,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             theme={siteSettings.designTheme || 'old'}
             logoUrl={mediaUrl(siteSettings.logo, 'card')}
             crossSellProducts={crossSellProducts}
+            cartGiftNote={siteSettings.cartGiftNote}
           />
           <main className="flex-1">{children}</main>
           <Footer

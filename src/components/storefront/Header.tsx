@@ -51,10 +51,12 @@ export function Header({
   theme,
   logoUrl,
   crossSellProducts,
+  cartGiftNote,
 }: {
   theme: 'old' | 'new'
   logoUrl?: string | null
   crossSellProducts?: CrossSellProduct[]
+  cartGiftNote?: string | null
 }) {
   return (
     <header
@@ -94,11 +96,11 @@ export function Header({
       {theme === 'new' ? (
         <div className="flex items-center gap-4">
           <HeaderIconPlaceholders />
-          <CartDrawer crossSellProducts={crossSellProducts} />
+          <CartDrawer crossSellProducts={crossSellProducts} giftNote={cartGiftNote} />
           <MobileNav />
         </div>
       ) : (
-        <CartDrawer crossSellProducts={crossSellProducts} />
+        <CartDrawer crossSellProducts={crossSellProducts} giftNote={cartGiftNote} />
       )}
     </header>
   )
