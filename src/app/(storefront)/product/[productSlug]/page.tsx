@@ -5,10 +5,12 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import { getPayloadClient } from '@/lib/payload'
 import { AddToCartForm } from '@/components/storefront/AddToCartForm'
+import { RelatedProductsBlock } from '@/components/storefront/RelatedProductsBlock'
 import { mediaUrl } from '@/lib/media'
 import { richTextToPlainText } from '@/lib/richTextToPlainText'
 import { pageMetadata } from '@/lib/pageMetadata'
-import type { Category } from '@/payload-types'
+import type { CrossSellItem } from '@/lib/crossSell'
+import type { Category, Product } from '@/payload-types'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
@@ -21,6 +23,54 @@ const getProduct = cache(async (productSlug: string) => {
     limit: 1,
   })
   return result.docs[0]
+})
+
+function toCrossSellItem(p: Product): CrossSellItem {
+  return {
+    productId: String(p.id),
+    productSlug: p.slug,
+    name: p.name,
+    price: p.price,
+    imageUrl: mediaUrl(p.images?.[0], 'card'),
+  }
+}
+
+const getRelatedProducts = cache(async (product: Product): Promise<CrossSellItem[]> => {
+  const payload = await getPayloadClient()
+
+  const explicitIds = (product.relatedProducts || [])
+    .map((p) => (typeof p === 'object' && p !== null ? p.id : p))
+    .filter((id): id is number => typeof id === 'number')
+
+  if (explicitIds.length > 0) {
+    // Re-fetch at depth 1 so the related products' own images are populated
+    // (the parent query only reaches them as bare relationships).
+    const related = await payload.find({
+      collection: 'products',
+      where: { and: [{ _status: { equals: 'published' } }, { id: { in: explicitIds } }] },
+      depth: 1,
+      limit: explicitIds.length,
+    })
+    const byId = new Map(related.docs.map((d) => [d.id, d]))
+    return explicitIds
+      .map((id) => byId.get(id))
+      .filter((d): d is Product => Boolean(d))
+      .map(toCrossSellItem)
+  }
+
+  const fallback = await payload.find({
+    collection: 'products',
+    where: {
+      and: [
+        { _status: { equals: 'published' } },
+        { crossSell: { equals: true } },
+        { id: { not_equals: product.id } },
+      ],
+    },
+    depth: 1,
+    limit: 4,
+  })
+  return fallback.docs.map(toCrossSellItem)
 })
 
 export async function generateMetadata({
@@ -55,6 +105,7 @@ export default async function ProductPage({ params }: { params: Promise<{ produc
 
   const imageUrl = mediaUrl(product.images?.[0], 'full')
   const absoluteImageUrl = imageUrl ? new URL(imageUrl, SITE_URL).toString() : undefined
+  const relatedProducts = await getRelatedProducts(product)
 
   const firstCategory = (product.categories || []).find(
     (c): c is Category => typeof c === 'object' && c !== null,
@@ -149,6 +200,7 @@ export default async function ProductPage({ params }: { params: Promise<{ produc
           )
         }
       />
+      <RelatedProductsBlock items={relatedProducts} />
     </>
   )
 }

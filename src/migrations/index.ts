@@ -18,6 +18,7 @@ import * as migration_20260826_200500_backfill_rebrand_content from './20260826_
 import * as migration_20260827_090000_backfill_real_nap_data from './20260827_090000_backfill_real_nap_data';
 import * as migration_20260827_094019_add_threads_url_to_site_settings from './20260827_094019_add_threads_url_to_site_settings';
 import * as migration_20260828_192458_add_product_images_hasmany from './20260828_192458_add_product_images_hasmany';
+import * as migration_20260828_193553_add_related_products_to_products from './20260828_193553_add_related_products_to_products';
 
 export const migrations = [
   {
@@ -118,6 +119,11 @@ export const migrations = [
   {
     up: migration_20260828_192458_add_product_images_hasmany.up,
     down: migration_20260828_192458_add_product_images_hasmany.down,
-    name: '20260828_192458_add_product_images_hasmany'
+    name: '20260828_192458_add_product_images_hasmany',
+  },
+  {
+    up: migration_20260828_193553_add_related_products_to_products.up,
+    down: migration_20260828_193553_add_related_products_to_products.down,
+    name: '20260828_193553_add_related_products_to_products'
   },
 ];

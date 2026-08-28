@@ -382,6 +382,10 @@ export interface Product {
    */
   pdpHeading?: string | null;
   /**
+   * Оберіть товари для допродажу (вази, листівки, солодощі). Показуються в блоці "Разом купують" на сторінці товару та в кошику. Порожньо — беруться товари з галочкою "Показувати в блоці Додати до замовлення".
+   */
+  relatedProducts?: (number | Product)[] | null;
+  /**
    * Блок довіри під кнопкою купівлі на сторінці товару (необовʼязково)
    */
   trustBadges?:
@@ -807,6 +811,7 @@ export interface ProductsSelect<T extends boolean = true> {
   audienceTags?: T;
   occasionTags?: T;
   pdpHeading?: T;
+  relatedProducts?: T;
   trustBadges?:
     | T
     | {

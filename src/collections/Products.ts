@@ -311,6 +311,17 @@ export const Products: CollectionConfig = {
               },
             },
             {
+              name: 'relatedProducts',
+              label: 'Супутні товари / Разом купують',
+              type: 'relationship',
+              relationTo: 'products',
+              hasMany: true,
+              admin: {
+                description:
+                  'Оберіть товари для допродажу (вази, листівки, солодощі). Показуються в блоці "Разом купують" на сторінці товару та в кошику. Порожньо — беруться товари з галочкою "Показувати в блоці Додати до замовлення".',
+              },
+            },
+            {
               name: 'trustBadges',
               type: 'array',
               admin: {
