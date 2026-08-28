@@ -293,15 +293,9 @@ export interface Product {
     [k: string]: unknown;
   } | null;
   /**
-   * Перетягуйте, щоб змінити порядок. Перше фото — головне.
+   * Оберіть одразу кілька фото та перетягуйте, щоб змінити порядок. Перше фото — головне. Опис (alt) береться з медіатеки.
    */
-  images?:
-    | {
-        image: number | Media;
-        alt?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  images: (number | Media)[];
   /**
    * Напр. розмір букета або частота підписки
    */
@@ -775,13 +769,7 @@ export interface ProductsSelect<T extends boolean = true> {
   price?: T;
   priceSuffixLabel?: T;
   description?: T;
-  images?:
-    | T
-    | {
-        image?: T;
-        alt?: T;
-        id?: T;
-      };
+  images?: T;
   variants?:
     | T
     | {

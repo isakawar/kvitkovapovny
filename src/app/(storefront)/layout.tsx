@@ -48,7 +48,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     productSlug: p.slug,
     name: p.name,
     price: p.price,
-    imageUrl: mediaUrl(p.images?.[0]?.image, 'thumbnail'),
+    imageUrl: mediaUrl(p.images?.[0], 'thumbnail'),
   }))
 
   const logoUrl = mediaUrl(siteSettings.logo, 'card')

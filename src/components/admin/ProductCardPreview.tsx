@@ -25,7 +25,7 @@ export function ProductCardPreview() {
       priceSuffixLabel: fields?.priceSuffixLabel?.value as string | undefined,
       badge: fields?.badge?.value as string | undefined,
       ctaLabel: fields?.ctaLabel?.value as string | undefined,
-      firstImageId: fields?.['images.0.image']?.value as string | number | undefined,
+      firstImageId: (fields?.images?.value as (string | number)[] | undefined)?.[0],
     }),
   )
 

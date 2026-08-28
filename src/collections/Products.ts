@@ -132,23 +132,15 @@ export const Products: CollectionConfig = {
             },
             {
               name: 'images',
-              type: 'array',
+              type: 'upload',
+              relationTo: 'media',
+              hasMany: true,
+              required: true,
               minRows: 1,
               admin: {
-                description: 'Перетягуйте, щоб змінити порядок. Перше фото — головне.',
+                description:
+                  'Оберіть одразу кілька фото та перетягуйте, щоб змінити порядок. Перше фото — головне. Опис (alt) береться з медіатеки.',
               },
-              fields: [
-                {
-                  name: 'image',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                },
-                {
-                  name: 'alt',
-                  type: 'text',
-                },
-              ],
             },
           ],
         },

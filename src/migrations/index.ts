@@ -17,6 +17,7 @@ import * as migration_20260826_195855_add_tiktok_url_to_site_settings from './20
 import * as migration_20260826_200500_backfill_rebrand_content from './20260826_200500_backfill_rebrand_content';
 import * as migration_20260827_090000_backfill_real_nap_data from './20260827_090000_backfill_real_nap_data';
 import * as migration_20260827_094019_add_threads_url_to_site_settings from './20260827_094019_add_threads_url_to_site_settings';
+import * as migration_20260828_192458_add_product_images_hasmany from './20260828_192458_add_product_images_hasmany';
 
 export const migrations = [
   {
@@ -112,6 +113,11 @@ export const migrations = [
   {
     up: migration_20260827_094019_add_threads_url_to_site_settings.up,
     down: migration_20260827_094019_add_threads_url_to_site_settings.down,
-    name: '20260827_094019_add_threads_url_to_site_settings'
+    name: '20260827_094019_add_threads_url_to_site_settings',
+  },
+  {
+    up: migration_20260828_192458_add_product_images_hasmany.up,
+    down: migration_20260828_192458_add_product_images_hasmany.down,
+    name: '20260828_192458_add_product_images_hasmany'
   },
 ];

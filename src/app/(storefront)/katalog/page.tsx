@@ -33,8 +33,8 @@ export default async function CatalogPage() {
           slug: p.slug,
           name: p.name,
           price: p.price,
-          imageUrl: mediaUrl(p.images?.[0]?.image, 'card'),
-          imageAlt: p.images?.[0]?.alt || p.name,
+          imageUrl: mediaUrl(p.images?.[0], 'card'),
+          imageAlt: (typeof p.images?.[0] === 'object' && p.images[0]?.alt) || p.name,
           inStock: p.inStock ?? true,
         }))}
       />

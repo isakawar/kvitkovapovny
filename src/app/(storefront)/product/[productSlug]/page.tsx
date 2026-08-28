@@ -36,7 +36,7 @@ export async function generateMetadata({
   const description =
     richTextToPlainText(product.description) ||
     `${product.name} — замовити з доставкою по Києву від Kvitkova Povnya.`
-  const imageUrl = mediaUrl(product.images?.[0]?.image, 'full')
+  const imageUrl = mediaUrl(product.images?.[0], 'full')
 
   const base = pageMetadata({ path: `/product/${product.slug}`, title, description })
   return {
@@ -53,7 +53,7 @@ export default async function ProductPage({ params }: { params: Promise<{ produc
   const product = await getProduct(productSlug)
   if (!product) notFound()
 
-  const imageUrl = mediaUrl(product.images?.[0]?.image, 'full')
+  const imageUrl = mediaUrl(product.images?.[0], 'full')
   const absoluteImageUrl = imageUrl ? new URL(imageUrl, SITE_URL).toString() : undefined
 
   const firstCategory = (product.categories || []).find(
@@ -125,8 +125,9 @@ export default async function ProductPage({ params }: { params: Promise<{ produc
         priceSuffixLabel={product.priceSuffixLabel}
         images={(product.images || [])
           .map((img) => {
-            const url = mediaUrl(img.image, 'full')
-            return url ? { url, alt: img.alt || product.name } : null
+            const url = mediaUrl(img, 'full')
+            const alt = (typeof img === 'object' && img?.alt) || product.name
+            return url ? { url, alt } : null
           })
           .filter((img): img is { url: string; alt: string } => img !== null)}
         inStock={product.inStock ?? true}

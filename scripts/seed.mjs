@@ -147,7 +147,7 @@ await payload.create({
       'Розмір визначає обʼєм композиції: від компактного M до пишного XXL. Змінити розмір чи періодичність можна в будь-який момент.',
       'До кожної доставки додається інструкція по догляду, підживлення для квітів та листівка з вашими побажаннями.',
     ]),
-    images: [{ image: subM.id, alt: 'Підписка на квіти' }],
+    images: [subM.id],
     variants: [
       { label: 'M', priceModifier: 0, image: subM.id },
       { label: 'L', priceModifier: 200000, image: subL.id },
@@ -174,7 +174,7 @@ await payload.create({
       'Оберіть розмір від компактного M до вражаючого XXL, і ми складемо букет із сезонних квітів.',
       'Букет приходить у фірмовому пакуванні з інструкцією по догляду.',
     ]),
-    images: [{ image: buketM.id, alt: 'Букет' }],
+    images: [buketM.id],
     variants: [
       { label: 'M', priceModifier: 0, image: buketM.id },
       { label: 'L', priceModifier: 50000, image: buketL.id },
@@ -196,7 +196,7 @@ await payload.create({
     slug: 'testovyi-buket',
     categories: [pidpyska.id],
     price: 120000,
-    images: [{ image: subM.id, alt: 'Тестовий букет' }],
+    images: [subM.id],
     bullets: [
       { label: '1 пробна доставка' },
       { label: 'Професійний секатор у подарунок' },
@@ -217,7 +217,7 @@ await payload.create({
     categories: [pidpyska.id],
     price: 400000,
     priceSuffixLabel: '1 000 грн / букет',
-    images: [{ image: subM.id, alt: 'Підписка S' }],
+    images: [subM.id],
     bullets: [{ label: '4 доставки букетів' }, { label: 'Ваза у подарунок' }, { label: 'Зміна днів доставки' }],
     ctaLabel: 'Обрати S',
     audienceTags: ['home', 'business'],
@@ -234,7 +234,7 @@ await payload.create({
     categories: [pidpyska.id],
     price: 680000,
     priceSuffixLabel: '1 700 грн / букет',
-    images: [{ image: subL.id, alt: 'Підписка M' }],
+    images: [subL.id],
     bullets: [
       { label: '4 великі композиції' },
       { label: 'Ваза + секатор у подарунок' },
@@ -258,7 +258,7 @@ await payload.create({
     categories: [pidpyska.id],
     price: 1120000,
     priceSuffixLabel: '2 800 грн / букет',
-    images: [{ image: subXl.id, alt: 'Підписка L' }],
+    images: [subXl.id],
     bullets: [
       { label: '4 преміум композиції' },
       { label: 'Ваза + секатор у подарунок' },
