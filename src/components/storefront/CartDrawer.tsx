@@ -1,25 +1,102 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import { useCart } from '@/lib/cart-context'
 import { formatUAH } from '@/lib/money'
+import { mediaUrl } from '@/lib/media'
 import { track } from '@/lib/analytics'
+import { trackCrossSellAdd, type CrossSellItem } from '@/lib/crossSell'
 
-export type CrossSellProduct = {
-  productId: string
-  productSlug: string
-  name: string
-  price: number
-  imageUrl?: string | null
+export type CrossSellProduct = CrossSellItem
+
+type ApiProduct = {
+  id: number | string
+  relatedProducts?: unknown[] | null
 }
 
-export function CartDrawer({ crossSellProducts = [] }: { crossSellProducts?: CrossSellProduct[] }) {
+function TrashIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M3 6h18" />
+      <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" />
+      <path d="M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" />
+      <path d="M10 11v6M14 11v6" />
+    </svg>
+  )
+}
+
+export function CartDrawer({
+  crossSellProducts = [],
+  giftNote,
+}: {
+  crossSellProducts?: CrossSellProduct[]
+  giftNote?: string | null
+}) {
   const [open, setOpen] = useState(false)
+  const [loaded, setLoaded] = useState<{ sig: string; items: CrossSellItem[] }>({ sig: '', items: [] })
   const cart = useCart()
+
+  const cartProductIds = cart.lines.map((l) => l.productId).join(',')
+  const relatedItems = loaded.sig === cartProductIds ? loaded.items : []
+
+  useEffect(() => {
+    if (!open) return
+    const ids = [...new Set(cartProductIds ? cartProductIds.split(',') : [])]
+    if (ids.length === 0) return
+
+    let cancelled = false
+    const qs = new URLSearchParams()
+    qs.set('where[id][in]', ids.join(','))
+    qs.set('depth', '2')
+    qs.set('limit', '50')
+
+    fetch(`/api/products?${qs.toString()}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { docs?: ApiProduct[] } | null) => {
+        if (cancelled || !data?.docs) return
+        const inCart = new Set(ids)
+        const seen = new Set<string>()
+        const items: CrossSellItem[] = []
+        for (const doc of data.docs) {
+          for (const rp of doc.relatedProducts ?? []) {
+            if (typeof rp !== 'object' || rp === null) continue
+            const p = rp as { id: number | string; slug: string; name: string; price: number; images?: unknown[] }
+            const id = String(p.id)
+            if (inCart.has(id) || seen.has(id)) continue
+            seen.add(id)
+            items.push({
+              productId: id,
+              productSlug: p.slug,
+              name: p.name,
+              price: p.price,
+              imageUrl: mediaUrl((p.images?.[0] as Parameters<typeof mediaUrl>[0]) ?? null, 'thumbnail'),
+            })
+          }
+        }
+        setLoaded({ sig: cartProductIds, items: items.slice(0, 6) })
+      })
+      .catch(() => {})
+
+    return () => {
+      cancelled = true
+    }
+  }, [open, cartProductIds])
+
+  const crossSellList: CrossSellItem[] = relatedItems.length > 0 ? relatedItems : crossSellProducts
 
   return (
     <>
@@ -78,9 +155,11 @@ export function CartDrawer({ crossSellProducts = [] }: { crossSellProducts?: Cro
                 <p className="text-sm text-ink-soft">Кошик порожній</p>
               ) : (
                 <>
-                  <p className="mb-4 rounded-xl bg-blush/60 px-3 py-2 text-xs font-medium text-ink">
-                    🎁 До вашого замовлення додано: Ваза та секатор у ПОДАРУНОК
-                  </p>
+                  {giftNote && (
+                    <p className="mb-4 rounded-xl bg-blush/60 px-3 py-2 text-xs font-medium text-ink">
+                      {giftNote}
+                    </p>
+                  )}
 
                   <ul className="flex-1 space-y-4 overflow-y-auto">
                     {cart.lines.map((line) => (
@@ -111,26 +190,33 @@ export function CartDrawer({ crossSellProducts = [] }: { crossSellProducts?: Cro
                                 +
                               </button>
                             </div>
-                            <span className="text-xs text-ink-soft">× {formatUAH(line.unitPrice)}</span>
+                            <span className="text-xs text-ink-soft">{formatUAH(line.unitPrice)} / шт.</span>
                           </div>
+                          {line.quantity > 1 && (
+                            <p className="mt-1 text-xs font-medium text-ink">
+                              Разом за позицію: {formatUAH(line.unitPrice * line.quantity)}
+                            </p>
+                          )}
                         </div>
                         <button
                           type="button"
-                          className="text-xs text-ink-soft underline"
+                          className="shrink-0 self-start rounded-full p-1.5 text-ink-soft transition hover:bg-blush hover:text-red-600"
                           onClick={() => cart.removeLine(line.productId, line.variantLabel)}
+                          aria-label="Видалити"
+                          title="Видалити"
                         >
-                          Видалити
+                          <TrashIcon />
                         </button>
                       </li>
                     ))}
                   </ul>
 
-                  {crossSellProducts.length > 0 && (
+                  {crossSellList.length > 0 && (
                     <div className="mt-6 border-t border-ink/10 pt-4">
-                      <p className="mb-3 text-xs font-semibold tracking-wide text-ink uppercase">Додати до замовлення</p>
+                      <p className="mb-3 text-xs font-semibold tracking-wide text-ink uppercase">Додайте до букета</p>
                       <div className="flex flex-col gap-2">
-                        {crossSellProducts.map((p) => (
-                          <div key={p.productId} className="flex items-center gap-3 rounded-xl bg-blush/40 p-2">
+                        {crossSellList.map((p) => (
+                          <div key={p.productId} className="flex items-center gap-3 rounded-xl bg-blush/40 px-3 py-2">
                             <div className="relative h-[50px] w-[50px] shrink-0 overflow-hidden rounded-lg bg-blush">
                               {p.imageUrl && <Image src={p.imageUrl} alt={p.name} fill sizes="50px" className="object-cover" />}
                             </div>
@@ -140,7 +226,7 @@ export function CartDrawer({ crossSellProducts = [] }: { crossSellProducts?: Cro
                             </div>
                             <button
                               type="button"
-                              onClick={() =>
+                              onClick={() => {
                                 cart.addLine({
                                   productId: p.productId,
                                   productSlug: p.productSlug,
@@ -148,7 +234,8 @@ export function CartDrawer({ crossSellProducts = [] }: { crossSellProducts?: Cro
                                   image: p.imageUrl ?? undefined,
                                   unitPrice: p.price,
                                 })
-                              }
+                                trackCrossSellAdd(p)
+                              }}
                               className="shrink-0 rounded-full border border-ink/20 px-3 py-1 text-xs text-ink transition hover:border-ink/50"
                             >
                               + Додати

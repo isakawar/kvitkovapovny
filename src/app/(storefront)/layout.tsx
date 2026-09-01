@@ -48,7 +48,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     productSlug: p.slug,
     name: p.name,
     price: p.price,
-    imageUrl: mediaUrl(p.images?.[0]?.image, 'thumbnail'),
+    imageUrl: mediaUrl(p.images?.[0], 'thumbnail'),
   }))
 
   const logoUrl = mediaUrl(siteSettings.logo, 'card')
@@ -96,7 +96,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             theme={siteSettings.designTheme || 'old'}
             logoUrl={mediaUrl(siteSettings.logo, 'card')}
             crossSellProducts={crossSellProducts}
-            threadsUrl={siteSettings.threadsUrl}
+            cartGiftNote={siteSettings.cartGiftNote}
           />
           <main className="flex-1">{children}</main>
           <Footer
@@ -105,6 +105,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             instagramUrl={siteSettings.instagramUrl}
             telegramUrl={siteSettings.telegramUrl}
             tiktokUrl={siteSettings.tiktokUrl}
+            threadsUrl={siteSettings.threadsUrl}
             showroomAddress={siteSettings.showroomAddress}
             googleMapsUrl={siteSettings.googleMapsUrl}
           />

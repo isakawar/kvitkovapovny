@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { getOrderPaymentStatus } from '@/app/actions/getOrderPaymentStatus'
 import { track } from '@/lib/analytics'
@@ -30,6 +31,7 @@ export function PurchaseTracker({
   items: PurchaseTrackerItem[]
 }) {
   const firedRef = useRef(false)
+  const router = useRouter()
 
   useEffect(() => {
     if (!requiresOnlinePayment) return
@@ -63,9 +65,15 @@ export function PurchaseTracker({
 
         if (result?.paymentStatus === 'paid') {
           firePurchase()
+          // Re-render the server component so the "awaiting payment" banner
+          // flips to the paid state without a manual reload.
+          router.refresh()
           return
         }
-        if (result?.paymentStatus === 'failed') return
+        if (result?.paymentStatus === 'failed') {
+          router.refresh()
+          return
+        }
       }
     }
 

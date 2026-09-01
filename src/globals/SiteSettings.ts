@@ -42,6 +42,16 @@ export const SiteSettings: GlobalConfig = {
       ],
     },
     {
+      name: 'cartGiftNote',
+      type: 'text',
+      label: 'Плашка-подарунок у кошику',
+      defaultValue: '🎁 До вашого замовлення додано: Ваза та секатор у ПОДАРУНОК',
+      admin: {
+        description:
+          'Текст жовтої плашки вгорі кошика, напр. "🎁 До вашого замовлення додано: Ваза та секатор у ПОДАРУНОК". Порожнє поле — плашка не показується.',
+      },
+    },
+    {
       name: 'instagramUrl',
       type: 'text',
     },
@@ -60,7 +70,7 @@ export const SiteSettings: GlobalConfig = {
       name: 'threadsUrl',
       type: 'text',
       defaultValue: 'https://www.threads.com/@kvitkova.povnya',
-      admin: { description: 'Посилання на Threads — використовується у хедері' },
+      admin: { description: 'Посилання на Threads — використовується у футері' },
     },
     {
       name: 'showroomAddress',

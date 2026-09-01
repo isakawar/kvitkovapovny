@@ -85,8 +85,9 @@ export default async function HomePage() {
         name: configuratorSourceProduct.name,
         images: (configuratorSourceProduct.images || [])
           .map((img) => {
-            const url = mediaUrl(img.image, 'full')
-            return url ? { url, alt: img.alt || configuratorSourceProduct.name } : null
+            const url = mediaUrl(img, 'full')
+            const alt = (typeof img === 'object' && img?.alt) || configuratorSourceProduct.name
+            return url ? { url, alt } : null
           })
           .filter((img): img is { url: string; alt: string } => img !== null),
         sizes: (configuratorSourceProduct.variants || []).map((v) => {
@@ -189,8 +190,8 @@ export default async function HomePage() {
           slug: p.slug,
           name: p.name,
           price: p.price,
-          imageUrl: mediaUrl(p.images?.[0]?.image, 'card'),
-          imageAlt: p.images?.[0]?.alt || p.name,
+          imageUrl: mediaUrl(p.images?.[0], 'card'),
+          imageAlt: (typeof p.images?.[0] === 'object' && p.images[0]?.alt) || p.name,
           inStock: p.inStock ?? true,
           freeDeliveryBadge: p.freeDeliveryBadge,
           vaseGiftBadge: p.vaseGiftBadge,
